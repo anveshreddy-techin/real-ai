@@ -12,7 +12,7 @@ from .core.config import settings
 from .core.errors import SkillGuardError, skillguard_exception_handler
 from .core.logging import configure_logging, get_logger
 
-from .routers import centres, attendance, infrastructure, alerts, pipeline
+from .routers import centres, attendance, infrastructure, alerts, pipeline, detection
 
 configure_logging(log_level="INFO")
 logger = get_logger(__name__)
@@ -52,6 +52,7 @@ app.include_router(attendance.router, prefix="/api/v1/attendance", tags=["Attend
 app.include_router(infrastructure.router, prefix="/api/v1/infrastructure", tags=["Infrastructure Compliance"])
 app.include_router(alerts.router, prefix="/api/v1/alerts", tags=["Discrepancy Alerts"])
 app.include_router(pipeline.router, prefix="/api/v1/pipeline", tags=["Pipeline & Benchmarks"])
+app.include_router(detection.router, prefix="/api/v1/detection", tags=["Real CV Inference Engine"])
 
 
 @app.get("/health", tags=["System"])
@@ -63,5 +64,7 @@ async def health_check():
         "ministry": "Ministry of Skill Development and Entrepreneurship (MSDE)",
         "sih_problem_statement": "SIH26245",
         "bandwidth_mode": settings.DEFAULT_BANDWIDTH_MODE.value,
-        "privacy_preservation": "STRICT_AGGREGATE_ONLY"
+        "privacy_preservation": "STRICT_AGGREGATE_ONLY",
+        "yolo_model": "YOLOv8-nano (active)",
+        "anomaly_detector": "RandomForest-100 (trained & active)"
     }

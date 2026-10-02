@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { CANONICAL_CENTRES, Centre } from '@/data/mockCentres';
 import { AttendanceTimelineChart } from '@/components/charts/AttendanceTimelineChart';
 import { SeatingHeatmap } from '@/components/ui/SeatingHeatmap';
+import { IndiaMapOverview } from '@/components/ui/IndiaMapOverview';
+import { PersonaRoleBanner } from '@/components/ui/PersonaRoleBanner';
 import { 
   Building2, 
   Users, 
@@ -15,7 +17,7 @@ import {
   Layers, 
   ShieldAlert, 
   Zap,
-  ArrowRight
+  MapPin
 } from 'lucide-react';
 
 export default function NationalCommandPage() {
@@ -58,6 +60,9 @@ export default function NationalCommandPage() {
           </div>
         </div>
       </div>
+
+      {/* Role-Adaptive Persona Banner */}
+      <PersonaRoleBanner />
 
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -109,59 +114,67 @@ export default function NationalCommandPage() {
 
       {/* Main Command Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Centres Directory */}
-        <div className="lg:col-span-1 bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h2 className="font-semibold text-slate-900 text-sm">Empaneled Training Centres</h2>
-            <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">5 Active Feeds</span>
+        {/* Left Column: Centres Directory & GIS Map */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h2 className="font-semibold text-slate-900 text-sm">Empaneled Training Centres</h2>
+              <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">5 Active Feeds</span>
+            </div>
+
+            <div className="space-y-2">
+              {CANONICAL_CENTRES.map((centre) => {
+                const isSelected = centre.centre_id === selectedCentre.centre_id;
+                const isCritical = centre.compliance_status === 'CRITICAL';
+                const isElevated = centre.compliance_status === 'ELEVATED_RISK';
+                const isCompliant = centre.compliance_status === 'COMPLIANT';
+
+                return (
+                  <button
+                    key={centre.centre_id}
+                    onClick={() => setSelectedCentre(centre)}
+                    className={`w-full text-left p-3 rounded-lg border transition-all ${
+                      isSelected
+                        ? 'border-blue-600 bg-blue-50/50 shadow-sm'
+                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="text-xs font-mono font-semibold text-slate-500">{centre.centre_id}</span>
+                        <h3 className="text-xs font-bold text-slate-900 line-clamp-1">{centre.name}</h3>
+                        <p className="text-[11px] text-slate-500 mt-0.5">{centre.district}, {centre.state}</p>
+                      </div>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                        isCritical ? 'bg-rose-100 text-rose-700 border border-rose-200' :
+                        isElevated ? 'bg-amber-100 text-amber-700 border border-amber-200' :
+                        isCompliant ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
+                        'bg-slate-100 text-slate-700'
+                      }`}>
+                        {centre.compliance_status.replace('_', ' ')}
+                      </span>
+                    </div>
+
+                    <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-600 pt-2 border-t border-slate-100">
+                      <div className="flex items-center space-x-1">
+                        <Users className="w-3.5 h-3.5 text-slate-400" />
+                        <span>Att: {centre.attendance.ai_detected_headcount} / {centre.attendance.submitted_attendance}</span>
+                      </div>
+                      <div className="font-semibold text-slate-900">
+                        Score: {centre.compliance_score}%
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            {CANONICAL_CENTRES.map((centre) => {
-              const isSelected = centre.centre_id === selectedCentre.centre_id;
-              const isCritical = centre.compliance_status === 'CRITICAL';
-              const isElevated = centre.compliance_status === 'ELEVATED_RISK';
-              const isCompliant = centre.compliance_status === 'COMPLIANT';
-
-              return (
-                <button
-                  key={centre.centre_id}
-                  onClick={() => setSelectedCentre(centre)}
-                  className={`w-full text-left p-3 rounded-lg border transition-all ${
-                    isSelected
-                      ? 'border-blue-600 bg-blue-50/50 shadow-sm'
-                      : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="text-xs font-mono font-semibold text-slate-500">{centre.centre_id}</span>
-                      <h3 className="text-xs font-bold text-slate-900 line-clamp-1">{centre.name}</h3>
-                      <p className="text-[11px] text-slate-500 mt-0.5">{centre.district}, {centre.state}</p>
-                    </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                      isCritical ? 'bg-rose-100 text-rose-700 border border-rose-200' :
-                      isElevated ? 'bg-amber-100 text-amber-700 border border-amber-200' :
-                      isCompliant ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
-                      'bg-slate-100 text-slate-700'
-                    }`}>
-                      {centre.compliance_status.replace('_', ' ')}
-                    </span>
-                  </div>
-
-                  <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-600 pt-2 border-t border-slate-100">
-                    <div className="flex items-center space-x-1">
-                      <Users className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Att: {centre.attendance.ai_detected_headcount} / {centre.attendance.submitted_attendance}</span>
-                    </div>
-                    <div className="font-semibold text-slate-900">
-                      Score: {centre.compliance_score}%
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+          {/* India GIS Spatial Overview */}
+          <IndiaMapOverview
+            selectedCentreId={selectedCentre.centre_id}
+            onSelectCentre={(centre) => setSelectedCentre(centre)}
+          />
         </div>
 
         {/* Right Column: Live Centre Telemetry Inspection */}

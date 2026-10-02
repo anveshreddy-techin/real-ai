@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ShieldCheck, Video, Users, Box, AlertTriangle, Cpu, Lock } from 'lucide-react';
+import { RoleSwitcher } from '../ui/RoleSwitcher';
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -56,8 +57,9 @@ export const Navbar = () => {
             })}
           </nav>
 
-          <div className="flex items-center space-x-2">
-            <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-700">
+          <div className="flex items-center space-x-3">
+            <RoleSwitcher />
+            <span className="hidden sm:inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-700">
               <span className="w-2 h-2 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               Live MSDE Telemetry
             </span>
