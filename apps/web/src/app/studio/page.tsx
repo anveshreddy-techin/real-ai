@@ -1,12 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Camera, 
-  Upload, 
-  Play, 
-  Pause, 
   RotateCcw, 
   ShieldCheck, 
   AlertTriangle, 
@@ -20,10 +17,14 @@ import {
   ArrowLeft,
   Sparkles,
   Zap,
-  Cpu,
-  FileText
+  HelpCircle,
+  Award,
+  UserCheck,
+  UserX,
+  Phone,
+  FileCheck2
 } from 'lucide-react';
-import { CANONICAL_CENTRES, Centre } from '@/data/mockCentres';
+import { CANONICAL_CENTRES } from '@/data/mockCentres';
 
 interface DetectionBox {
   id: string;
@@ -34,6 +35,18 @@ interface DetectionBox {
   y: number; // percentage 0-100
   w: number; // percentage 0-100
   h: number; // percentage 0-100
+  gender?: 'M' | 'F';
+  isTrainer?: boolean;
+  personName?: string;
+}
+
+interface HumanTrainee {
+  id: string;
+  name: string;
+  gender: 'M' | 'F';
+  punchTime: string;
+  inRoom: boolean;
+  avatar: string;
 }
 
 interface Scenario {
@@ -46,6 +59,16 @@ interface Scenario {
   expectedPersons: number;
   description: string;
   fraudType: string;
+  trainer: {
+    name: string;
+    gender: 'M' | 'F';
+    id: string;
+    qualification: string;
+    avatar: string;
+    punchIn: string;
+    phone: string;
+  };
+  trainees: HumanTrainee[];
   boxes: DetectionBox[];
 }
 
@@ -64,26 +87,70 @@ const DEMO_SCENARIOS: Scenario[] = [
     expectedPersons: 18,
     description: 'Centre registered 32 trainees on AEBAS door register. Camera feed detects only 18 physical bodies in room (-14 ghost trainees, 43.8% inflation).',
     fraudType: 'CRITICAL_GHOST_ATTENDANCE',
+    trainer: {
+      name: 'Sunita Devi',
+      gender: 'F',
+      id: 'TR-2024-UP-4209',
+      qualification: 'NSDC Master Certified Level 4',
+      avatar: '👩‍🏫',
+      punchIn: '08:45 AM',
+      phone: '+91 98390 14209'
+    },
+    trainees: [
+      { id: 'CAN-GKP-001', name: 'Ravi Kumar', gender: 'M', punchTime: '08:52', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-002', name: 'Pooja Verma', gender: 'F', punchTime: '08:54', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-003', name: 'Amit Singh', gender: 'M', punchTime: '08:55', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-004', name: 'Kavita Yadav', gender: 'F', punchTime: '08:57', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-005', name: 'Manoj Tiwari', gender: 'M', punchTime: '08:58', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-006', name: 'Suman Gupta', gender: 'F', punchTime: '08:59', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-007', name: 'Deepak Sharma', gender: 'M', punchTime: '09:00', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-008', name: 'Anjali Maurya', gender: 'F', punchTime: '09:01', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-009', name: 'Sanjay Nishad', gender: 'M', punchTime: '09:02', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-010', name: 'Priyanka Dubey', gender: 'F', punchTime: '09:03', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-011', name: 'Vikas Pandey', gender: 'M', punchTime: '09:04', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-012', name: 'Roshni Khatun', gender: 'F', punchTime: '09:05', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-013', name: 'Alok Mishra', gender: 'M', punchTime: '09:06', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-014', name: 'Sarita Chauhan', gender: 'F', punchTime: '09:07', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-015', name: 'Ramesh Patel', gender: 'M', punchTime: '09:08', inRoom: true, avatar: '👨' },
+      { id: 'CAN-GKP-016', name: 'Neetu Rajbhar', gender: 'F', punchTime: '09:09', inRoom: true, avatar: '👩' },
+      { id: 'CAN-GKP-017', name: 'Gaurav Srivastava', gender: 'M', punchTime: '09:10', inRoom: true, avatar: '👨' },
+      // 14 Ghost Absent trainees
+      { id: 'CAN-GKP-018', name: 'Archana Singh', gender: 'F', punchTime: '09:11', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-019', name: 'Sunil Kumar', gender: 'M', punchTime: '09:12', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-020', name: 'Meena Devi', gender: 'F', punchTime: '09:13', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-021', name: 'Ashok Bind', gender: 'M', punchTime: '09:14', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-022', name: 'Shobha Rani', gender: 'F', punchTime: '09:15', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-023', name: 'Dharmendra Yadav', gender: 'M', punchTime: '09:16', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-024', name: 'Kiran Prajapati', gender: 'F', punchTime: '09:17', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-025', name: 'Rajendra Prasad', gender: 'M', punchTime: '09:18', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-026', name: 'Sunita Bharati', gender: 'F', punchTime: '09:19', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-027', name: 'Mohit Paswan', gender: 'M', punchTime: '09:20', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-028', name: 'Rekha Vishwakarma', gender: 'F', punchTime: '09:21', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-029', name: 'Ajay Sahani', gender: 'M', punchTime: '09:22', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-030', name: 'Anita Kannaujiya', gender: 'F', punchTime: '09:23', inRoom: false, avatar: '👩' },
+      { id: 'CAN-GKP-031', name: 'Pankaj Maddheshiya', gender: 'M', punchTime: '09:24', inRoom: false, avatar: '👨' },
+      { id: 'CAN-GKP-032', name: 'Usha Gond', gender: 'F', punchTime: '09:25', inRoom: false, avatar: '👩' }
+    ],
     boxes: [
-      // 18 persons
-      { id: 'p1', label: 'Trainee [Centroid]', category: 'person', confidence: 0.94, x: 12, y: 35, w: 9, h: 28 },
-      { id: 'p2', label: 'Trainee [Centroid]', category: 'person', confidence: 0.96, x: 23, y: 36, w: 9, h: 27 },
-      { id: 'p3', label: 'Trainee [Centroid]', category: 'person', confidence: 0.91, x: 34, y: 38, w: 8, h: 26 },
-      { id: 'p4', label: 'Trainee [Centroid]', category: 'person', confidence: 0.89, x: 45, y: 37, w: 9, h: 28 },
-      { id: 'p5', label: 'Trainee [Centroid]', category: 'person', confidence: 0.95, x: 56, y: 35, w: 9, h: 29 },
-      { id: 'p6', label: 'Trainee [Centroid]', category: 'person', confidence: 0.92, x: 67, y: 36, w: 8, h: 27 },
-      { id: 'p7', label: 'Trainee [Centroid]', category: 'person', confidence: 0.88, x: 78, y: 38, w: 9, h: 26 },
-      { id: 'p8', label: 'Trainee [Centroid]', category: 'person', confidence: 0.93, x: 15, y: 55, w: 10, h: 32 },
-      { id: 'p9', label: 'Trainee [Centroid]', category: 'person', confidence: 0.97, x: 28, y: 56, w: 10, h: 31 },
-      { id: 'p10', label: 'Trainee [Centroid]', category: 'person', confidence: 0.90, x: 40, y: 54, w: 10, h: 33 },
-      { id: 'p11', label: 'Trainee [Centroid]', category: 'person', confidence: 0.94, x: 53, y: 55, w: 10, h: 32 },
-      { id: 'p12', label: 'Trainee [Centroid]', category: 'person', confidence: 0.87, x: 65, y: 57, w: 10, h: 30 },
-      { id: 'p13', label: 'Trainee [Centroid]', category: 'person', confidence: 0.91, x: 78, y: 55, w: 10, h: 32 },
-      { id: 'p14', label: 'Trainee [Centroid]', category: 'person', confidence: 0.86, x: 20, y: 22, w: 7, h: 20 },
-      { id: 'p15', label: 'Trainee [Centroid]', category: 'person', confidence: 0.89, x: 32, y: 21, w: 7, h: 21 },
-      { id: 'p16', label: 'Trainee [Centroid]', category: 'person', confidence: 0.93, x: 44, y: 23, w: 7, h: 19 },
-      { id: 'p17', label: 'Trainee [Centroid]', category: 'person', confidence: 0.88, x: 56, y: 22, w: 7, h: 20 },
-      { id: 'p18', label: 'Instructor [Centroid]', category: 'person', confidence: 0.98, x: 86, y: 25, w: 9, h: 35 },
+      // 17 Present Trainees + 1 Trainer = 18 in room
+      { id: 'p1', label: 'Trainee: Ravi Kumar', category: 'person', confidence: 0.94, x: 12, y: 35, w: 9, h: 28, gender: 'M', personName: 'Ravi Kumar' },
+      { id: 'p2', label: 'Trainee: Pooja Verma', category: 'person', confidence: 0.96, x: 23, y: 36, w: 9, h: 27, gender: 'F', personName: 'Pooja Verma' },
+      { id: 'p3', label: 'Trainee: Amit Singh', category: 'person', confidence: 0.91, x: 34, y: 38, w: 8, h: 26, gender: 'M', personName: 'Amit Singh' },
+      { id: 'p4', label: 'Trainee: Kavita Yadav', category: 'person', confidence: 0.89, x: 45, y: 37, w: 9, h: 28, gender: 'F', personName: 'Kavita Yadav' },
+      { id: 'p5', label: 'Trainee: Manoj Tiwari', category: 'person', confidence: 0.95, x: 56, y: 35, w: 9, h: 29, gender: 'M', personName: 'Manoj Tiwari' },
+      { id: 'p6', label: 'Trainee: Suman Gupta', category: 'person', confidence: 0.92, x: 67, y: 36, w: 8, h: 27, gender: 'F', personName: 'Suman Gupta' },
+      { id: 'p7', label: 'Trainee: Deepak Sharma', category: 'person', confidence: 0.88, x: 78, y: 38, w: 9, h: 26, gender: 'M', personName: 'Deepak Sharma' },
+      { id: 'p8', label: 'Trainee: Anjali Maurya', category: 'person', confidence: 0.93, x: 15, y: 55, w: 10, h: 32, gender: 'F', personName: 'Anjali Maurya' },
+      { id: 'p9', label: 'Trainee: Sanjay Nishad', category: 'person', confidence: 0.97, x: 28, y: 56, w: 10, h: 31, gender: 'M', personName: 'Sanjay Nishad' },
+      { id: 'p10', label: 'Trainee: Priyanka Dubey', category: 'person', confidence: 0.90, x: 40, y: 54, w: 10, h: 33, gender: 'F', personName: 'Priyanka Dubey' },
+      { id: 'p11', label: 'Trainee: Vikas Pandey', category: 'person', confidence: 0.94, x: 53, y: 55, w: 10, h: 32, gender: 'M', personName: 'Vikas Pandey' },
+      { id: 'p12', label: 'Trainee: Roshni Khatun', category: 'person', confidence: 0.87, x: 65, y: 57, w: 10, h: 30, gender: 'F', personName: 'Roshni Khatun' },
+      { id: 'p13', label: 'Trainee: Alok Mishra', category: 'person', confidence: 0.91, x: 78, y: 55, w: 10, h: 32, gender: 'M', personName: 'Alok Mishra' },
+      { id: 'p14', label: 'Trainee: Sarita Chauhan', category: 'person', confidence: 0.86, x: 20, y: 22, w: 7, h: 20, gender: 'F', personName: 'Sarita Chauhan' },
+      { id: 'p15', label: 'Trainee: Ramesh Patel', category: 'person', confidence: 0.89, x: 32, y: 21, w: 7, h: 21, gender: 'M', personName: 'Ramesh Patel' },
+      { id: 'p16', label: 'Trainee: Neetu Rajbhar', category: 'person', confidence: 0.93, x: 44, y: 23, w: 7, h: 19, gender: 'F', personName: 'Neetu Rajbhar' },
+      { id: 'p17', label: 'Trainee: Gaurav Srivastava', category: 'person', confidence: 0.88, x: 56, y: 22, w: 7, h: 20, gender: 'M', personName: 'Gaurav Srivastava' },
+      { id: 'p18', label: 'Instructor: Sunita Devi', category: 'person', confidence: 0.99, x: 86, y: 25, w: 10, h: 36, isTrainer: true, gender: 'F', personName: 'Sunita Devi' },
       // Equipment
       { id: 'e1', label: 'Sewing Machine #1', category: 'equipment', confidence: 0.92, x: 10, y: 65, w: 14, h: 18 },
       { id: 'e2', label: 'Sewing Machine #2', category: 'equipment', confidence: 0.89, x: 26, y: 66, w: 14, h: 17 },
@@ -107,17 +174,36 @@ const DEMO_SCENARIOS: Scenario[] = [
     expectedPersons: 43,
     description: 'Clean baseline centre. All 43 registered trainees and sanctioned CNC training equipment verified in real time.',
     fraudType: 'COMPLIANT_BASELINE',
+    trainer: {
+      name: 'Vikram Patil',
+      gender: 'M',
+      id: 'TR-2022-MH-3199',
+      qualification: 'Capital Goods SSC Certified CNC Master',
+      avatar: '👨‍🔧',
+      punchIn: '08:15 AM',
+      phone: '+91 97654 33031'
+    },
+    trainees: Array.from({ length: 42 }, (_, i) => ({
+      id: `CAN-NGP-${String(i + 1).padStart(3, '0')}`,
+      name: i % 2 === 0 ? `Trainee ${i + 1} (Kumar)` : `Trainee ${i + 1} (Tai)`,
+      gender: i % 3 === 0 ? 'F' : 'M',
+      punchTime: `08:${20 + (i % 25)}`,
+      inRoom: true,
+      avatar: i % 3 === 0 ? '👩' : '👨'
+    })),
     boxes: [
-      // 43 persons distributed across workshop
-      ...Array.from({ length: 43 }, (_, i) => ({
-        id: `np${i}`,
-        label: i === 0 ? 'Instructor [Centroid]' : 'Trainee [Centroid]',
+      { id: 'np0', label: 'Instructor: Vikram Patil', category: 'person', confidence: 0.99, x: 86, y: 22, w: 9, h: 35, isTrainer: true, gender: 'M', personName: 'Vikram Patil' },
+      ...Array.from({ length: 42 }, (_, i) => ({
+        id: `np${i + 1}`,
+        label: i % 3 === 0 ? `👩 Female Trainee #${i + 1}` : `👨 Male Trainee #${i + 1}`,
         category: 'person' as const,
         confidence: 0.88 + (i % 10) * 0.01,
-        x: 8 + (i % 8) * 11,
+        x: 6 + (i % 8) * 11,
         y: 20 + Math.floor(i / 8) * 14,
         w: 7,
-        h: 18
+        h: 18,
+        gender: (i % 3 === 0 ? 'F' : 'M') as 'F' | 'M',
+        personName: `Trainee #${i + 1}`
       })),
       { id: 'ne1', label: 'CNC Simulator 1', category: 'equipment', confidence: 0.96, x: 5, y: 75, w: 20, h: 22 },
       { id: 'ne2', label: 'CNC Simulator 2', category: 'equipment', confidence: 0.95, x: 28, y: 75, w: 20, h: 22 },
@@ -138,15 +224,42 @@ const DEMO_SCENARIOS: Scenario[] = [
     expectedPersons: 8,
     description: 'Trainees scanned entry biometrics at 09:00 AM, but exited by 10:00 AM. Camera shows room depleted to 8 trainees during scheduled practical hours.',
     fraudType: 'TEMPORAL_DROPOFF_FRAUD',
+    trainer: {
+      name: 'Pooja Negi',
+      gender: 'F',
+      id: 'TR-2025-HP-1904',
+      qualification: 'Tourism & Hospitality SSC Level 4',
+      avatar: '👩‍💼',
+      punchIn: '09:40 AM',
+      phone: '+91 94180 55019'
+    },
+    trainees: [
+      ...Array.from({ length: 7 }, (_, i) => ({
+        id: `CAN-SMR-00${i + 1}`,
+        name: `Trainee ${i + 1}`,
+        gender: (i % 2 === 0 ? 'F' : 'M') as 'F' | 'M',
+        punchTime: '09:05',
+        inRoom: true,
+        avatar: i % 2 === 0 ? '👩' : '👨'
+      })),
+      ...Array.from({ length: 17 }, (_, i) => ({
+        id: `CAN-SMR-0${i + 8}`,
+        name: `Missing Candidate ${i + 8}`,
+        gender: (i % 2 === 0 ? 'F' : 'M') as 'F' | 'M',
+        punchTime: '09:12',
+        inRoom: false,
+        avatar: i % 2 === 0 ? '👩' : '👨'
+      }))
+    ],
     boxes: [
-      { id: 'sp1', label: 'Trainee [Centroid]', category: 'person', confidence: 0.92, x: 18, y: 40, w: 10, h: 30 },
-      { id: 'sp2', label: 'Trainee [Centroid]', category: 'person', confidence: 0.90, x: 30, y: 42, w: 10, h: 28 },
-      { id: 'sp3', label: 'Trainee [Centroid]', category: 'person', confidence: 0.95, x: 45, y: 41, w: 10, h: 29 },
-      { id: 'sp4', label: 'Trainee [Centroid]', category: 'person', confidence: 0.88, x: 60, y: 43, w: 10, h: 27 },
-      { id: 'sp5', label: 'Trainee [Centroid]', category: 'person', confidence: 0.91, x: 72, y: 40, w: 10, h: 30 },
-      { id: 'sp6', label: 'Trainee [Centroid]', category: 'person', confidence: 0.89, x: 25, y: 65, w: 11, h: 28 },
-      { id: 'sp7', label: 'Trainee [Centroid]', category: 'person', confidence: 0.93, x: 50, y: 66, w: 11, h: 27 },
-      { id: 'sp8', label: 'Instructor [Centroid]', category: 'person', confidence: 0.97, x: 80, y: 30, w: 10, h: 35 }
+      { id: 'sp1', label: 'Trainee: Priya Sharma', category: 'person', confidence: 0.92, x: 18, y: 40, w: 10, h: 30, gender: 'F', personName: 'Priya Sharma' },
+      { id: 'sp2', label: 'Trainee: Rohit Verma', category: 'person', confidence: 0.90, x: 30, y: 42, w: 10, h: 28, gender: 'M', personName: 'Rohit Verma' },
+      { id: 'sp3', label: 'Trainee: Anjali Thakur', category: 'person', confidence: 0.95, x: 45, y: 41, w: 10, h: 29, gender: 'F', personName: 'Anjali Thakur' },
+      { id: 'sp4', label: 'Trainee: Vikas Negi', category: 'person', confidence: 0.88, x: 60, y: 43, w: 10, h: 27, gender: 'M', personName: 'Vikas Negi' },
+      { id: 'sp5', label: 'Trainee: Sneha Paul', category: 'person', confidence: 0.91, x: 72, y: 40, w: 10, h: 30, gender: 'F', personName: 'Sneha Paul' },
+      { id: 'sp6', label: 'Trainee: Amit Rawat', category: 'person', confidence: 0.89, x: 25, y: 65, w: 11, h: 28, gender: 'M', personName: 'Amit Rawat' },
+      { id: 'sp7', label: 'Trainee: Tina Dhiman', category: 'person', confidence: 0.93, x: 50, y: 66, w: 11, h: 27, gender: 'F', personName: 'Tina Dhiman' },
+      { id: 'sp8', label: 'Instructor: Pooja Negi', category: 'person', confidence: 0.98, x: 80, y: 30, w: 10, h: 35, isTrainer: true, gender: 'F', personName: 'Pooja Negi' }
     ]
   },
   {
@@ -162,16 +275,36 @@ const DEMO_SCENARIOS: Scenario[] = [
     expectedPersons: 21,
     description: 'Sanctioned Scheme BOM requires 8 Solar Inverter simulators. Only 4 detected in practical bays. Equipment borrowing fraud suspected.',
     fraudType: 'EQUIPMENT_BOM_DEFICIT',
+    trainer: {
+      name: 'Rajesh Sharma',
+      gender: 'M',
+      id: 'TR-2023-RJ-1502',
+      qualification: 'SCGJ Certified Solar Master Trainer',
+      avatar: '👨‍🏫',
+      punchIn: '08:30 AM',
+      phone: '+91 94140 88215'
+    },
+    trainees: Array.from({ length: 26 }, (_, i) => ({
+      id: `CAN-JDH-${String(i + 1).padStart(3, '0')}`,
+      name: i % 2 === 0 ? `Solar Trainee ${i + 1}` : `Suryamitra ${i + 1}`,
+      gender: (i % 4 === 0 ? 'F' : 'M') as 'F' | 'M',
+      punchTime: `08:${30 + (i % 20)}`,
+      inRoom: i < 20,
+      avatar: i % 4 === 0 ? '👩' : '👨'
+    })),
     boxes: [
-      ...Array.from({ length: 21 }, (_, i) => ({
-        id: `jp${i}`,
-        label: 'Trainee [Centroid]',
+      { id: 'jp0', label: 'Instructor: Rajesh Sharma', category: 'person', confidence: 0.98, x: 85, y: 22, w: 9, h: 33, isTrainer: true, gender: 'M', personName: 'Rajesh Sharma' },
+      ...Array.from({ length: 20 }, (_, i) => ({
+        id: `jp${i + 1}`,
+        label: i % 4 === 0 ? `👩 Female Trainee #${i + 1}` : `👨 Male Trainee #${i + 1}`,
         category: 'person' as const,
         confidence: 0.89 + (i % 8) * 0.01,
         x: 10 + (i % 6) * 14,
         y: 25 + Math.floor(i / 6) * 16,
         w: 8,
-        h: 22
+        h: 22,
+        gender: (i % 4 === 0 ? 'F' : 'M') as 'F' | 'M',
+        personName: `Trainee #${i + 1}`
       })),
       { id: 'je1', label: 'Solar Inverter Simulator 1', category: 'equipment', confidence: 0.93, x: 10, y: 72, w: 18, h: 22 },
       { id: 'je2', label: 'Solar Inverter Simulator 2', category: 'equipment', confidence: 0.91, x: 32, y: 72, w: 18, h: 22 },
@@ -189,6 +322,7 @@ export default function LiveStudioPage() {
   const [isScanning, setIsScanning] = useState<boolean>(false);
   const [customRosterInput, setCustomRosterInput] = useState<number>(32);
   const [selectedTradeItem, setSelectedTradeItem] = useState<string | null>(null);
+  const [galleryFilter, setGalleryFilter] = useState<'ALL' | 'MALES' | 'FEMALES' | 'MISSING'>('ALL');
 
   const scenario = DEMO_SCENARIOS.find(s => s.id === selectedScenarioId) || DEMO_SCENARIOS[0];
 
@@ -212,6 +346,10 @@ export default function LiveStudioPage() {
   const detectedPersons = filteredBoxes.filter(b => b.category === 'person').length;
   const detectedEquipment = filteredBoxes.filter(b => b.category === 'equipment').length;
 
+  const maleDetections = filteredBoxes.filter(b => b.category === 'person' && b.gender === 'M' && !b.isTrainer).length;
+  const femaleDetections = filteredBoxes.filter(b => b.category === 'person' && b.gender === 'F' && !b.isTrainer).length;
+  const trainerDetected = filteredBoxes.some(b => b.isTrainer);
+
   const discrepancy = detectedPersons - customRosterInput;
   const discrepancyPct = customRosterInput > 0 && discrepancy < 0 
     ? ((Math.abs(discrepancy) / customRosterInput) * 100).toFixed(1)
@@ -227,8 +365,12 @@ export default function LiveStudioPage() {
       authority: 'Ministry of Skill Development and Entrepreneurship (MSDE)',
       centreId: scenario.centreId,
       trade: scenario.trade,
+      trainer: scenario.trainer,
       submittedAttendance: customRosterInput,
       aiDetectedHeadcount: detectedPersons,
+      maleDetected: maleDetections,
+      femaleDetected: femaleDetections,
+      trainerPresentInRoom: trainerDetected,
       discrepancyDelta: discrepancy,
       discrepancyPercentage: `${discrepancyPct}%`,
       subsidyAtRiskINR: subsidyAtRisk,
@@ -246,6 +388,14 @@ export default function LiveStudioPage() {
     URL.revokeObjectURL(url);
   };
 
+  // Trainees filter for human gallery
+  const filteredTrainees = scenario.trainees.filter(t => {
+    if (galleryFilter === 'MALES') return t.gender === 'M';
+    if (galleryFilter === 'FEMALES') return t.gender === 'F';
+    if (galleryFilter === 'MISSING') return !t.inRoom;
+    return true;
+  });
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
       {/* Header */}
@@ -255,23 +405,25 @@ export default function LiveStudioPage() {
         </Link>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
-            <div className="p-3 bg-blue-600 text-white rounded-xl shadow-md">
+            <div className="p-3 bg-blue-600 text-white rounded-xl shadow-md flex-shrink-0">
               <Camera className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="text-2xl font-bold text-slate-900">Live Video Analytics & Compliance Studio</h1>
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  Live Video Analytics & Compliance Studio
+                </h1>
                 <span className="px-2.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-bold rounded-full border border-blue-300">
-                  SIH 26245 Real-World Working Prototype
+                  SIH 26245 Real-World Prototype
                 </span>
               </div>
-              <p className="text-sm text-slate-600 mt-0.5">
-                Inspect live video feeds, run real-time optical headcount extraction, and instantly cross-check physical presence against official attendance rosters.
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                Inspect live video feeds, differentiate male 👨 and female 👩 candidates, verify certified trainers 👩‍🏫, and audit physical presence against AEBAS portal records.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2.5">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={triggerScan}
               disabled={isScanning}
@@ -335,21 +487,21 @@ export default function LiveStudioPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Interactive Video Canvas Viewport (2 Cols) */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-xl relative aspect-video flex flex-col justify-between p-4">
+          <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-xl relative aspect-video flex flex-col justify-between p-3 sm:p-4">
             {/* Viewport Top Bar */}
             <div className="flex items-center justify-between text-xs z-20">
               <div className="flex items-center space-x-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="font-mono text-white/90 bg-black/70 px-2 py-0.5 rounded border border-slate-800 font-semibold">
+                <span className="font-mono text-white/90 bg-black/70 px-2 py-0.5 rounded border border-slate-800 font-semibold text-[11px]">
                   CAM-01 • {scenario.centreId}
                 </span>
-                <span className="bg-blue-600/90 text-white font-mono text-[11px] px-2 py-0.5 rounded">
-                  {scenario.trade}
+                <span className="hidden sm:inline-block bg-blue-600/90 text-white font-mono text-[11px] px-2 py-0.5 rounded">
+                  {scenario.trade.split('(')[0]}
                 </span>
               </div>
 
               <div className="flex items-center space-x-2">
-                <span className="bg-black/60 text-slate-300 font-mono text-[11px] px-2 py-0.5 rounded border border-slate-800">
+                <span className="hidden sm:inline-block bg-black/60 text-slate-300 font-mono text-[11px] px-2 py-0.5 rounded border border-slate-800">
                   Model: YOLOv8-nano (48ms)
                 </span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
@@ -370,9 +522,21 @@ export default function LiveStudioPage() {
                 <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee] animate-pulse top-1/2"></div>
               )}
 
-              {/* Rendered Computer Vision Detections */}
+              {/* Rendered Computer Vision Detections with Gender and Trainer distinction */}
               {filteredBoxes.map((box) => {
                 const isPerson = box.category === 'person';
+                const isFemale = box.gender === 'F';
+                const isTrainer = box.isTrainer;
+
+                // Color coding for clear visual recognition
+                const boxColor = isTrainer
+                  ? 'border-2 border-amber-400 bg-amber-400/20 shadow-[0_0_12px_rgba(251,191,36,0.5)]'
+                  : isFemale
+                  ? 'border-2 border-fuchsia-400 bg-fuchsia-500/15 shadow-[0_0_8px_rgba(232,121,249,0.3)]'
+                  : isPerson
+                  ? 'border-2 border-cyan-400 bg-cyan-500/15 shadow-[0_0_8px_rgba(34,211,238,0.3)]'
+                  : 'border-2 border-amber-400 bg-amber-400/10 shadow-[0_0_8px_rgba(251,191,36,0.3)]';
+
                 return (
                   <div
                     key={box.id}
@@ -383,22 +547,36 @@ export default function LiveStudioPage() {
                       height: `${box.h}%`,
                     }}
                     className={`absolute rounded transition-all cursor-pointer ${
-                      isPerson
-                        ? dpdpMode
-                          ? 'border border-cyan-400/50 bg-cyan-400/10'
-                          : 'border-2 border-emerald-400 bg-emerald-500/10 shadow-[0_0_8px_rgba(52,211,153,0.3)]'
-                        : 'border-2 border-amber-400 bg-amber-400/10 shadow-[0_0_8px_rgba(251,191,36,0.3)]'
+                      dpdpMode && isPerson
+                        ? 'border border-cyan-400/50 bg-cyan-400/10'
+                        : boxColor
                     }`}
                     onClick={() => setSelectedTradeItem(`${box.label} (${(box.confidence * 100).toFixed(0)}% conf)`)}
                   >
                     {/* Centroid Dot (DPDP Act 2023 Mode) */}
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-300 ring-2 ring-cyan-500/50 shadow-[0_0_6px_#22d3ee]"></div>
+                    <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full ${
+                      isTrainer ? 'bg-amber-300 ring-2 ring-amber-500 shadow-[0_0_8px_#f59e0b]' :
+                      isFemale ? 'bg-fuchsia-300 ring-2 ring-fuchsia-500 shadow-[0_0_6px_#d946ef]' :
+                      'bg-cyan-300 ring-2 ring-cyan-500 shadow-[0_0_6px_#22d3ee]'
+                    }`}></div>
 
-                    {/* Annotation Pill */}
-                    <span className={`absolute -top-4 left-0 text-[9px] font-mono px-1 py-0.2 rounded whitespace-nowrap font-bold ${
-                      isPerson ? 'bg-cyan-500 text-black' : 'bg-amber-400 text-black'
+                    {/* Human Annotation Pill with Emojis */}
+                    <span className={`absolute -top-4 left-0 text-[8px] sm:text-[9px] font-mono px-1 py-0.2 rounded whitespace-nowrap font-bold flex items-center gap-0.5 ${
+                      isTrainer ? 'bg-amber-400 text-slate-950 ring-1 ring-amber-300' :
+                      isFemale ? 'bg-fuchsia-400 text-slate-950' :
+                      isPerson ? 'bg-cyan-400 text-slate-950' :
+                      'bg-amber-400 text-black'
                     }`}>
-                      {dpdpMode && isPerson ? `Centroid ${(box.confidence * 100).toFixed(0)}%` : `${box.label}`}
+                      {dpdpMode && isPerson ? (
+                        isTrainer ? `👩‍🏫 Trainer ${(box.confidence * 100).toFixed(0)}%` :
+                        isFemale ? `👩 Trainee ${(box.confidence * 100).toFixed(0)}%` :
+                        `👨 Trainee ${(box.confidence * 100).toFixed(0)}%`
+                      ) : (
+                        isTrainer ? `👩‍🏫 ${box.personName || 'Trainer'}` :
+                        isFemale ? `👩 ${box.personName || 'Trainee'}` :
+                        isPerson ? `👨 ${box.personName || 'Trainee'}` :
+                        box.label
+                      )}
                     </span>
                   </div>
                 );
@@ -406,15 +584,25 @@ export default function LiveStudioPage() {
             </div>
 
             {/* Viewport Bottom Overlay */}
-            <div className="flex items-center justify-between text-xs text-slate-400 z-20 border-t border-slate-800/80 pt-2 bg-black/60 px-3 py-1.5 rounded-lg backdrop-blur-sm">
-              <div className="flex items-center space-x-3">
-                <span>Optical Headcount: <strong className="text-white font-mono text-sm">{detectedPersons}</strong></span>
+            <div className="flex flex-wrap items-center justify-between text-xs text-slate-400 z-20 border-t border-slate-800/80 pt-2 bg-black/60 px-3 py-1.5 rounded-lg backdrop-blur-sm gap-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                <span>Total Detected: <strong className="text-white font-mono text-sm">{detectedPersons}</strong></span>
                 <span>•</span>
-                <span>Equipment Detected: <strong className="text-amber-400 font-mono text-sm">{detectedEquipment}</strong></span>
+                <span className="flex items-center gap-1 text-cyan-300">
+                  <span>👨</span> Male: <strong>{maleDetections}</strong>
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1 text-fuchsia-300">
+                  <span>👩</span> Female: <strong>{femaleDetections}</strong>
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1 text-amber-300">
+                  <span>👩‍🏫</span> Trainer: <strong>{trainerDetected ? 'Present' : 'Absent'}</strong>
+                </span>
               </div>
               <div className="font-mono text-[11px] text-emerald-400 flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Zero Facial Biometrics Retained</span>
+                <span>Zero Facial Biometrics Stored</span>
               </div>
             </div>
           </div>
@@ -439,7 +627,7 @@ export default function LiveStudioPage() {
               </div>
 
               {/* Mode Toggles */}
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setDpdpMode(!dpdpMode)}
                   className={`px-3 py-1.5 rounded-lg font-semibold flex items-center space-x-1.5 transition-colors ${
@@ -459,6 +647,130 @@ export default function LiveStudioPage() {
                   <Box className="w-3.5 h-3.5 text-amber-600" />
                   <span>{showEquipment ? 'BOM Objects ON' : 'BOM Objects OFF'}</span>
                 </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Visual Human Trainee & Trainer Live Gallery (Designed for Non-Educated Clarity) */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                  <Users className="w-4 h-4 text-blue-700" />
+                  <span>सजीव मानवीय उपस्थिति गैलरी (Live Human Candidate Roster)</span>
+                </h3>
+                <p className="text-xs text-slate-500">
+                  हर छात्र और ट्रेनर की व्यक्तिगत तस्वीर, नाम और लाइव उपस्थिति स्थिति
+                </p>
+              </div>
+
+              {/* Filter Pills */}
+              <div className="flex flex-wrap gap-1.5 text-xs">
+                <button
+                  onClick={() => setGalleryFilter('ALL')}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors ${
+                    galleryFilter === 'ALL' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  All ({scenario.trainees.length})
+                </button>
+                <button
+                  onClick={() => setGalleryFilter('MALES')}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors ${
+                    galleryFilter === 'MALES' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-700'
+                  }`}
+                >
+                  👨 Males ({scenario.trainees.filter(t => t.gender === 'M').length})
+                </button>
+                <button
+                  onClick={() => setGalleryFilter('FEMALES')}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors ${
+                    galleryFilter === 'FEMALES' ? 'bg-fuchsia-600 text-white' : 'bg-fuchsia-50 text-fuchsia-700'
+                  }`}
+                >
+                  👩 Females ({scenario.trainees.filter(t => t.gender === 'F').length})
+                </button>
+                <button
+                  onClick={() => setGalleryFilter('MISSING')}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors ${
+                    galleryFilter === 'MISSING' ? 'bg-rose-600 text-white' : 'bg-rose-50 text-rose-700'
+                  }`}
+                >
+                  ⚠️ Missing ({scenario.trainees.filter(t => !t.inRoom).length})
+                </button>
+              </div>
+            </div>
+
+            {/* Approved Trainer Spotlight Card */}
+            <div className="p-3.5 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-transparent rounded-xl border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-2xl shadow-sm border border-amber-300 flex-shrink-0">
+                  {scenario.trainer.avatar}
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-slate-900 text-sm">{scenario.trainer.name}</span>
+                    <span className="text-[10px] px-2 py-0.5 bg-amber-100 text-amber-900 font-bold rounded-full">
+                      Certified Master Instructor
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600 font-medium">{scenario.trainer.qualification}</p>
+                  <p className="text-[11px] text-slate-500 font-mono">ID: {scenario.trainer.id} • Biometric Punch: {scenario.trainer.punchIn}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                  <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  कक्षा में मौजूद (Present in Room)
+                </span>
+              </div>
+            </div>
+
+            {/* Trainees Grid with Human Avatars */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto pr-1">
+              {filteredTrainees.map((trainee) => (
+                <div
+                  key={trainee.id}
+                  className={`p-2.5 rounded-xl border transition-all text-xs flex flex-col justify-between ${
+                    trainee.inRoom
+                      ? 'bg-emerald-50/50 border-emerald-200 hover:border-emerald-300'
+                      : 'bg-rose-50/50 border-rose-200 hover:border-rose-300'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-lg shadow-2xs">
+                      {trainee.avatar}
+                    </div>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                      trainee.inRoom ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                    }`}>
+                      {trainee.inRoom ? '✅ Present' : '❌ Ghost'}
+                    </span>
+                  </div>
+
+                  <div className="mt-2">
+                    <span className="font-bold text-slate-900 text-xs block truncate">{trainee.name}</span>
+                    <span className="text-[10px] text-slate-500 font-mono block">{trainee.id}</span>
+                  </div>
+
+                  <div className="mt-2 pt-1 border-t border-slate-200/50 flex items-center justify-between text-[10px] text-slate-500">
+                    <span>{trainee.gender === 'F' ? '👩 महिला' : '👨 पुरुष'}</span>
+                    <span className="font-mono">{trainee.punchTime} AM</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Non-Educated Friendly Audio/Visual Card */}
+            <div className="p-3 bg-blue-50/80 rounded-xl border border-blue-200 text-xs text-blue-950 flex items-start gap-2.5">
+              <HelpCircle className="w-4 h-4 text-blue-700 flex-shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <p className="font-bold text-blue-900 text-xs">
+                  सरल भाषा में स्पष्टीकरण (Simple Guide for Students and Visitors):
+                </p>
+                <p className="text-[11px] leading-relaxed text-blue-800">
+                  हर छात्र के कार्ड पर हरा निशान (✅) का मतलब है कि वे कैमरे के सामने कक्षा में उपस्थित हैं। लाल निशान (❌) का मतलब है कि पोर्टल पर हाज़िरी दर्ज़ हुई थी लेकिन वे क्लास में मौजूद नहीं हैं।
+                </p>
               </div>
             </div>
           </div>
@@ -499,7 +811,7 @@ export default function LiveStudioPage() {
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5 text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-slate-600">AI Verified Optical Headcount:</span>
-                <strong className="text-sm font-bold text-slate-900">{detectedPersons} trainees</strong>
+                <strong className="text-sm font-bold text-slate-900">{detectedPersons} occupants</strong>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-600">Discrepancy Delta:</span>

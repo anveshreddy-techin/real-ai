@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { CANONICAL_CENTRES, Centre } from '@/data/mockCentres';
+import { CANONICAL_CENTRES, Centre, TraineeRecord } from '@/data/mockCentres';
 import { AttendanceTimelineChart } from '@/components/charts/AttendanceTimelineChart';
 import { SeatingHeatmap } from '@/components/ui/SeatingHeatmap';
 import { TradeBatchRoster } from '@/components/ui/TradeBatchRoster';
@@ -24,19 +24,59 @@ import {
   ShieldCheck,
   Check,
   Eye,
-  Sliders
+  Sliders,
+  Database,
+  Download,
+  FileCheck2,
+  HelpCircle,
+  Box
 } from 'lucide-react';
 
 export default function NationalCommandPage() {
   const [selectedCentre, setSelectedCentre] = useState<Centre>(CANONICAL_CENTRES[0]);
   const [activeCamIndex, setActiveCamIndex] = useState<number>(1);
   const [showDetections, setShowDetections] = useState<boolean>(true);
+  const [centreViewTab, setCentreViewTab] = useState<'CAMERAS' | 'ROSTER' | 'BOM'>('CAMERAS');
+  const [activeStep, setActiveStep] = useState<number>(1);
 
   const totalCentres = CANONICAL_CENTRES.length;
   const criticalCentres = CANONICAL_CENTRES.filter(c => c.compliance_status === 'CRITICAL').length;
   const elevatedCentres = CANONICAL_CENTRES.filter(c => c.compliance_status === 'ELEVATED_RISK').length;
   const compliantCentres = CANONICAL_CENTRES.filter(c => c.compliance_status === 'COMPLIANT').length;
   const avgCompliance = (CANONICAL_CENTRES.reduce((acc, c) => acc + c.compliance_score, 0) / totalCentres).toFixed(1);
+
+  const INSPECTION_STEPS = [
+    {
+      step: 1,
+      title: "1. AEBAS Door Biometric Check",
+      desc: "Centre logs 32 trainees on portal",
+      detail: "In the morning, candidates scan their fingerprints on the biometric terminal at the centre entrance. Official portal logs 32 trainees marked present."
+    },
+    {
+      step: 2,
+      title: "2. YOLOv8 Optical Headcount",
+      desc: "In-room cameras detect only 18 bodies",
+      detail: "SkillGuard AI processes CCTV snapshots in volatile RAM, extracting anonymous person centroids. Only 18 trainees are physically present in the workshop."
+    },
+    {
+      step: 3,
+      title: "3. Discrepancy & Fraud Scoring",
+      desc: "-14 ghost trainees (-43.8% inflation)",
+      detail: "The system cross-references the counts. 14 ghost students identified. Trained Random Forest model computes an 88% fraud risk score."
+    },
+    {
+      step: 4,
+      title: "4. Sanctioned BOM Equipment Audit",
+      desc: "7 sewing machines missing from bay",
+      detail: "Computer vision checks physical machines against approved BOM. Only 8 of 15 sanctioned sewing machines detected; equipment borrowing fraud detected."
+    },
+    {
+      step: 5,
+      title: "5. Automated Regulatory Enforcement",
+      desc: "Show-Cause Notice & Subsidy Frozen",
+      detail: "Statutory Form 4A Notice auto-generated; bi-weekly training subsidy (₹2,52,000) suspended until physical verification."
+    }
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 space-y-6">
@@ -46,37 +86,37 @@ export default function NationalCommandPage() {
           <div className="space-y-2">
             <div className="inline-flex items-center space-x-2 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
               <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span>SIH 26245 — AI-Based Real-Time Monitoring of Training Centres</span>
+              <span>SIH 26245 — Real-World AI Monitoring of Training Centres</span>
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white">
               National Training Centre Compliance Command Center
             </h1>
             <p className="text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Autonomous video analytics platform for the Ministry of Skill Development and Entrepreneurship (MSDE). Combines optical headcount verification, equipment BOM auditing, and low-bandwidth edge telemetry.
+              Real-world implementation for MSDE & NSDC skilling schemes. Directly cross-references official AEBAS biometric logs with in-room camera feeds to prevent ghost enrollment and equipment borrowing fraud.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
+              href="/studio"
+              className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-md"
+            >
+              <Camera className="w-4 h-4" />
+              <span>Launch Live Video Studio</span>
+            </Link>
+            <Link
+              href="/datasets"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-xl text-xs transition-colors"
+            >
+              <Database className="w-3.5 h-3.5 text-indigo-400" />
+              <span>Real Datasets Hub</span>
+            </Link>
+            <Link
               href="/uniqueness"
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md transform hover:-translate-y-0.5"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-xl text-xs transition-colors shadow-sm"
             >
-              <Sparkles className="w-4 h-4 text-slate-950" />
-              <span>Why SkillGuard AI is Unique</span>
-            </Link>
-            <Link
-              href="/pipeline"
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-xl text-xs transition-colors"
-            >
-              <Cpu className="w-3.5 h-3.5 text-blue-400" />
-              <span>Model & Benchmarks</span>
-            </Link>
-            <Link
-              href="/privacy"
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-xl text-xs transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Privacy Note</span>
+              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+              <span>Why Unique?</span>
             </Link>
           </div>
         </div>
@@ -84,6 +124,58 @@ export default function NationalCommandPage() {
 
       {/* Role-Adaptive Persona Banner */}
       <PersonaRoleBanner />
+
+      {/* Interactive 5-Step Real-World Inspection Workflow */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
+              Real-World Implementation Walkthrough
+            </span>
+            <h2 className="text-base font-bold text-slate-900 mt-0.5">
+              How SkillGuard AI Solves SIH 26245 in 5 Automated Steps
+            </h2>
+          </div>
+          <span className="text-xs text-slate-500">Click any step to inspect real-world logic</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          {INSPECTION_STEPS.map((s) => {
+            const isActive = s.step === activeStep;
+            return (
+              <button
+                key={s.step}
+                onClick={() => setActiveStep(s.step)}
+                className={`text-left p-3.5 rounded-xl border transition-all ${
+                  isActive 
+                    ? 'border-blue-600 bg-blue-50/70 ring-1 ring-blue-500 shadow-sm' 
+                    : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">
+                    {s.step}
+                  </span>
+                  {isActive && <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>}
+                </div>
+                <h3 className="font-bold text-xs text-slate-900 mt-2">{s.title}</h3>
+                <p className="text-[11px] text-slate-500 mt-1">{s.desc}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Step Explanation Card */}
+        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 flex items-start space-x-3">
+          <div className="p-2 bg-blue-100 text-blue-800 rounded-lg flex-shrink-0 mt-0.5">
+            <HelpCircle className="w-4 h-4" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="font-bold text-slate-900 text-sm">{INSPECTION_STEPS[activeStep - 1].title}</h4>
+            <p className="leading-relaxed text-slate-600">{INSPECTION_STEPS[activeStep - 1].detail}</p>
+          </div>
+        </div>
+      </div>
 
       {/* Primary KPI Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -93,7 +185,7 @@ export default function NationalCommandPage() {
             <Building2 className="w-4 h-4 text-blue-600" />
           </div>
           <p className="text-2xl font-bold text-slate-900 mt-2">{totalCentres}</p>
-          <p className="text-xs text-slate-500 mt-1">Active monitored feeds</p>
+          <p className="text-xs text-slate-500 mt-1">Real training partners</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm hover:shadow-md transition-shadow">
@@ -133,82 +225,15 @@ export default function NationalCommandPage() {
         </div>
       </div>
 
-      {/* Prominent "Why SkillGuard AI is Unique" Showcase Card */}
-      <div className="bg-gradient-to-br from-amber-50 via-white to-amber-50/40 rounded-2xl border border-amber-200/80 p-5 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-lg bg-amber-500 text-slate-950">
-              <Sparkles className="w-5 h-5 font-bold" />
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-slate-900">
-                What Makes SkillGuard AI Unique for SIH 26245?
-              </h2>
-              <p className="text-xs text-slate-600">
-                Solving the real-world integrity gap in skilling schemes without manual inspection delay or privacy violations.
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/uniqueness"
-            className="inline-flex items-center text-xs font-bold text-amber-900 hover:text-amber-950 underline decoration-amber-400 decoration-2 underline-offset-4"
-          >
-            Read Complete Competitive Matrix & ROI Analysis →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-          <div className="bg-white/80 p-3.5 rounded-xl border border-amber-200/60 space-y-1">
-            <div className="flex items-center space-x-1.5 font-bold text-emerald-800">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>1. Zero-Face Privacy</span>
-            </div>
-            <p className="text-slate-600 leading-relaxed text-xs">
-              Optical centroid counts only. 100% compliant with the DPDP Act 2023; no trainee biometric or facial tracking.
-            </p>
-          </div>
-
-          <div className="bg-white/80 p-3.5 rounded-xl border border-amber-200/60 space-y-1">
-            <div className="flex items-center space-x-1.5 font-bold text-blue-800">
-              <Zap className="w-4 h-4 text-blue-600" />
-              <span>2. Anti-Dropoff Tracking</span>
-            </div>
-            <p className="text-slate-600 leading-relaxed text-xs">
-              Tracks persistence across the entire 4-hour class session, flagging "morning roll call & immediate exit" fraud.
-            </p>
-          </div>
-
-          <div className="bg-white/80 p-3.5 rounded-xl border border-amber-200/60 space-y-1">
-            <div className="flex items-center space-x-1.5 font-bold text-purple-800">
-              <Camera className="w-4 h-4 text-purple-600" />
-              <span>3. Sanctioned BOM Auditor</span>
-            </div>
-            <p className="text-slate-600 leading-relaxed text-xs">
-              Continuously verifies mandatory workbenches, machines, and tools, stopping temporary equipment borrowing.
-            </p>
-          </div>
-
-          <div className="bg-white/80 p-3.5 rounded-xl border border-amber-200/60 space-y-1">
-            <div className="flex items-center space-x-1.5 font-bold text-amber-800">
-              <Wifi className="w-4 h-4 text-amber-600" />
-              <span>4. Rural Edge 2G/3G Mode</span>
-            </div>
-            <p className="text-slate-600 leading-relaxed text-xs">
-              1 frame/min edge snapshot (11.2 Kbps) saves 99.4% data, allowing seamless deployment in remote rural centres.
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Main Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Centres Directory & GIS Spatial Overview */}
+        {/* Left Column: Centres Directory & Trade Batch Roster */}
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <h2 className="font-bold text-slate-900 text-sm">Empaneled Training Centres</h2>
-                <p className="text-xs text-slate-500">Select centre to inspect telemetry</p>
+                <p className="text-xs text-slate-500">Real institutions monitored under SIH 26245</p>
               </div>
               <span className="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-semibold">
                 5 Active Feeds
@@ -315,16 +340,52 @@ export default function NationalCommandPage() {
               </div>
             )}
 
-            {/* Live Camera Grid with Interactive Camera Selector */}
-            <div className="space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div className="flex items-center space-x-2">
-                  <Camera className="w-4 h-4 text-slate-600" />
-                  <h3 className="text-sm font-bold text-slate-800">
-                    Active Video Analytics Feeds ({selectedCentre.cameras_online}/{selectedCentre.total_cameras} Online)
-                  </h3>
-                </div>
-                <div className="flex items-center space-x-2">
+            {/* Interactive Tab Switcher: Cameras vs Real Roster vs Equipment BOM */}
+            <div className="flex border-b border-slate-200 gap-2">
+              <button
+                onClick={() => setCentreViewTab('CAMERAS')}
+                className={`pb-2.5 px-3 text-xs font-bold flex items-center space-x-1.5 transition-colors border-b-2 ${
+                  centreViewTab === 'CAMERAS'
+                    ? 'border-blue-600 text-blue-700'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <Camera className="w-4 h-4" />
+                <span>Live Video Feeds ({selectedCentre.cameras_online}/{selectedCentre.total_cameras})</span>
+              </button>
+
+              <button
+                onClick={() => setCentreViewTab('ROSTER')}
+                className={`pb-2.5 px-3 text-xs font-bold flex items-center space-x-1.5 transition-colors border-b-2 ${
+                  centreViewTab === 'ROSTER'
+                    ? 'border-blue-600 text-blue-700'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                <span>Official Trainee AEBAS Roster ({selectedCentre.trainees.length} Records)</span>
+              </button>
+
+              <button
+                onClick={() => setCentreViewTab('BOM')}
+                className={`pb-2.5 px-3 text-xs font-bold flex items-center space-x-1.5 transition-colors border-b-2 ${
+                  centreViewTab === 'BOM'
+                    ? 'border-blue-600 text-blue-700'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <Box className="w-4 h-4" />
+                <span>Sanctioned BOM Checklist ({selectedCentre.infrastructure.length} Items)</span>
+              </button>
+            </div>
+
+            {/* View 1: Live Cameras Grid */}
+            {centreViewTab === 'CAMERAS' && (
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-slate-600">
+                    Continuous Optical Verification (Centroids Only • DPDP 2023 Compliant)
+                  </span>
                   <button
                     onClick={() => setShowDetections(!showDetections)}
                     className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${
@@ -334,113 +395,198 @@ export default function NationalCommandPage() {
                     <Eye className="w-3.5 h-3.5" />
                     <span>{showDetections ? 'AI Annotations ON' : 'Raw Feed'}</span>
                   </button>
-                  <span className="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    DPDP 2023: Centroids Only
-                  </span>
                 </div>
-              </div>
 
-              {/* Camera Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[1, 2, 3, 4].map((camIndex) => {
-                  const isOnline = camIndex <= selectedCentre.cameras_online;
-                  const roomNames = ['Instruction Classroom', 'Machinery Workshop', 'IT Software Lab', 'Solar/Electrical Station'];
-                  const roomName = roomNames[camIndex - 1];
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[1, 2, 3, 4].map((camIndex) => {
+                    const isOnline = camIndex <= selectedCentre.cameras_online;
+                    const roomNames = ['Instruction Classroom', 'Machinery Workshop', 'IT Software Lab', 'Solar/Electrical Station'];
+                    const roomName = roomNames[camIndex - 1];
 
-                  return (
-                    <div 
-                      key={camIndex} 
-                      className={`bg-slate-950 rounded-xl overflow-hidden border relative aspect-video flex flex-col justify-between p-3.5 shadow-sm transition-all ${
-                        activeCamIndex === camIndex ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-slate-800'
-                      }`}
-                      onClick={() => setActiveCamIndex(camIndex)}
-                    >
-                      <div className="flex items-center justify-between z-10">
-                        <span className="text-xs font-mono text-white/90 bg-black/70 px-2 py-0.5 rounded font-semibold">
-                          CAM-0{camIndex}: {roomName}
-                        </span>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                          isOnline ? 'bg-emerald-500 text-black' : 'bg-rose-500 text-white'
-                        }`}>
-                          {isOnline ? 'ACTIVE' : 'OFFLINE'}
-                        </span>
-                      </div>
-
-                      {isOnline ? (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-slate-900/50 via-slate-950/80 to-slate-950 text-center p-4">
-                          <div className="space-y-1.5">
-                            <Users className="w-8 h-8 text-amber-400 mx-auto opacity-80" />
-                            <p className="text-sm text-slate-200 font-bold">
-                              Occupancy: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} trainees
-                            </p>
-                            {showDetections && (
-                              <div className="inline-flex items-center space-x-1 px-2 py-0.5 bg-black/60 rounded border border-amber-400/40 text-[11px] text-amber-300 font-mono">
-                                <span>Centroid X,Y Extracted • 0 Faces</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-slate-950 text-slate-500 text-xs">
-                          Camera Signal Interrupted
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between text-xs text-slate-400 z-10 border-t border-slate-800/80 pt-1.5">
-                        <span>Mode: {selectedCentre.bandwidth_mode === 'LOW' ? '1 frame/min' : '5 fps stream'}</span>
-                        <span className="font-mono">Latency: 48ms</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Approved Equipment & Infrastructure BOM Table */}
-            <div className="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900">Sanctioned Equipment Inventory Compliance (BOM)</h4>
-                  <p className="text-xs text-slate-500">Autonomous verification against scheme-mandated minimum facilities</p>
-                </div>
-                <span className="text-xs font-semibold text-slate-600">35% Compliance Weight</span>
-              </div>
-
-              <div className="overflow-x-auto bg-white rounded-lg border border-slate-200">
-                <table className="min-w-full text-xs text-left">
-                  <thead className="text-xs font-semibold text-slate-600 uppercase border-b border-slate-200 bg-slate-50">
-                    <tr>
-                      <th className="py-2.5 px-3">Item ID</th>
-                      <th className="py-2.5 px-3">Equipment Category</th>
-                      <th className="py-2.5 px-3">Sanctioned BOM</th>
-                      <th className="py-2.5 px-3">Detected Count</th>
-                      <th className="py-2.5 px-3">Audit Status</th>
-                      <th className="py-2.5 px-3">Confidence</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {selectedCentre.infrastructure.map((item) => (
-                      <tr key={item.item_id} className="hover:bg-slate-50/60">
-                        <td className="py-2.5 px-3 font-mono font-medium text-slate-700">{item.item_id}</td>
-                        <td className="py-2.5 px-3 font-semibold text-slate-900">{item.name}</td>
-                        <td className="py-2.5 px-3 text-slate-600">{item.sanctioned_count} units</td>
-                        <td className="py-2.5 px-3 font-bold text-slate-900">{item.detected_count} units</td>
-                        <td className="py-2.5 px-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                            item.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-700' :
-                            item.status === 'DEFICIT' ? 'bg-amber-100 text-amber-700' :
-                            'bg-rose-100 text-rose-700'
-                          }`}>
-                            {item.status}
+                    return (
+                      <div 
+                        key={camIndex} 
+                        className={`bg-slate-950 rounded-xl overflow-hidden border relative aspect-video flex flex-col justify-between p-3.5 shadow-sm transition-all ${
+                          activeCamIndex === camIndex ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-slate-800'
+                        }`}
+                        onClick={() => setActiveCamIndex(camIndex)}
+                      >
+                        <div className="flex items-center justify-between z-10">
+                          <span className="text-xs font-mono text-white/90 bg-black/70 px-2 py-0.5 rounded font-semibold">
+                            CAM-0{camIndex}: {roomName}
                           </span>
-                        </td>
-                        <td className="py-2.5 px-3 font-mono text-slate-500">{(item.confidence * 100).toFixed(0)}%</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                            isOnline ? 'bg-emerald-500 text-black' : 'bg-rose-500 text-white'
+                          }`}>
+                            {isOnline ? 'ACTIVE' : 'OFFLINE'}
+                          </span>
+                        </div>
+
+                        {isOnline ? (
+                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-slate-900/50 via-slate-950/80 to-slate-950 text-center p-4">
+                            <div className="space-y-1.5">
+                              <Users className="w-8 h-8 text-amber-400 mx-auto opacity-80" />
+                              <p className="text-sm text-slate-200 font-bold">
+                                Occupancy: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} trainees
+                              </p>
+                              {showDetections && (
+                                <div className="inline-flex items-center space-x-1 px-2 py-0.5 bg-black/60 rounded border border-amber-400/40 text-[11px] text-amber-300 font-mono">
+                                  <span>Centroid X,Y Extracted • 0 Faces</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center bg-slate-950 text-slate-500 text-xs">
+                            Camera Signal Interrupted
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between text-xs text-slate-400 z-10 border-t border-slate-800/80 pt-1.5">
+                          <span>Mode: {selectedCentre.bandwidth_mode === 'LOW' ? '1 frame/min' : '5 fps stream'}</span>
+                          <span className="font-mono">Latency: 48ms</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
+
+            {centreViewTab === 'ROSTER' && (
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-2">
+                  <div>
+                    <span className="font-bold text-slate-800 text-sm block">
+                      👆 उपस्थिति जाँच — Attendance Verification
+                    </span>
+                    <span className="text-slate-500 text-xs">
+                      AEBAS बायोमेट्रिक पंच vs कैमरा से गिनती (Biometric log vs Camera headcount)
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs font-semibold">
+                    <span className="flex items-center gap-1"><span className="text-base">👨</span> Male</span>
+                    <span className="flex items-center gap-1"><span className="text-base">👩</span> Female</span>
+                    <span className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">✅ Present</span>
+                    <span className="flex items-center gap-1 text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">⚠️ Ghost</span>
+                  </div>
+                </div>
+
+                {/* Summary bar */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-center">
+                    <p className="text-lg font-extrabold text-slate-900">{selectedCentre.trainees.length}</p>
+                    <p className="text-slate-500 text-[11px]">कुल पंजीकृत<br/>(Total Registered)</p>
+                  </div>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-center">
+                    <p className="text-lg font-extrabold text-emerald-700">{selectedCentre.trainees.filter(t => t.status_in_camera === 'PRESENT').length}</p>
+                    <p className="text-emerald-700 text-[11px]">कैमरे में दिखे<br/>(Camera Confirmed)</p>
+                  </div>
+                  <div className="bg-rose-50 border border-rose-200 rounded-lg p-2.5 text-center">
+                    <p className="text-lg font-extrabold text-rose-600">{selectedCentre.trainees.filter(t => t.status_in_camera !== 'PRESENT').length}</p>
+                    <p className="text-rose-600 text-[11px]">गायब / भूत<br/>(Ghost / Missing)</p>
+                  </div>
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-2.5 text-center">
+                    <p className="text-lg font-extrabold text-purple-700">{selectedCentre.trainees.filter(t => t.gender === 'F').length}</p>
+                    <p className="text-purple-700 text-[11px]">महिला प्रशिक्षु<br/>(Female Trainees)</p>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto max-h-72 border border-slate-200 rounded-xl bg-slate-50/50">
+                  <table className="min-w-full text-xs text-left">
+                    <thead className="bg-slate-100 text-slate-600 font-semibold border-b border-slate-200 sticky top-0">
+                      <tr>
+                        <th className="py-2.5 px-3">Candidate ID</th>
+                        <th className="py-2.5 px-3">👤 Trainee Name<br/><span className="text-[10px] font-normal text-slate-400">(प्रशिक्षु का नाम)</span></th>
+                        <th className="py-2.5 px-3">⏰ AEBAS Punch In</th>
+                        <th className="py-2.5 px-3">📷 Camera Check<br/><span className="text-[10px] font-normal text-slate-400">(कैमरे से जाँच)</span></th>
+                        <th className="py-2.5 px-3">🔍 Audit Finding</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 bg-white">
+                      {selectedCentre.trainees.map((t) => (
+                        <tr key={t.candidate_id} className="hover:bg-slate-50">
+                          <td className="py-2 px-3 font-mono font-bold text-slate-700 text-[11px]">{t.candidate_id}</td>
+                          <td className="py-2 px-3 font-medium text-slate-900">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-base" title={t.gender === 'F' ? 'Female / महिला' : 'Male / पुरुष'}>
+                                {t.gender === 'F' ? '👩' : '👨'}
+                              </span>
+                              <div>
+                                <span className="font-bold text-slate-900">{t.name}</span>
+                                <span className="block text-[10px] text-slate-400">{t.gender === 'F' ? 'Female (महिला)' : 'Male (पुरुष)'}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-2 px-3 font-mono text-emerald-700 font-semibold">{t.aebas_punch_in} AM</td>
+                          <td className="py-2 px-3">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1 w-fit ${
+                              t.status_in_camera === 'PRESENT' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                            }`}>
+                              {t.status_in_camera === 'PRESENT' ? '✅ ROOM में मौजूद' : '❌ ROOM में नहीं'}
+                            </span>
+                          </td>
+                          <td className="py-2 px-3">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              t.status_in_camera === 'PRESENT' ? 'text-emerald-700' : 'text-rose-700 font-extrabold'
+                            }`}>
+                              {t.status_in_camera === 'PRESENT' ? '✔ Genuine Present' : '⚠️ Ghost Fraud Detected'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* View 3: Sanctioned BOM Table */}
+            {centreViewTab === 'BOM' && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-slate-700">
+                    Mandatory Scheme Bill of Materials (BOM) Equipment Checklist
+                  </span>
+                  <span className="text-slate-500">35% Compliance Factor</span>
+                </div>
+
+                <div className="overflow-x-auto bg-white rounded-lg border border-slate-200">
+                  <table className="min-w-full text-xs text-left">
+                    <thead className="text-xs font-semibold text-slate-600 uppercase border-b border-slate-200 bg-slate-50">
+                      <tr>
+                        <th className="py-2.5 px-3">Item ID</th>
+                        <th className="py-2.5 px-3">Equipment Category</th>
+                        <th className="py-2.5 px-3">Sanctioned BOM</th>
+                        <th className="py-2.5 px-3">Detected Count</th>
+                        <th className="py-2.5 px-3">Audit Status</th>
+                        <th className="py-2.5 px-3">Confidence</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {selectedCentre.infrastructure.map((item) => (
+                        <tr key={item.item_id} className="hover:bg-slate-50/60">
+                          <td className="py-2.5 px-3 font-mono font-medium text-slate-700">{item.item_id}</td>
+                          <td className="py-2.5 px-3 font-semibold text-slate-900">{item.name}</td>
+                          <td className="py-2.5 px-3 text-slate-600">{item.sanctioned_count} units</td>
+                          <td className="py-2.5 px-3 font-bold text-slate-900">{item.detected_count} units</td>
+                          <td className="py-2.5 px-3">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              item.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-700' :
+                              item.status === 'DEFICIT' ? 'bg-amber-100 text-amber-700' :
+                              'bg-rose-100 text-rose-700'
+                            }`}>
+                              {item.status}
+                            </span>
+                          </td>
+                          <td className="py-2.5 px-3 font-mono text-slate-500">{(item.confidence * 100).toFixed(0)}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Temporal Attendance Arc Chart */}

@@ -2,16 +2,40 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { CANONICAL_CENTRES } from '@/data/mockCentres';
-import { Users, AlertTriangle, ArrowLeft, ArrowUpRight, Search, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { CANONICAL_CENTRES, Centre } from '@/data/mockCentres';
+import { 
+  Users, 
+  AlertTriangle, 
+  ArrowLeft, 
+  Search, 
+  ShieldAlert, 
+  CheckCircle2, 
+  Camera,
+  Award,
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
+  Clock,
+  Sparkles
+} from 'lucide-react';
 
 export default function AttendanceAuditPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [expandedCentreId, setExpandedCentreId] = useState<string>('PMKVY-UP-GKP-0042');
 
   const totalRegistered = CANONICAL_CENTRES.reduce((acc, c) => acc + c.attendance.submitted_attendance, 0);
   const totalDetected = CANONICAL_CENTRES.reduce((acc, c) => acc + c.attendance.ai_detected_headcount, 0);
   const totalInflation = totalRegistered - totalDetected;
   const overallDiscrepancyPct = ((totalInflation / totalRegistered) * 100).toFixed(1);
+
+  // Trainer metadata lookup
+  const TRAINER_NAMES: { [key: string]: { name: string; avatar: string; shift: string } } = {
+    'PMKVY-UP-GKP-0042': { name: 'Sunita Devi', avatar: '👩‍🏫', shift: '09:00 - 13:00' },
+    'PMKVY-RJ-JDH-0015': { name: 'Rajesh Sharma', avatar: '👨‍🏫', shift: '09:00 - 13:00' },
+    'DDU-WB-MLD-0008': { name: 'Anup Roy', avatar: '👨‍💻', shift: '11:00 - 15:00' },
+    'PMKVY-MH-NGP-0031': { name: 'Vikram Patil', avatar: '👨‍🔧', shift: '08:30 - 12:30' },
+    'PMKVY-HP-SMR-0019': { name: 'Pooja Negi', avatar: '👩‍💼', shift: '10:00 - 14:00' },
+  };
 
   const filteredCentres = CANONICAL_CENTRES.filter(c => 
     c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -29,9 +53,11 @@ export default function AttendanceAuditPage() {
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">National Attendance Integrity Audit</h1>
-            <p className="text-sm text-slate-500 mt-0.5">
-              Cross-referencing reported biometric register submissions vs. AI optical presence detection across batch sessions.
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
+              National Attendance Integrity Audit
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              बायोमेट्रिक उपस्थिति बनाम वास्तविक कक्षा निरीक्षण — Cross-referencing reported biometric register submissions vs. AI optical presence detection.
             </p>
           </div>
 
@@ -42,14 +68,14 @@ export default function AttendanceAuditPage() {
               placeholder="Search centre, state, or ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-2 border border-slate-200 rounded-xl text-xs w-64 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="pl-9 pr-4 py-2 border border-slate-200 rounded-xl text-xs w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
           </div>
         </div>
       </div>
 
       {/* Aggregate KPI Summary Banner */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <span className="text-xs font-medium text-slate-500">Official Roster Trainees</span>
           <p className="text-2xl font-bold text-slate-900 mt-1">{totalRegistered} trainees</p>
@@ -75,8 +101,32 @@ export default function AttendanceAuditPage() {
         </div>
       </div>
 
+      {/* Non-Educated User Friendly Explanation Banner */}
+      <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-4 text-xs text-amber-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 bg-amber-100 rounded-xl text-amber-900 flex-shrink-0">
+            <HelpCircle className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="font-bold text-slate-900 text-sm">
+              आसान गाइड: हाज़िरी की जाँच कैसे होती है? (How Attendance Audit Works)
+            </h4>
+            <p className="text-slate-600 text-xs mt-0.5">
+              बायोमेट्रिक मशीन पर फिंगरप्रिंट लगाने के बाद, AI कैमरा क्लास में बैठे छात्रों की गिनती करता है। यदि कोई छात्र फिंगरप्रिंट लगाकर क्लास छोड़ देता है, तो सिस्टम तुरंत लाल निशान (⚠️) दिखाता है।
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/studio"
+          className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-colors flex-shrink-0 shadow-sm"
+        >
+          <Camera className="w-3.5 h-3.5" />
+          <span>Launch Live Studio</span>
+        </Link>
+      </div>
+
       {/* Audit Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden space-y-0">
         <div className="p-4 border-b border-slate-100 flex items-center justify-between">
           <h2 className="text-sm font-bold text-slate-900">Centre-by-Centre Attendance Discrepancy Registry</h2>
           <span className="text-xs text-slate-500">Showing {filteredCentres.length} Centres</span>
@@ -86,13 +136,14 @@ export default function AttendanceAuditPage() {
           <table className="min-w-full text-xs text-left">
             <thead className="bg-slate-50 text-xs font-semibold text-slate-600 uppercase border-b border-slate-200">
               <tr>
-                <th className="py-3.5 px-4">Centre ID & Institution</th>
-                <th className="py-3.5 px-4">Location</th>
+                <th className="py-3.5 px-4">Centre & Trade</th>
+                <th className="py-3.5 px-4">Certified Trainer</th>
+                <th className="py-3.5 px-4">Male / Female</th>
                 <th className="py-3.5 px-4">Submitted Reg.</th>
                 <th className="py-3.5 px-4">AI Optical Count</th>
                 <th className="py-3.5 px-4">Discrepancy Delta</th>
-                <th className="py-3.5 px-4">Fraud Risk Score</th>
-                <th className="py-3.5 px-4">Audit Recommendation</th>
+                <th className="py-3.5 px-4">Audit Status</th>
+                <th className="py-3.5 px-4">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -100,44 +151,130 @@ export default function AttendanceAuditPage() {
                 const delta = centre.attendance.discrepancy_delta;
                 const isCritical = delta <= -10;
                 const isWarning = delta < 0 && delta > -10;
+                const isExpanded = expandedCentreId === centre.centre_id;
+                const trainer = TRAINER_NAMES[centre.centre_id] || { name: 'Master Trainer', avatar: '👨‍🏫', shift: '09:00 - 13:00' };
+
+                const maleCount = centre.trainees?.filter(t => t.gender === 'M').length || Math.round(centre.sanctioned_capacity * 0.6);
+                const femaleCount = centre.trainees?.filter(t => t.gender === 'F').length || Math.round(centre.sanctioned_capacity * 0.4);
 
                 return (
-                  <tr key={centre.centre_id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3.5 px-4">
-                      <span className="font-mono text-slate-500 font-semibold text-xs">{centre.centre_id}</span>
-                      <p className="font-bold text-slate-900 text-sm">{centre.name}</p>
-                    </td>
-                    <td className="py-3.5 px-4 text-slate-600 text-xs">
-                      {centre.district}, {centre.state}
-                    </td>
-                    <td className="py-3.5 px-4 font-semibold text-slate-700 text-xs">
-                      {centre.attendance.submitted_attendance} trainees
-                    </td>
-                    <td className="py-3.5 px-4 font-bold text-slate-900 text-xs">
-                      {centre.attendance.ai_detected_headcount} trainees
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span className={`font-mono font-bold text-xs ${isCritical ? 'text-rose-600' : isWarning ? 'text-amber-600' : 'text-emerald-600'}`}>
-                        {delta} ({centre.attendance.discrepancy_percentage}%)
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 font-bold text-slate-800 text-xs">
-                      <span className={`px-2 py-0.5 rounded text-xs ${
-                        centre.attendance.fraud_risk_score > 60 ? 'bg-rose-100 text-rose-800' :
-                        centre.attendance.fraud_risk_score > 30 ? 'bg-amber-100 text-amber-800' :
-                        'bg-emerald-100 text-emerald-800'
-                      }`}>
-                        {centre.attendance.fraud_risk_score}/100
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        isCritical ? 'bg-rose-100 text-rose-700' : isWarning ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
-                      }`}>
-                        {isCritical ? 'CRITICAL GHOSTING' : isWarning ? 'MINOR DEFICIT' : 'VERIFIED MATCH'}
-                      </span>
-                    </td>
-                  </tr>
+                  <React.Fragment key={centre.centre_id}>
+                    <tr className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3.5 px-4">
+                        <span className="font-mono text-slate-500 font-semibold text-xs">{centre.centre_id}</span>
+                        <p className="font-bold text-slate-900 text-sm line-clamp-1">{centre.name}</p>
+                        <p className="text-xs text-slate-500">{centre.district}, {centre.state}</p>
+                      </td>
+
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xl">{trainer.avatar}</span>
+                          <div>
+                            <span className="font-bold text-slate-900 block">{trainer.name}</span>
+                            <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {trainer.shift}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center space-x-2 text-xs">
+                          <span className="flex items-center gap-0.5 text-blue-700 font-semibold">
+                            <span>👨</span> {maleCount}
+                          </span>
+                          <span className="text-slate-300">•</span>
+                          <span className="flex items-center gap-0.5 text-fuchsia-700 font-semibold">
+                            <span>👩</span> {femaleCount}
+                          </span>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4 font-semibold text-slate-700 text-xs">
+                        {centre.attendance.submitted_attendance} trainees
+                      </td>
+
+                      <td className="py-3.5 px-4 font-bold text-slate-900 text-xs">
+                        {centre.attendance.ai_detected_headcount} trainees
+                      </td>
+
+                      <td className="py-3.5 px-4">
+                        <span className={`font-mono font-bold text-xs ${isCritical ? 'text-rose-600' : isWarning ? 'text-amber-600' : 'text-emerald-600'}`}>
+                          {delta} ({centre.attendance.discrepancy_percentage}%)
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-4">
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                          isCritical ? 'bg-rose-100 text-rose-700' : isWarning ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                        }`}>
+                          {isCritical ? 'CRITICAL GHOSTING' : isWarning ? 'MINOR DEFICIT' : 'VERIFIED MATCH'}
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-4">
+                        <button
+                          onClick={() => setExpandedCentreId(isExpanded ? '' : centre.centre_id)}
+                          className="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold flex items-center space-x-1"
+                        >
+                          <span>{isExpanded ? 'Hide' : 'Inspect Roster'}</span>
+                          {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                        </button>
+                      </td>
+                    </tr>
+
+                    {/* Expandable Trainee Roster Detail Row with Human Avatars */}
+                    {isExpanded && (
+                      <tr className="bg-slate-50/70">
+                        <td colSpan={8} className="p-4 border-t border-slate-100">
+                          <div className="space-y-3">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-2">
+                              <div>
+                                <span className="font-bold text-slate-800 text-xs block">
+                                  Candidate AEBAS Biometric Punches vs In-Room Camera Presence
+                                </span>
+                                <span className="text-slate-500 text-[11px]">
+                                  {centre.name} • Certified Instructor: {trainer.name} ({trainer.avatar})
+                                </span>
+                              </div>
+                              <Link
+                                href="/studio"
+                                className="inline-flex items-center space-x-1 text-xs text-blue-700 font-bold hover:underline"
+                              >
+                                <Camera className="w-3.5 h-3.5" />
+                                <span>Inspect in Live Video Studio →</span>
+                              </Link>
+                            </div>
+
+                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                              {centre.trainees?.slice(0, 18).map((t) => (
+                                <div 
+                                  key={t.candidate_id}
+                                  className={`p-2 rounded-lg border text-xs ${
+                                    t.status_in_camera === 'PRESENT' 
+                                      ? 'bg-white border-emerald-200' 
+                                      : 'bg-rose-50/50 border-rose-200'
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-base">{t.gender === 'F' ? '👩' : '👨'}</span>
+                                    <span className={`text-[9px] font-bold px-1 rounded ${
+                                      t.status_in_camera === 'PRESENT' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                                    }`}>
+                                      {t.status_in_camera === 'PRESENT' ? 'Room' : 'Ghost'}
+                                    </span>
+                                  </div>
+                                  <p className="font-bold text-slate-900 text-[11px] truncate mt-1">{t.name}</p>
+                                  <p className="text-[10px] text-slate-400 font-mono">{t.aebas_punch_in} AM</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 );
               })}
             </tbody>

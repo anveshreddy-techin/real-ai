@@ -1,0 +1,17 @@
+{
+  "name": "SkillGuard AI — Real-Time Centre Monitoring",
+  "short_name": "SkillGuard AI",
+  "description": "AI-Based Real-Time Monitoring of Training Centres for Attendance and Infrastructure Compliance (SIH 26245)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07172A",
+  "theme_color": "#07172A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
