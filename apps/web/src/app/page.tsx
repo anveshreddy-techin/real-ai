@@ -6,7 +6,6 @@ import { CANONICAL_CENTRES, Centre, TraineeRecord } from '@/data/mockCentres';
 import { AttendanceTimelineChart } from '@/components/charts/AttendanceTimelineChart';
 import { SeatingHeatmap } from '@/components/ui/SeatingHeatmap';
 import { TradeBatchRoster } from '@/components/ui/TradeBatchRoster';
-import { PersonaRoleBanner } from '@/components/ui/PersonaRoleBanner';
 import { 
   Building2, 
   Users, 
@@ -80,36 +79,42 @@ export default function NationalCommandPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 space-y-6">
-      {/* Streamlined Executive Scheme Header */}
-      <div className="bg-gradient-to-r from-[#07172A] via-[#0F294D] to-[#07172A] rounded-2xl p-6 text-white shadow-lg border border-slate-800">
+      {/* 1. Unified Executive Command Header */}
+      <div className="bg-gradient-to-r from-[#07172A] via-[#0F294D] to-[#07172A] rounded-2xl p-5 sm:p-6 text-white shadow-xl border border-slate-800 space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div className="space-y-2">
-            <div className="inline-flex items-center space-x-2 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
-              <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span>SIH 26245 — Real-World AI Monitoring of Training Centres</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center space-x-1.5 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span>SIH 26245 — Real-World AI Monitoring of Training Centres</span>
+              </span>
+              <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/60 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Active Continuous Audit</span>
+              </span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
               National Training Centre Compliance Command Center
             </h1>
-            <p className="text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Real-world implementation for MSDE & NSDC skilling schemes. Directly cross-references official AEBAS biometric logs with in-room camera feeds to prevent ghost enrollment and equipment borrowing fraud.
+            <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
+              Official MSDE & NSDC skilling compliance monitoring engine. Automatically cross-references door AEBAS biometric entries with in-room AI headcount to eliminate ghost enrollment and temporary equipment borrowing.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2">
             <Link
               href="/studio"
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-md"
+              className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-md shadow-blue-900/40"
             >
               <Camera className="w-4 h-4" />
-              <span>Launch Live Video Studio</span>
+              <span>Launch Live Studio</span>
             </Link>
             <Link
               href="/datasets"
               className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-xl text-xs transition-colors"
             >
               <Database className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Real Datasets Hub</span>
+              <span>Datasets Hub</span>
             </Link>
             <Link
               href="/uniqueness"
@@ -120,12 +125,69 @@ export default function NationalCommandPage() {
             </Link>
           </div>
         </div>
+
+        {/* Integrated Jurisdiction & Privacy Bar */}
+        <div className="pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-300 gap-2">
+          <div className="flex items-center space-x-2">
+            <ShieldCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
+            <span className="font-semibold text-slate-400">Jurisdiction Scope:</span>
+            <span className="text-white font-medium">5 Empaneled Centres Across 5 Indian States (UP, RJ, WB, MH, HP)</span>
+          </div>
+          <span className="font-mono text-[11px] text-slate-400">
+            DPDP Act 2023 Compliant • Aggregate Centroids Only
+          </span>
+        </div>
       </div>
 
-      {/* Role-Adaptive Persona Banner */}
-      <PersonaRoleBanner />
+      {/* 2. Primary KPI Stats Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-600">Empaneled Centres</span>
+            <Building2 className="w-4 h-4 text-blue-600" />
+          </div>
+          <p className="text-2xl font-bold text-slate-900 mt-2">{totalCentres}</p>
+          <p className="text-xs text-slate-500 mt-1">Real training partners</p>
+        </div>
 
-      {/* Interactive 5-Step Real-World Inspection Workflow */}
+        <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-rose-700">Critical Flags</span>
+            <AlertTriangle className="w-4 h-4 text-rose-600" />
+          </div>
+          <p className="text-2xl font-bold text-rose-600 mt-2">{criticalCentres}</p>
+          <p className="text-xs text-rose-700 mt-1">Severe ghost attendance</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-amber-700">Elevated Risk</span>
+            <ShieldAlert className="w-4 h-4 text-amber-600" />
+          </div>
+          <p className="text-2xl font-bold text-amber-600 mt-2">{elevatedCentres}</p>
+          <p className="text-xs text-amber-700 mt-1">Equipment deficit queue</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-emerald-700">Fully Compliant</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          </div>
+          <p className="text-2xl font-bold text-emerald-600 mt-2">{compliantCentres}</p>
+          <p className="text-xs text-emerald-700 mt-1">Roster & BOM verified</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm col-span-2 sm:col-span-1 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-600">National Index</span>
+            <Layers className="w-4 h-4 text-indigo-600" />
+          </div>
+          <p className="text-2xl font-bold text-indigo-600 mt-2">{avgCompliance}%</p>
+          <p className="text-xs text-slate-500 mt-1">Weighted compliance</p>
+        </div>
+      </div>
+
+      {/* 3. Interactive 5-Step Real-World Inspection Workflow */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
@@ -174,54 +236,6 @@ export default function NationalCommandPage() {
             <h4 className="font-bold text-slate-900 text-sm">{INSPECTION_STEPS[activeStep - 1].title}</h4>
             <p className="leading-relaxed text-slate-600">{INSPECTION_STEPS[activeStep - 1].detail}</p>
           </div>
-        </div>
-      </div>
-
-      {/* Primary KPI Stats Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-600">Empaneled Centres</span>
-            <Building2 className="w-4 h-4 text-blue-600" />
-          </div>
-          <p className="text-2xl font-bold text-slate-900 mt-2">{totalCentres}</p>
-          <p className="text-xs text-slate-500 mt-1">Real training partners</p>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-rose-700">Critical Flags</span>
-            <AlertTriangle className="w-4 h-4 text-rose-600" />
-          </div>
-          <p className="text-2xl font-bold text-rose-600 mt-2">{criticalCentres}</p>
-          <p className="text-xs text-rose-700 mt-1">Severe ghost attendance</p>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-amber-700">Elevated Risk</span>
-            <ShieldAlert className="w-4 h-4 text-amber-600" />
-          </div>
-          <p className="text-2xl font-bold text-amber-600 mt-2">{elevatedCentres}</p>
-          <p className="text-xs text-amber-700 mt-1">Equipment deficit queue</p>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-emerald-700">Fully Compliant</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          </div>
-          <p className="text-2xl font-bold text-emerald-600 mt-2">{compliantCentres}</p>
-          <p className="text-xs text-emerald-700 mt-1">Roster & BOM verified</p>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm col-span-2 sm:col-span-1 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-600">National Index</span>
-            <Layers className="w-4 h-4 text-indigo-600" />
-          </div>
-          <p className="text-2xl font-bold text-indigo-600 mt-2">{avgCompliance}%</p>
-          <p className="text-xs text-slate-500 mt-1">Weighted compliance</p>
         </div>
       </div>
 
