@@ -37,21 +37,21 @@ export const SeatingHeatmap: React.FC<SeatingHeatmapProps> = ({
 
       {/* Grid Floorplan */}
       <div className="bg-slate-900 p-4 rounded-lg border border-slate-800">
-        <div className="text-center pb-2 mb-3 border-b border-slate-800 text-[10px] uppercase font-mono text-slate-400 tracking-widest">
-          INSTRUCTOR PODIUM & DIGITAL BOARD
+        <div className="text-center pb-2 mb-3 border-b border-slate-800 text-xs uppercase font-mono text-slate-400 tracking-wider">
+          INSTRUCTOR PODIUM & DIGITAL INSTRUCTION BOARD
         </div>
         <div className="grid grid-cols-7 gap-2">
           {seats.map((seat) => (
             <div
               key={seat.id}
-              className={`p-2 rounded text-center transition-all ${
+              className={`p-2.5 rounded-lg text-center transition-all ${
                 seat.occupied
-                  ? 'bg-blue-600/80 border border-blue-400 text-white shadow-sm'
+                  ? 'bg-blue-600/90 border border-blue-400 text-white shadow-sm'
                   : 'bg-slate-800/80 border border-slate-700/60 text-slate-500'
               }`}
             >
-              <div className="text-[10px] font-mono font-semibold">S-{seat.id}</div>
-              <div className="text-[8px] uppercase mt-0.5">
+              <div className="text-xs font-mono font-bold">Seat {seat.id}</div>
+              <div className="text-[10px] uppercase font-semibold mt-0.5">
                 {seat.occupied ? 'Occupied' : 'Vacant'}
               </div>
             </div>

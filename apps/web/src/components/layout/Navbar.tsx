@@ -14,7 +14,8 @@ import {
   Menu, 
   X,
   Activity,
-  Sparkles
+  Sparkles,
+  Camera
 } from 'lucide-react';
 import { RoleSwitcher } from '../ui/RoleSwitcher';
 
@@ -25,6 +26,7 @@ export const Navbar = () => {
   // Grouped logically according to the core Problem Statement SIH26245 outcomes
   const primaryNav = [
     { name: 'Command Center', href: '/', icon: LayoutDashboard },
+    { name: 'Live Video Studio', href: '/studio', icon: Camera },
     { name: 'Centres', href: '/centres', icon: Building2 },
     { name: 'Attendance Audit', href: '/attendance', icon: Users },
     { name: 'Infrastructure (BOM)', href: '/infrastructure', icon: Box },

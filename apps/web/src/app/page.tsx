@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CANONICAL_CENTRES, Centre } from '@/data/mockCentres';
 import { AttendanceTimelineChart } from '@/components/charts/AttendanceTimelineChart';
 import { SeatingHeatmap } from '@/components/ui/SeatingHeatmap';
-import { IndiaMapOverview } from '@/components/ui/IndiaMapOverview';
+import { TradeBatchRoster } from '@/components/ui/TradeBatchRoster';
 import { PersonaRoleBanner } from '@/components/ui/PersonaRoleBanner';
 import { 
   Building2, 
@@ -263,11 +263,8 @@ export default function NationalCommandPage() {
             </div>
           </div>
 
-          {/* India GIS Spatial Distribution */}
-          <IndiaMapOverview
-            selectedCentreId={selectedCentre.centre_id}
-            onSelectCentre={(centre) => setSelectedCentre(centre)}
-          />
+          {/* Sector & Batch Schedule Inspector */}
+          <TradeBatchRoster centre={selectedCentre} />
         </div>
 
         {/* Right Column: Live Telemetry Inspection, Feeds, and Analytics */}
