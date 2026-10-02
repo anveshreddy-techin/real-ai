@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  LayoutDashboard,
+  LayoutDashboard, 
   Building2, 
   Users, 
   Box, 
@@ -19,26 +19,28 @@ import {
   Database
 } from 'lucide-react';
 import { RoleSwitcher } from '../ui/RoleSwitcher';
+import { LanguageSwitcher } from '../ui/LanguageSwitcher';
+import { useLanguage } from '../ui/LanguageContext';
 
 export const Navbar = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
-  // Grouped logically according to the core Problem Statement SIH26245 outcomes
   const primaryNav = [
-    { name: 'Command Center', href: '/', icon: LayoutDashboard },
-    { name: 'Live Video Studio', href: '/studio', icon: Camera },
-    { name: 'Centres', href: '/centres', icon: Building2 },
-    { name: 'Attendance Audit', href: '/attendance', icon: Users },
-    { name: 'Infrastructure (BOM)', href: '/infrastructure', icon: Box },
-    { name: 'Discrepancy Alerts', href: '/alerts', icon: AlertTriangle },
+    { key: 'command_center', defaultName: 'Command Center', href: '/', icon: LayoutDashboard },
+    { key: 'live_studio', defaultName: 'Live Video Studio', href: '/studio', icon: Camera },
+    { key: 'centres', defaultName: 'Centres', href: '/centres', icon: Building2 },
+    { key: 'attendance_audit', defaultName: 'Attendance Audit', href: '/attendance', icon: Users },
+    { key: 'infra_bom', defaultName: 'Infrastructure (BOM)', href: '/infrastructure', icon: Box },
+    { key: 'alerts', defaultName: 'Discrepancy Alerts', href: '/alerts', icon: AlertTriangle },
   ];
 
   const technicalNav = [
-    { name: 'Why SkillGuard (Uniqueness)', href: '/uniqueness', icon: Sparkles, highlight: true },
-    { name: 'Real Datasets Hub', href: '/datasets', icon: Database },
-    { name: 'AI Pipeline & Benchmarks', href: '/pipeline', icon: Cpu },
-    { name: 'Privacy Note', href: '/privacy', icon: ShieldCheck },
+    { key: 'why_skillguard', defaultName: 'Why SkillGuard (Uniqueness)', href: '/uniqueness', icon: Sparkles, highlight: true },
+    { key: 'datasets_hub', defaultName: 'Real Datasets Hub', href: '/datasets', icon: Database },
+    { key: 'pipeline_benchmarks', defaultName: 'AI Pipeline & Benchmarks', href: '/pipeline', icon: Cpu },
+    { key: 'privacy_note', defaultName: 'Privacy Note', href: '/privacy', icon: ShieldCheck },
   ];
 
   return (
@@ -49,12 +51,13 @@ export const Navbar = () => {
           <div className="flex items-center space-x-2">
             <span className="font-semibold text-slate-300">Government of India</span>
             <span>•</span>
-            <span>Ministry of Skill Development and Entrepreneurship (MSDE)</span>
+            <span className="hidden sm:inline">Ministry of Skill Development and Entrepreneurship (MSDE)</span>
+            <span className="sm:hidden">MSDE</span>
           </div>
           <div className="flex items-center space-x-3">
             <span className="text-[10px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live AI Edge Telemetry
+              {t('live_telemetry')}
             </span>
           </div>
         </div>
@@ -62,44 +65,45 @@ export const Navbar = () => {
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+        <div className="flex items-center justify-between h-16 gap-3">
           {/* Brand Logo & Scheme ID */}
-          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
+          <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group flex-shrink-0">
             <div className="bg-gradient-to-br from-amber-500 to-amber-600 p-2 rounded-lg shadow-sm group-hover:opacity-95 transition-opacity">
               <Activity className="w-5 h-5 text-slate-950 font-bold" />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-base tracking-tight text-white group-hover:text-amber-300 transition-colors">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <span className="font-extrabold text-sm sm:text-base tracking-tight text-white group-hover:text-amber-300 transition-colors">
                   SkillGuard <span className="text-amber-400">AI</span>
                 </span>
                 <span className="text-[9px] uppercase font-bold bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-400/40">
                   SIH26245
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 -mt-0.5 tracking-wide">
-                Real-Time Centre Monitoring System
+              <p className="text-[9px] sm:text-[10px] text-slate-400 -mt-0.5 tracking-wide line-clamp-1">
+                {t('app_subtitle')}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden xl:flex items-center space-x-1">
             {primaryNav.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+              const name = t(item.key) || item.defaultName;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                     isActive
                       ? 'bg-blue-600/30 text-amber-300 border border-blue-500/50 shadow-sm'
                       : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
-                  <span>{item.name}</span>
+                  <span>{name}</span>
                 </Link>
               );
             })}
@@ -110,11 +114,12 @@ export const Navbar = () => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
               const isHighlight = item.highlight;
+              const name = t(item.key) || item.defaultName;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                     isActive
                       ? 'bg-blue-600/30 text-amber-300 border border-blue-500/50 shadow-sm'
                       : isHighlight
@@ -123,20 +128,23 @@ export const Navbar = () => {
                   }`}
                 >
                   <Icon className={`w-3.5 h-3.5 ${isHighlight ? 'text-amber-400' : ''}`} />
-                  <span>{item.name}</span>
+                  <span>{name}</span>
                 </Link>
               );
             })}
           </nav>
 
-          {/* Role Persona Switcher & Mobile Menu Button */}
+          {/* Right Controls: Language Switcher, Role Switcher, Mobile Button */}
           <div className="flex items-center space-x-2">
-            <RoleSwitcher />
+            <LanguageSwitcher />
+            <div className="hidden md:block">
+              <RoleSwitcher />
+            </div>
 
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700"
+              className="xl:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700"
               aria-label="Toggle navigation"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -147,48 +155,60 @@ export const Navbar = () => {
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#0A192F] border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
-          <p className="text-[10px] uppercase font-bold text-slate-500 px-3 py-1">Operational Views</p>
-          {primaryNav.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-medium ${
-                  isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
+        <div className="xl:hidden bg-[#0A192F] border-b border-slate-800 px-4 pt-3 pb-5 space-y-3">
+          {/* Mobile Role Switcher */}
+          <div className="md:hidden pb-2 border-b border-slate-800 flex items-center justify-between">
+            <span className="text-[11px] text-slate-400 font-medium">Active Inspector Role:</span>
+            <RoleSwitcher />
+          </div>
 
-          <p className="text-[10px] uppercase font-bold text-slate-500 px-3 pt-3 py-1">Governance & Accuracy</p>
-          {technicalNav.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-medium ${
-                  isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
+          <div className="space-y-1">
+            <p className="text-[10px] uppercase font-bold text-slate-500 px-3 py-1">Operational Views</p>
+            {primaryNav.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              const name = t(item.key) || item.defaultName;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-medium ${
+                    isActive
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{name}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="space-y-1 pt-2 border-t border-slate-800">
+            <p className="text-[10px] uppercase font-bold text-slate-500 px-3 py-1">Governance & Accuracy</p>
+            {technicalNav.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              const name = t(item.key) || item.defaultName;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-medium ${
+                    isActive
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{name}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
     </header>
