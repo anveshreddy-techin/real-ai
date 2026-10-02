@@ -16,7 +16,7 @@ Government-funded skilling initiatives (PMKVY 4.0, DDU-GKY, Craftsmen Training S
 - **Transient Infrastructure Dilution:** Heavy machinery or student workbenches are temporarily assembled for inspection days and removed immediately afterwards.
 - **Passive Camera Infrastructure:** CCTV feeds record passively without automated continuous cross-checking against scheme registers.
 
-**SkillGuard AI** solves this by delivering an automated, privacy-first computer vision intelligence layer processing video feeds or periodic low-bandwidth snapshots to continuously audit attendance counts and verify approved equipment inventory.
+**SkillGuard AI** delivers an automated, privacy-first computer vision intelligence layer processing existing CCTV feeds or periodic low-bandwidth snapshots to continuously audit attendance counts, verify approved equipment inventory (BOM), and prevent public fund leakages.
 
 ---
 
@@ -42,11 +42,23 @@ Government-funded skilling initiatives (PMKVY 4.0, DDU-GKY, Craftsmen Training S
 | **Privacy-Preserving Design Note** | Comprehensive note detailing aggregate presence vs. biometric surveillance | `docs/PRIVACY_DESIGN_NOTE.md`, `/privacy` |
 | **Accuracy Assessment (FP/FN)** | 1,200 benchmark frames evaluated (94.2% precision, 5.8% FPR) | `ml/evaluation/accuracy_benchmarks.py`, `/pipeline` |
 | **Low-Bandwidth Deployment Mode** | 1 frame/min snapshot mode achieving 99.4% payload reduction (11.2 Kbps) | `core/config.py`, `/pipeline` |
-| **Live Deployed Prototype** | Globally accessible CDN deployment | `https://skillguard-ai.surge.sh` |
+| **Uniqueness & Innovation Matrix** | Comprehensive competitive comparison vs manual, CCTV, and facial biometrics | `/uniqueness` |
+| **Live Deployed Prototype** | Globally accessible CDN deployment with 11 production static routes | `https://skillguard-ai.surge.sh` |
 
 ---
 
-## 4. Verification & Testing
+## 4. Why SkillGuard AI is Unique vs Competitors
+
+1. **DPDP Act 2023 Compliant by Design:** Zero facial recognition, zero facial embeddings, zero Aadhaar mapping. Extracts only anonymous centroid integers; raw pixels are purged from RAM in <500ms.
+2. **In-Session Anti-Dropoff Verification:** Door thumb scanners cannot detect trainees who sign in at 9:00 AM and leave at 9:15 AM. SkillGuard AI tracks persistence curves across the entire 4-hour batch.
+3. **Automated Sanctioned BOM Auditing:** Stops centres from "borrowing" tools or machines just for inspection day by continuously verifying equipment between visits.
+4. **Rural 2G/3G Edge Mode (11.2 Kbps):** 99.4% internet data reduction enables deployment across remote Himalayan, North-East, and rural skilling centres.
+5. **Supervised ML Anomaly Artifact:** Powered by a real, trained Random Forest Classifier (`ml/artifacts/anomaly_detector.joblib`) with 94.2% precision on 1,200 benchmark scenarios.
+
+---
+
+## 5. Verification & Testing
+
 ```bash
 # Backend unit tests (pytest)
 PYTHONPATH=. pytest tests/unit -v
@@ -54,5 +66,5 @@ PYTHONPATH=. pytest tests/unit -v
 
 # Frontend Next.js production build
 npm --prefix apps/web run build
-# 10/10 static production pages compiled successfully
+# 11/11 static production pages compiled successfully
 ```

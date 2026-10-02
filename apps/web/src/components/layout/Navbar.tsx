@@ -4,15 +4,17 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
+  LayoutDashboard,
   Building2, 
   Users, 
   Box, 
   AlertTriangle, 
   Cpu, 
-  Lock, 
+  ShieldCheck, 
   Menu, 
   X,
-  Activity
+  Activity,
+  Sparkles
 } from 'lucide-react';
 import { RoleSwitcher } from '../ui/RoleSwitcher';
 
@@ -22,7 +24,7 @@ export const Navbar = () => {
 
   // Grouped logically according to the core Problem Statement SIH26245 outcomes
   const primaryNav = [
-    { name: 'Command Center', href: '/', icon: Building2 },
+    { name: 'Command Center', href: '/', icon: LayoutDashboard },
     { name: 'Centres', href: '/centres', icon: Building2 },
     { name: 'Attendance Audit', href: '/attendance', icon: Users },
     { name: 'Infrastructure (BOM)', href: '/infrastructure', icon: Box },
@@ -30,8 +32,9 @@ export const Navbar = () => {
   ];
 
   const technicalNav = [
-    { name: 'AI Model & Benchmarks', href: '/pipeline', icon: Cpu },
-    { name: 'Privacy Architecture', href: '/privacy', icon: Lock },
+    { name: 'Why SkillGuard (Uniqueness)', href: '/uniqueness', icon: Sparkles, highlight: true },
+    { name: 'AI Pipeline & Benchmarks', href: '/pipeline', icon: Cpu },
+    { name: 'Privacy Note', href: '/privacy', icon: ShieldCheck },
   ];
 
   return (
@@ -102,17 +105,20 @@ export const Navbar = () => {
             {technicalNav.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+              const isHighlight = item.highlight;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-blue-600/30 text-amber-300 border border-blue-500/50'
-                      : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                      ? 'bg-blue-600/30 text-amber-300 border border-blue-500/50 shadow-sm'
+                      : isHighlight
+                      ? 'bg-amber-400/10 text-amber-300 border border-amber-400/30 hover:bg-amber-400/20 hover:text-amber-200'
+                      : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className={`w-3.5 h-3.5 ${isHighlight ? 'text-amber-400' : ''}`} />
                   <span>{item.name}</span>
                 </Link>
               );
