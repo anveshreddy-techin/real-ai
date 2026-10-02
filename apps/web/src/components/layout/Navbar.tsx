@@ -15,7 +15,8 @@ import {
   X,
   Activity,
   Sparkles,
-  Camera
+  Camera,
+  Database
 } from 'lucide-react';
 import { RoleSwitcher } from '../ui/RoleSwitcher';
 
@@ -35,6 +36,7 @@ export const Navbar = () => {
 
   const technicalNav = [
     { name: 'Why SkillGuard (Uniqueness)', href: '/uniqueness', icon: Sparkles, highlight: true },
+    { name: 'Real Datasets Hub', href: '/datasets', icon: Database },
     { name: 'AI Pipeline & Benchmarks', href: '/pipeline', icon: Cpu },
     { name: 'Privacy Note', href: '/privacy', icon: ShieldCheck },
   ];

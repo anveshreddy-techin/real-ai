@@ -1,0 +1,16 @@
+item_id,sector,qp_code,equipment_name,specification,mandated_ratio,sanctioned_qty_per_batch,unit_cost_inr,detectability_confidence
+BOM-AMH-01,Apparel,AMH/Q0102,Single Needle Lockstitch Machine (SNLS),"Direct Drive Servo Motor with Under-bed Thread Trimmer (UBT), 5000 RPM, ISO 9001",1 per trainee,15,28500,0.94
+BOM-AMH-02,Apparel,AMH/Q0102,Three/Four Thread Overlock Machine,"Heavy duty, 6000 RPM, auto lubrication with differential feed",1 per 5 trainees,3,34000,0.91
+BOM-AMH-03,Apparel,AMH/Q0102,Pattern Making & Cutting Table,"Laminated top, 8x4 feet, 36-inch working height with measuring scale inlay",1 per 10 trainees,3,18000,0.96
+BOM-AMH-04,Apparel,AMH/Q0102,Steam Ironing Station with Vacuum Table,3.5 Bar Boiler with Teflon shoe electric iron and suction board,1 per batch,2,22000,0.89
+BOM-SGJ-01,Green Jobs,SGJ/Q0101,Monocrystalline Solar PV Module 330W,"IEC 61215 / IS 14286 certified, anodized aluminum frame with MC4 connectors",1 per 4 trainees,8,14500,0.95
+BOM-SGJ-02,Green Jobs,SGJ/Q0101,Solar Grid-Tied Inverter Simulator 1kW,"Single phase with MPPT tracking, LCD display, anti-islanding protection",1 per 4 trainees,8,32000,0.92
+BOM-SGJ-03,Green Jobs,SGJ/Q0101,Digital Solar Power Meter & Pyranometer,"0-2000 W/m2 measurement, accuracy +/- 5%",1 per batch,2,12000,0.86
+BOM-SGJ-04,Green Jobs,SGJ/Q0101,Full Body Safety Harness & PPE Rack,"EN 361 certified harness, fall arrester, 1000V insulated electrician gloves",1 per trainee,28,3500,0.88
+BOM-ASC-01,Capital Goods,ASC/Q3501,CNC Lathe Machine Simulator Workstation,"Siemens 828D / Fanuc 0i-TF compatible, 3D graphics virtual machining console",1 per 10 trainees,4,185000,0.97
+BOM-ASC-02,Capital Goods,ASC/Q3501,Mechanical Precision Fitting Workbench,"Cast iron bench with 6-inch parallel jaw vices, 4 stations per bench",1 per 4 trainees,10,24000,0.94
+BOM-ASC-03,Capital Goods,ASC/Q3501,Digital Vernier Caliper & Micrometer Set,"0-150mm range, 0.01mm resolution, hardened stainless steel (IS 3651)",1 per 2 trainees,20,4500,0.85
+BOM-SSC-01,IT-ITeS,SSC/Q2212,Desktop Computer Terminals (i5/16GB/SSD),"Intel Core i5 12th Gen, 16GB RAM, 512GB NVMe, 21.5-inch IPS monitor, Windows 11 Pro",1 per trainee,20,48000,0.96
+BOM-SSC-02,IT-ITeS,SSC/Q2212,Online Centralized UPS 5 kVA,True online double conversion with 1 hour battery bank,1 per computer lab,1,85000,0.93
+BOM-GEN-01,Universal,UNIVERSAL,ABC Dry Powder Fire Extinguisher (6 kg),"IS 15683 certified, nitrogen pressurized for Class A, B, C and electrical fires",2 per floor/workshop,2,4200,0.94
+BOM-GEN-02,Universal,UNIVERSAL,Digital Overhead Multimedia Projector,"Full HD 1080p, 4000 lumens brightness, HDMI/wireless display casting",1 per theory classroom,1,42000,0.95
