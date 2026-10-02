@@ -17,7 +17,9 @@ import {
   Layers, 
   ShieldAlert, 
   Zap,
-  MapPin
+  Cpu,
+  Lock,
+  ArrowRight
 } from 'lucide-react';
 
 export default function NationalCommandPage() {
@@ -30,32 +32,34 @@ export default function NationalCommandPage() {
   const avgCompliance = (CANONICAL_CENTRES.reduce((acc, c) => acc + c.compliance_score, 0) / totalCentres).toFixed(1);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
-      {/* Top Banner */}
-      <div className="bg-gradient-to-r from-[#0A2540] via-[#1E3A8A] to-[#0A2540] rounded-xl p-6 text-white shadow-lg border border-slate-700">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 space-y-5">
+      {/* Streamlined Executive Scheme Header */}
+      <div className="bg-gradient-to-r from-[#07172A] via-[#0F294D] to-[#07172A] rounded-xl p-5 text-white shadow-md border border-slate-800">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-400/40 px-3 py-1 rounded-full text-xs font-semibold text-amber-300 mb-2">
-              <Zap className="w-3.5 h-3.5" />
-              <span>SIH26245 — Real-Time Compliance Surveillance Active</span>
+            <div className="inline-flex items-center space-x-2 bg-amber-400/10 border border-amber-400/30 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-amber-300 mb-1.5">
+              <Zap className="w-3 h-3 text-amber-400" />
+              <span>SIH26245 — Real-Time Video Analytics & Compliance Monitoring</span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">National Skilling Centre Compliance Command Center</h1>
-            <p className="text-sm text-slate-300 mt-1 max-w-3xl">
-              Automated video analytics cross-referencing physical attendance headcounts and approved infrastructure items across empaneled MSDE training centres.
+            <h1 className="text-xl font-bold tracking-tight">National Training Centre Compliance Command Center</h1>
+            <p className="text-xs text-slate-300 mt-0.5 max-w-3xl">
+              Active optical attendance estimation, sanctioned equipment inventory auditing, and privacy-preserving aggregate telemetry across empaneled centres.
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/privacy"
-              className="px-4 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-lg text-xs font-medium text-slate-200 transition-colors"
-            >
-              Privacy Architecture Note
-            </Link>
+          <div className="flex items-center gap-2">
             <Link
               href="/pipeline"
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold rounded-lg text-xs transition-colors shadow-sm"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-colors shadow-sm"
             >
-              Accuracy Assessment
+              <Cpu className="w-3.5 h-3.5" />
+              <span>Model & Benchmarks</span>
+            </Link>
+            <Link
+              href="/privacy"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-semibold text-slate-200 transition-colors"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>Privacy Note</span>
             </Link>
           </div>
         </div>
@@ -64,62 +68,62 @@ export default function NationalCommandPage() {
       {/* Role-Adaptive Persona Banner */}
       <PersonaRoleBanner />
 
-      {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+      {/* Primary KPI Stats Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-500">Monitored Centres</span>
             <Building2 className="w-4 h-4 text-blue-600" />
           </div>
-          <p className="text-2xl font-bold text-slate-900 mt-2">{totalCentres}</p>
-          <p className="text-[11px] text-slate-500 mt-1">Empaneled in active schemes</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1">{totalCentres}</p>
+          <p className="text-[10px] text-slate-500 mt-0.5">Empaneled in active schemes</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm">
+        <div className="bg-white p-3.5 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-rose-700">Critical Flags</span>
+            <span className="text-xs font-semibold text-rose-700">Critical Flags</span>
             <AlertTriangle className="w-4 h-4 text-rose-600" />
           </div>
-          <p className="text-2xl font-bold text-rose-600 mt-2">{criticalCentres}</p>
-          <p className="text-[11px] text-rose-700 mt-1">Severe ghost/inventory gaps</p>
+          <p className="text-2xl font-bold text-rose-600 mt-1">{criticalCentres}</p>
+          <p className="text-[10px] text-rose-700 mt-0.5">Severe ghosting / BOM deficits</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm">
+        <div className="bg-white p-3.5 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-amber-700">Elevated Risk</span>
+            <span className="text-xs font-semibold text-amber-700">Elevated Risk</span>
             <ShieldAlert className="w-4 h-4 text-amber-600" />
           </div>
-          <p className="text-2xl font-bold text-amber-600 mt-2">{elevatedCentres}</p>
-          <p className="text-[11px] text-amber-700 mt-1">Priority audit recommended</p>
+          <p className="text-2xl font-bold text-amber-600 mt-1">{elevatedCentres}</p>
+          <p className="text-[10px] text-amber-700 mt-0.5">Priority physical audit queue</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm">
+        <div className="bg-white p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-emerald-700">Fully Compliant</span>
+            <span className="text-xs font-semibold text-emerald-700">Fully Compliant</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           </div>
-          <p className="text-2xl font-bold text-emerald-600 mt-2">{compliantCentres}</p>
-          <p className="text-[11px] text-emerald-700 mt-1">Attendance & BOM verified</p>
+          <p className="text-2xl font-bold text-emerald-600 mt-1">{compliantCentres}</p>
+          <p className="text-[10px] text-emerald-700 mt-0.5">Roster & equipment verified</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+        <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">Avg Compliance</span>
+            <span className="text-xs font-medium text-slate-500">National Compliance</span>
             <Layers className="w-4 h-4 text-indigo-600" />
           </div>
-          <p className="text-2xl font-bold text-indigo-600 mt-2">{avgCompliance}%</p>
-          <p className="text-[11px] text-slate-500 mt-1">Weighted nationwide index</p>
+          <p className="text-2xl font-bold text-indigo-600 mt-1">{avgCompliance}%</p>
+          <p className="text-[10px] text-slate-500 mt-0.5">Weighted nationwide index</p>
         </div>
       </div>
 
-      {/* Main Command Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Centres Directory & GIS Map */}
-        <div className="lg:col-span-1 space-y-6">
+      {/* Main Workspace Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Left Column: Centres Directory & GIS Spatial Overview */}
+        <div className="lg:col-span-1 space-y-5">
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="font-semibold text-slate-900 text-sm">Empaneled Training Centres</h2>
-              <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">5 Active Feeds</span>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h2 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Empaneled Training Centres</h2>
+              <span className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-semibold">5 Active Feeds</span>
             </div>
 
             <div className="space-y-2">
@@ -141,11 +145,11 @@ export default function NationalCommandPage() {
                   >
                     <div className="flex items-start justify-between">
                       <div>
-                        <span className="text-xs font-mono font-semibold text-slate-500">{centre.centre_id}</span>
+                        <span className="text-[11px] font-mono font-bold text-slate-500">{centre.centre_id}</span>
                         <h3 className="text-xs font-bold text-slate-900 line-clamp-1">{centre.name}</h3>
                         <p className="text-[11px] text-slate-500 mt-0.5">{centre.district}, {centre.state}</p>
                       </div>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                      <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                         isCritical ? 'bg-rose-100 text-rose-700 border border-rose-200' :
                         isElevated ? 'bg-amber-100 text-amber-700 border border-amber-200' :
                         isCompliant ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
@@ -160,7 +164,7 @@ export default function NationalCommandPage() {
                         <Users className="w-3.5 h-3.5 text-slate-400" />
                         <span>Att: {centre.attendance.ai_detected_headcount} / {centre.attendance.submitted_attendance}</span>
                       </div>
-                      <div className="font-semibold text-slate-900">
+                      <div className="font-bold text-slate-900">
                         Score: {centre.compliance_score}%
                       </div>
                     </div>
@@ -170,16 +174,16 @@ export default function NationalCommandPage() {
             </div>
           </div>
 
-          {/* India GIS Spatial Overview */}
+          {/* India GIS Spatial Distribution */}
           <IndiaMapOverview
             selectedCentreId={selectedCentre.centre_id}
             onSelectCentre={(centre) => setSelectedCentre(centre)}
           />
         </div>
 
-        {/* Right Column: Live Centre Telemetry Inspection */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+        {/* Right Column: Live Telemetry Inspection, Feeds, and Analytics */}
+        <div className="lg:col-span-2 space-y-5">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
               <div>
                 <div className="flex items-center space-x-2">
@@ -194,13 +198,13 @@ export default function NationalCommandPage() {
                     Mode: {selectedCentre.bandwidth_mode === 'LOW' ? '1 Frame/60s (Edge Low-BW)' : '5 FPS Stream'}
                   </span>
                 </div>
-                <h2 className="text-lg font-bold text-slate-900 mt-1">{selectedCentre.name}</h2>
+                <h2 className="text-base font-bold text-slate-900 mt-1">{selectedCentre.name}</h2>
                 <p className="text-xs text-slate-500">{selectedCentre.address}</p>
               </div>
 
               <div className="text-right">
                 <span className="text-xs text-slate-500">Compliance Score</span>
-                <p className={`text-3xl font-extrabold ${
+                <p className={`text-2xl font-extrabold ${
                   selectedCentre.compliance_status === 'CRITICAL' ? 'text-rose-600' :
                   selectedCentre.compliance_status === 'ELEVATED_RISK' ? 'text-amber-600' :
                   'text-emerald-600'
@@ -210,29 +214,29 @@ export default function NationalCommandPage() {
               </div>
             </div>
 
-            {/* Canonical Scenario Alert Callout if Critical */}
+            {/* Canonical Critical Ghost Alert Notification */}
             {selectedCentre.compliance_status === 'CRITICAL' && (
-              <div className="bg-rose-50 border border-rose-300 rounded-lg p-4 text-xs text-rose-900">
+              <div className="bg-rose-50 border border-rose-300 rounded-lg p-3.5 text-xs text-rose-900">
                 <div className="flex items-center space-x-2 font-bold text-rose-700 mb-1">
-                  <AlertTriangle className="w-4 h-4" />
-                  <span>SEVERE DISCREPANCY DETECTED: GHOST ATTENDANCE & INVENTORY GAP</span>
+                  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                  <span>CRITICAL DISCREPANCY: ATTENDANCE INFLATION & INVENTORY GAP DETECTED</span>
                 </div>
-                <p>
-                  Submitted register claims <strong>{selectedCentre.attendance.submitted_attendance} trainees</strong> present. 
-                  AI optical headcount detected <strong>only {selectedCentre.attendance.ai_detected_headcount} trainees</strong> across all camera feeds ({selectedCentre.attendance.discrepancy_percentage}% inflation).
+                <p className="leading-relaxed">
+                  Submitted register reported <strong>{selectedCentre.attendance.submitted_attendance} trainees</strong>. 
+                  AI optical headcount detected <strong>only {selectedCentre.attendance.ai_detected_headcount} trainees</strong> physically present ({selectedCentre.attendance.discrepancy_percentage}% ghost inflation).
                 </p>
               </div>
             )}
 
-            {/* Visual Camera Feeds Mock Grid */}
+            {/* Live Camera Grid */}
             <div>
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-2.5">
                 <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
                   <Camera className="w-4 h-4 text-slate-500" />
                   Live Camera Feeds ({selectedCentre.cameras_online}/{selectedCentre.total_cameras} Online)
                 </h3>
-                <span className="text-[11px] text-emerald-700 font-medium bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                  Privacy Enforced: Aggregate Headcount Only
+                <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  Privacy Enforced: Centroid Headcounts Only
                 </span>
               </div>
 
@@ -240,9 +244,9 @@ export default function NationalCommandPage() {
                 {[1, 2, 3, 4].map((camIndex) => {
                   const isOnline = camIndex <= selectedCentre.cameras_online;
                   return (
-                    <div key={camIndex} className="bg-slate-900 rounded-lg overflow-hidden border border-slate-800 relative aspect-video flex flex-col justify-between p-3">
+                    <div key={camIndex} className="bg-slate-950 rounded-lg overflow-hidden border border-slate-800 relative aspect-video flex flex-col justify-between p-3">
                       <div className="flex items-center justify-between z-10">
-                        <span className="text-[10px] font-mono text-white/80 bg-black/50 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-mono text-white/80 bg-black/60 px-1.5 py-0.5 rounded">
                           CAM-0{camIndex}: Room {camIndex}
                         </span>
                         <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase ${
@@ -255,20 +259,20 @@ export default function NationalCommandPage() {
                       {isOnline ? (
                         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-slate-900/60 to-slate-950/90 text-center p-4">
                           <div className="space-y-1">
-                            <Users className="w-8 h-8 text-amber-400 mx-auto opacity-70" />
-                            <p className="text-xs text-slate-300 font-medium">Headcount in Zone: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} persons</p>
+                            <Users className="w-7 h-7 text-amber-400 mx-auto opacity-70" />
+                            <p className="text-xs text-slate-300 font-semibold">Headcount in Zone: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} persons</p>
                             <p className="text-[10px] text-slate-500 font-mono">Edge Anonymization: Centroids Extracted</p>
                           </div>
                         </div>
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center bg-slate-950 text-slate-600 text-xs">
-                          Camera Connection Lost
+                          Camera Signal Interrupted
                         </div>
                       )}
 
                       <div className="flex items-center justify-between text-[10px] text-slate-400 z-10">
                         <span>Rate: {selectedCentre.bandwidth_mode === 'LOW' ? '1 frame/min' : '5 fps'}</span>
-                        <span>Snapshot 11:30:00 UTC</span>
+                        <span>Telemetry: 11:30:00 UTC</span>
                       </div>
                     </div>
                   );
@@ -276,12 +280,12 @@ export default function NationalCommandPage() {
               </div>
             </div>
 
-            {/* Discrepancy Breakdown Table */}
+            {/* Approved Equipment & Infrastructure Table */}
             <div className="border border-slate-200 rounded-lg p-4 bg-slate-50/50">
-              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Sanctioned Equipment Compliance</h4>
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2.5">Sanctioned Equipment Inventory Compliance</h4>
               <div className="overflow-x-auto">
                 <table className="min-w-full text-xs text-left">
-                  <thead className="text-[11px] font-semibold text-slate-500 uppercase border-b border-slate-200">
+                  <thead className="text-[10px] font-semibold text-slate-500 uppercase border-b border-slate-200">
                     <tr>
                       <th className="py-2">Item ID</th>
                       <th className="py-2">Equipment Category</th>
@@ -297,9 +301,9 @@ export default function NationalCommandPage() {
                         <td className="py-2 font-mono font-medium text-slate-700">{item.item_id}</td>
                         <td className="py-2 font-semibold text-slate-900">{item.name}</td>
                         <td className="py-2 text-slate-600">{item.sanctioned_count} units</td>
-                        <td className="py-2 font-semibold text-slate-900">{item.detected_count} units</td>
+                        <td className="py-2 font-bold text-slate-900">{item.detected_count} units</td>
                         <td className="py-2">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
                             item.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-700' :
                             item.status === 'DEFICIT' ? 'bg-amber-100 text-amber-700' :
                             'bg-rose-100 text-rose-700'
