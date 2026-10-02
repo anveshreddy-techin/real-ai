@@ -4,6 +4,8 @@
 **Smart India Hackathon (SIH 2026) — Problem Statement:** `SIH26245`  
 **Ministry / Domain:** Ministry of Skill Development and Entrepreneurship (MSDE)  
 **Theme:** Smart Education | **Category:** Software  
+**Live Production URL:** [https://skillguard-ai.surge.sh](https://skillguard-ai.surge.sh)  
+**GitHub Repository:** [https://github.com/anveshreddy-techin/real-ai](https://github.com/anveshreddy-techin/real-ai)  
 **Canonical Demonstration Scenario:** Pratham Kaushal Vikas Kendra, Gorakhpur (`PMKVY-UP-GKP-0042`)
 
 ---
@@ -26,7 +28,7 @@ Government-funded skilling initiatives (PMKVY 4.0, DDU-GKY, Craftsmen Training S
 | **Pillar 2: Seating & Occupancy** | Classroom desk utilization | Grid-based centroid heatmap distribution | Anonymized cell occupancy |
 | **Pillar 3: Infrastructure Verification** | Sanctioned BOM audit | Object detection for workbenches, sewing machines, PCs, solar kits | Non-human asset detection |
 | **Pillar 4: Temporal Consistency** | Duration integrity | Continuous rolling-window presence arc (30-minute intervals) | Statistical time-series |
-| **Pillar 5: Discrepancy & Fraud Scoring** | Discrepancy alerts | Weighted compliance index & Isolation Forest anomaly alerts | Transparent explainability factors |
+| **Pillar 5: Discrepancy & Fraud Scoring** | Discrepancy alerts | Weighted compliance index & trained Random Forest fraud classifier | Transparent explainability factors |
 
 ---
 
@@ -34,12 +36,13 @@ Government-funded skilling initiatives (PMKVY 4.0, DDU-GKY, Craftsmen Training S
 
 | Requirement | Implementation in SkillGuard AI | File / Route Reference |
 |---|---|---|
-| **Video Analytics Pipeline** | Real-time person and infrastructure detection with centroid reduction | `ml/detectors/`, `ml/pipeline/` |
+| **Video Analytics Pipeline** | Real-time person and infrastructure detection with centroid reduction | `ml/pipeline/frame_processor.py` |
 | **Attendance Discrepancy Dashboard** | Interactive national command center comparing submitted vs. AI counts | `/` and `/attendance` |
 | **Infrastructure Compliance Audit** | Visual BOM checklist verifying equipment items vs. approved inventory | `/infrastructure` |
 | **Privacy-Preserving Design Note** | Comprehensive note detailing aggregate presence vs. biometric surveillance | `docs/PRIVACY_DESIGN_NOTE.md`, `/privacy` |
 | **Accuracy Assessment (FP/FN)** | 1,200 benchmark frames evaluated (94.2% precision, 5.8% FPR) | `ml/evaluation/accuracy_benchmarks.py`, `/pipeline` |
 | **Low-Bandwidth Deployment Mode** | 1 frame/min snapshot mode achieving 99.4% payload reduction (11.2 Kbps) | `core/config.py`, `/pipeline` |
+| **Live Deployed Prototype** | Globally accessible CDN deployment | `https://skillguard-ai.surge.sh` |
 
 ---
 
@@ -47,9 +50,9 @@ Government-funded skilling initiatives (PMKVY 4.0, DDU-GKY, Craftsmen Training S
 ```bash
 # Backend unit tests (pytest)
 PYTHONPATH=. pytest tests/unit -v
-# 5 passed, 0 failed
+# 7 passed, 0 failed (100% pass rate)
 
 # Frontend Next.js production build
 npm --prefix apps/web run build
-# Compiled successfully into static production pages
+# 10/10 static production pages compiled successfully
 ```
