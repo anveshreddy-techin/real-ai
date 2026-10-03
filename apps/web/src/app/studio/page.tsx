@@ -318,18 +318,18 @@ const DEMO_SCENARIOS: Scenario[] = [
 const getScenarioImage = (scenarioId: string, trade: string = ''): string => {
   const t = trade.toLowerCase();
   if (scenarioId === 'gkp-ghost' || t.includes('apparel') || t.includes('sewing')) {
-    return '/images/feeds/sewing_workshop.jpg';
+    return '/images/feeds/ai_ghost_fraud.jpg';    // Ghost attendance: 18 detected vs 32 registered
   }
   if (scenarioId === 'mld-equipment' || t.includes('data entry') || t.includes('software') || t.includes('it')) {
-    return '/images/feeds/computer_lab.jpg';
+    return '/images/feeds/ai_it_lab.jpg';          // IT Lab: workstations + AEBAS detection
   }
   if (scenarioId === 'jdh-solar' || t.includes('solar') || t.includes('electrical') || t.includes('electrician')) {
-    return '/images/feeds/solar_training.jpg';
+    return '/images/feeds/ai_bom_verification.jpg'; // Equipment BOM: deficit detection
   }
   if (scenarioId === 'ngp-normal' || t.includes('cnc') || t.includes('lathe') || t.includes('machinery')) {
-    return '/images/feeds/electrical_workshop.jpg';
+    return '/images/feeds/ai_compliant_cnc.jpg';   // Fully compliant: 43/43 detected
   }
-  return '/images/feeds/classroom_instruction.jpg';
+  return '/images/feeds/ai_sewing_detection.jpg';  // Default: sewing workshop bounding boxes
 };
 
 export default function LiveStudioPage() {

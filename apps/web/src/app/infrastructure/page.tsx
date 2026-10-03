@@ -6,14 +6,14 @@ import { useLanguage } from '@/components/ui/LanguageContext';
 
 const getEquipmentPhoto = (name: string, category: string): string => {
   const n = (name + ' ' + category).toLowerCase();
-  if (n.includes('sewing') || n.includes('tailor') || n.includes('garment')) return '/images/feeds/sewing_workshop.jpg';
-  if (n.includes('computer') || n.includes('pc') || n.includes('screen') || n.includes('lab') || n.includes('desk')) return '/images/feeds/computer_lab.jpg';
-  if (n.includes('fire') || n.includes('extinguisher') || n.includes('safety')) return '/images/feeds/fire_extinguisher.jpg';
-  if (n.includes('solar') || n.includes('electrical') || n.includes('wire') || n.includes('panel')) return '/images/feeds/solar_training.jpg';
-  if (n.includes('ups') || n.includes('power') || n.includes('generator') || n.includes('battery')) return '/images/feeds/ups_generator.jpg';
-  if (n.includes('first aid') || n.includes('medical')) return '/images/feeds/first_aid.jpg';
-  if (n.includes('biometric') || n.includes('punch') || n.includes('aebas')) return '/images/feeds/attendance_biometric.jpg';
-  return '/images/feeds/electrical_workshop.jpg';
+  if (n.includes('sewing') || n.includes('tailor') || n.includes('garment')) return '/images/feeds/ai_sewing_detection.jpg';
+  if (n.includes('computer') || n.includes('pc') || n.includes('screen') || n.includes('lab') || n.includes('desk')) return '/images/feeds/ai_it_lab.jpg';
+  if (n.includes('fire') || n.includes('extinguisher') || n.includes('safety')) return '/images/feeds/ai_bom_verification.jpg';
+  if (n.includes('solar') || n.includes('electrical') || n.includes('wire') || n.includes('panel')) return '/images/feeds/ai_solar_electrical.jpg';
+  if (n.includes('ups') || n.includes('power') || n.includes('generator') || n.includes('battery')) return '/images/feeds/ai_bom_verification.jpg';
+  if (n.includes('first aid') || n.includes('medical')) return '/images/feeds/ai_bom_verification.jpg';
+  if (n.includes('biometric') || n.includes('punch') || n.includes('aebas')) return '/images/feeds/ai_it_lab.jpg';
+  return '/images/feeds/ai_compliant_cnc.jpg';
 };
 import { CANONICAL_CENTRES } from '@/data/mockCentres';
 import { Box, ArrowLeft, CheckCircle2, AlertTriangle, ShieldCheck, ArrowRight } from 'lucide-react';

@@ -426,11 +426,12 @@ export default function NationalCommandPage() {
                     const isOnline = camIndex <= selectedCentre.cameras_online;
                     const roomNames = ['Instruction Classroom', 'Machinery Workshop', 'IT Software Lab', 'Solar/Electrical Station'];
                     const roomName = roomNames[camIndex - 1];
+                    // Purpose-built AI detection visualizations — clearly shows what is being monitored
                     const roomImages = [
-                      '/images/feeds/classroom_instruction.jpg',
-                      '/images/feeds/sewing_workshop.jpg',
-                      '/images/feeds/computer_lab.jpg',
-                      '/images/feeds/solar_training.jpg'
+                      '/images/feeds/ai_compliant_cnc.jpg',    // Classroom: full detection with attendance match
+                      '/images/feeds/ai_sewing_detection.jpg', // Workshop: sewing machines + trainee bounding boxes
+                      '/images/feeds/ai_it_lab.jpg',           // IT Lab: workstations + AEBAS terminal
+                      '/images/feeds/ai_bom_verification.jpg', // Solar/Electrical: BOM verification split view
                     ];
                     const roomImg = roomImages[camIndex - 1];
 

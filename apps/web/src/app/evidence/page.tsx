@@ -34,18 +34,18 @@ import { TRAINING_CENTRES_28 } from '@/data/trainingCentres28';
 import { useLanguage } from '@/components/ui/LanguageContext';
 const getEvidencePreviewImage = (item: EvidenceRecord): string => {
   if (item.type === 'Lab Photo' || item.fileName.toLowerCase().includes('lab')) {
-    return '/images/feeds/sewing_workshop.jpg';
+    return '/images/feeds/ai_it_lab.jpg';            // IT Lab with workstation + AEBAS detection
   }
   if (item.type === 'Equipment Video' || item.fileName.toLowerCase().includes('video')) {
-    return '/images/feeds/electrical_workshop.jpg';
+    return '/images/feeds/ai_bom_verification.jpg';  // Equipment BOM verification with AI detection
   }
   if (item.type === 'Attendance Log' || item.fileName.toLowerCase().includes('attendance')) {
-    return '/images/feeds/attendance_biometric.jpg';
+    return '/images/feeds/ai_ghost_fraud.jpg';       // Ghost attendance detection screenshot
   }
   if (item.fileName.toLowerCase().includes('computer') || item.fileName.toLowerCase().includes('it')) {
-    return '/images/feeds/computer_lab.jpg';
+    return '/images/feeds/ai_it_lab.jpg';            // IT Lab detection
   }
-  return '/images/feeds/classroom_instruction.jpg';
+  return '/images/feeds/ai_sewing_detection.jpg';    // Default: sewing workshop with full bounding boxes
 };
 
 export default function EvidenceReviewPage() {
