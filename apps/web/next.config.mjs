@@ -11,7 +11,7 @@ if (!basePath && isGithubActions) {
 
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export',
+  ...(isGithubActions ? { output: 'export' } : {}),
   images: {
     unoptimized: true,
   },
