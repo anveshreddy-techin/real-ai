@@ -84,8 +84,20 @@ export default function InfrastructurePage() {
                     <div key={item.item_id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2 text-xs">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                          <div className="w-12 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-slate-900 border border-slate-200 shadow-xs relative">
-                            <img src={getEquipmentPhoto(item.name, item.category)} alt={item.name} className="w-full h-full object-cover" />
+                          <div className={`w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center text-xl shadow-sm border ${
+                            isAvail ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'
+                          }`}>
+                            {item.name.toLowerCase().includes('sewing') || item.name.toLowerCase().includes('machine') ? '🪡' :
+                             item.name.toLowerCase().includes('computer') || item.name.toLowerCase().includes('pc') || item.name.toLowerCase().includes('workstation') ? '🖥️' :
+                             item.name.toLowerCase().includes('fire') || item.name.toLowerCase().includes('extinguisher') ? '🧯' :
+                             item.name.toLowerCase().includes('first aid') || item.name.toLowerCase().includes('medical') ? '🩺' :
+                             item.name.toLowerCase().includes('biometric') || item.name.toLowerCase().includes('aebas') ? '🔐' :
+                             item.name.toLowerCase().includes('ups') || item.name.toLowerCase().includes('power') || item.name.toLowerCase().includes('generator') ? '⚡' :
+                             item.name.toLowerCase().includes('solar') || item.name.toLowerCase().includes('panel') ? '☀️' :
+                             item.name.toLowerCase().includes('bench') || item.name.toLowerCase().includes('table') || item.name.toLowerCase().includes('desk') ? '🪑' :
+                             item.name.toLowerCase().includes('projector') ? '📽️' :
+                             item.name.toLowerCase().includes('tool') || item.name.toLowerCase().includes('kit') ? '🔧' :
+                             item.category === 'Safety' ? '🦺' : '📦'}
                           </div>
                           <div>
                             <p className="font-bold text-slate-900 text-sm leading-tight">{item.name}</p>

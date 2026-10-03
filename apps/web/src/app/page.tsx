@@ -446,13 +446,16 @@ export default function NationalCommandPage() {
                         {/* Real Camera Image Feed */}
                         {isOnline && (
                           <>
+                            {/* Show the AI detection visualization fully — this IS the camera view */}
                             <img
                               src={roomImg}
                               alt={roomName}
-                              className="absolute inset-0 w-full h-full object-cover filter brightness-[0.55] contrast-110 saturate-95 group-hover:scale-105 transition-transform duration-700"
+                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/70"></div>
-                            <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+                            {/* Light top bar overlay only for camera label readability */}
+                            <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-black/70 to-transparent pointer-events-none"></div>
+                            {/* Light bottom overlay for stats readability */}
+                            <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
                           </>
                         )}
 
@@ -468,28 +471,17 @@ export default function NationalCommandPage() {
                         </div>
 
                         {isOnline ? (
-                          <div className="relative z-10 my-auto text-center py-2">
-                            <div className="inline-block px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md border border-amber-400/50 shadow-lg">
-                              <p className="text-xs sm:text-sm text-amber-300 font-extrabold font-mono flex items-center justify-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                                <span>Occupancy: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} Trainees</span>
-                              </p>
-                              {showDetections && (
-                                <p className="text-[10px] text-emerald-400 font-mono mt-0.5">
-                                  Centroid X,Y Extracted • 0 Faces Stored
-                                </p>
-                              )}
-                            </div>
-                          </div>
+                          // No occupancy overlay on top — the image shows everything already
+                          <div className="relative z-10 my-auto" />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center bg-slate-950 text-slate-500 text-xs">
                             Camera Signal Interrupted
                           </div>
                         )}
 
-                        <div className="flex items-center justify-between text-xs text-slate-400 z-10 border-t border-slate-800/80 pt-1.5">
-                          <span>Mode: {selectedCentre.bandwidth_mode === 'LOW' ? '1 frame/min' : '5 fps stream'}</span>
-                          <span className="font-mono">Latency: 48ms</span>
+                        <div className="flex items-center justify-between text-xs text-white/80 z-10 border-t border-white/10 pt-1.5">
+                          <span className="bg-black/60 px-1.5 py-0.5 rounded text-[10px]">Mode: {selectedCentre.bandwidth_mode === 'LOW' ? '1 frame/min' : '5 fps stream'}</span>
+                          <span className="font-mono bg-black/60 px-1.5 py-0.5 rounded text-[10px]">Latency: 48ms</span>
                         </div>
                       </div>
                     );
@@ -497,6 +489,8 @@ export default function NationalCommandPage() {
                 </div>
               </div>
             )}
+
+
 
             {centreViewTab === 'ROSTER' && (
               <div className="space-y-3">

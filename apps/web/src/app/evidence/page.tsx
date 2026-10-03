@@ -391,8 +391,18 @@ export default function EvidenceReviewPage() {
                         </td>
                         <td className="py-2.5 px-3">
                           <div className="flex items-center space-x-2.5">
-                            <div className="w-10 h-7 rounded-lg overflow-hidden flex-shrink-0 bg-slate-900 border border-slate-200 shadow-xs relative">
-                              <img src={getEvidencePreviewImage(item)} alt={item.type} className="w-full h-full object-cover" />
+                            <div className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-base shadow-sm border ${
+                              item.status === 'Valid' ? 'bg-emerald-50 border-emerald-200' :
+                              item.status === 'Issue' ? 'bg-rose-50 border-rose-200' :
+                              'bg-amber-50 border-amber-200'
+                            }`}>
+                              {item.type === 'Lab Photo' ? '📷' :
+                               item.type === 'Equipment Video' ? '🎥' :
+                               item.type === 'Attendance Log' ? '📋' :
+                               item.type === 'Biometric Export' ? '🔐' :
+                               item.type === 'Infrastructure Report' ? '🏗️' :
+                               item.type === 'AI Detection Frame' ? '🤖' :
+                               '📄'}
                             </div>
                             <div>
                               <div className="font-bold text-slate-900 leading-tight">{item.type}</div>

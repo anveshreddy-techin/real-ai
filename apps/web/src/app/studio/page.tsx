@@ -552,20 +552,13 @@ export default function LiveStudioPage() {
               </div>
             </div>
 
-            {/* Real Live Frame Background with Real Vocational Workshop & Classroom Photos */}
+            {/* Live Detection Canvas — dark background, AI simulation is the only visual */}
             <div className="absolute inset-0 bg-slate-950 overflow-hidden select-none">
-              {/* Real Classroom/Workshop Camera Image */}
-              <img
-                src={getScenarioImage(scenario.id, scenario.trade)}
-                alt={scenario.name}
-                className="absolute inset-0 w-full h-full object-cover filter brightness-[0.55] contrast-120 saturate-105 transition-all duration-700"
-              />
+              {/* Floor Grid — suggests room/workspace layout */}
+              <div className="absolute inset-0 opacity-[0.12] bg-[linear-gradient(to_right,#00f0ff_1px,transparent_1px),linear-gradient(to_bottom,#00f0ff_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none"></div>
 
-              {/* Realistic CCTV Lens Vignette & Scan Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/60 pointer-events-none"></div>
-
-              {/* Workshop Layout Grid Lines */}
-              <div className="absolute inset-0 opacity-15 bg-[linear-gradient(to_right,#00f0ff_1px,transparent_1px),linear-gradient(to_bottom,#00f0ff_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none"></div>
+              {/* Corner vignette for CCTV lens feel */}
+              <div className="absolute inset-0 pointer-events-none" style={{background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%)'}}></div>
 
               {/* Scanning Laser Line Animation */}
               {isScanning && (

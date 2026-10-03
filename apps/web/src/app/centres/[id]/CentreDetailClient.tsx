@@ -407,13 +407,29 @@ export default function CentreDetailClient({ id }: { id: string }) {
               <tbody className="divide-y divide-slate-100">
                 {infraItems.map((item, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3 px-4 font-bold text-slate-900 flex items-center space-x-3">
-                      <div className="w-12 h-9 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-900 shadow-xs relative">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                      </div>
-                      <div>
-                        <span className="block text-slate-900 leading-tight">{item.name}</span>
-                        <span className="text-[10px] text-slate-400 font-normal font-mono">BOM Verification Verified</span>
+                    <td className="py-3 px-4 font-bold text-slate-900">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center text-lg shadow-sm border ${
+                          item.status === 'PASS' ? 'bg-emerald-50 border-emerald-200' :
+                          item.status === 'WARNING' ? 'bg-rose-50 border-rose-200' :
+                          'bg-amber-50 border-amber-200'
+                        }`}>
+                          {item.name.toLowerCase().includes('sewing') || item.name.toLowerCase().includes('machine') ? '🪡' :
+                           item.name.toLowerCase().includes('computer') || item.name.toLowerCase().includes('pc') || item.name.toLowerCase().includes('workstation') ? '🖥️' :
+                           item.name.toLowerCase().includes('fire') || item.name.toLowerCase().includes('extinguisher') ? '🧯' :
+                           item.name.toLowerCase().includes('first aid') || item.name.toLowerCase().includes('medical') ? '🩺' :
+                           item.name.toLowerCase().includes('biometric') || item.name.toLowerCase().includes('aebas') ? '🔐' :
+                           item.name.toLowerCase().includes('ups') || item.name.toLowerCase().includes('power') || item.name.toLowerCase().includes('generator') ? '⚡' :
+                           item.name.toLowerCase().includes('solar') || item.name.toLowerCase().includes('panel') ? '☀️' :
+                           item.name.toLowerCase().includes('bench') || item.name.toLowerCase().includes('table') || item.name.toLowerCase().includes('desk') ? '🪑' :
+                           item.name.toLowerCase().includes('projector') || item.name.toLowerCase().includes('display') ? '📽️' :
+                           item.name.toLowerCase().includes('tool') || item.name.toLowerCase().includes('kit') ? '🔧' :
+                           '📦'}
+                        </div>
+                        <div>
+                          <span className="block text-slate-900 leading-tight">{item.name}</span>
+                          <span className="text-[10px] text-slate-400 font-normal font-mono">AI-Verified BOM Item</span>
+                        </div>
                       </div>
                     </td>
                     <td className="py-3.5 px-4 text-slate-600">{item.spec}</td>
