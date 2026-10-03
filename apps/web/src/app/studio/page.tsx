@@ -552,17 +552,39 @@ export default function LiveStudioPage() {
               </div>
             </div>
 
-            {/* Live Detection Canvas — dark background, AI simulation is the only visual */}
+            {/* Live Detection Canvas — real CCTV room footage + AI simulation on top */}
             <div className="absolute inset-0 bg-slate-950 overflow-hidden select-none">
-              {/* Floor Grid — suggests room/workspace layout */}
-              <div className="absolute inset-0 opacity-[0.12] bg-[linear-gradient(to_right,#00f0ff_1px,transparent_1px),linear-gradient(to_bottom,#00f0ff_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none"></div>
+              {/* Real CCTV room background — switches per scenario */}
+              <img
+                src={
+                  scenario.id === 'gkp-ghost'
+                    ? '/images/feeds/room_ghost_cctv.jpg'      // Ghost: sewing room with empty seats
+                    : scenario.id === 'ngp-normal'
+                    ? '/images/feeds/room_cnc_cctv.jpg'        // Compliant: full CNC workshop
+                    : scenario.id === 'jdh-solar'
+                    ? '/images/feeds/room_solar_cctv.jpg'      // Solar: electrical/solar lab
+                    : scenario.id === 'mld-equipment'
+                    ? '/images/feeds/room_it_cctv.jpg'         // IT Lab: computer workstations
+                    : '/images/feeds/room_sewing_cctv.jpg'     // Default: sewing workshop
+                }
+                alt="CCTV Live Feed"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ filter: 'brightness(0.42) contrast(1.1) saturate(0.85)' }}
+              />
+
+              {/* Subtle CCTV scan-line texture overlay */}
+              <div className="absolute inset-0 pointer-events-none opacity-20"
+                style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)' }}
+              />
 
               {/* Corner vignette for CCTV lens feel */}
-              <div className="absolute inset-0 pointer-events-none" style={{background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%)'}}></div>
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%)' }}
+              />
 
               {/* Scanning Laser Line Animation */}
               {isScanning && (
-                <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee] animate-pulse top-1/2 pointer-events-none"></div>
+                <div className="absolute inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] animate-pulse top-1/2 pointer-events-none opacity-70"></div>
               )}
 
               {/* Rendered Computer Vision Detections with Gender and Trainer distinction */}
