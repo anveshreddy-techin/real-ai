@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { CANONICAL_CENTRES, Centre } from '@/data/mockCentres';
+import { useLanguage } from '@/components/ui/LanguageContext';
 import { 
   Users, 
   AlertTriangle, 
@@ -20,6 +21,7 @@ import {
 } from 'lucide-react';
 
 export default function AttendanceAuditPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCentreId, setExpandedCentreId] = useState<string>('PMKVY-UP-GKP-0042');
 
@@ -49,15 +51,15 @@ export default function AttendanceAuditPage() {
       {/* Header */}
       <div>
         <Link href="/" className="inline-flex items-center text-xs font-semibold text-blue-700 hover:text-blue-800 mb-2">
-          <ArrowLeft className="w-3.5 h-3.5 mr-1" /> Back to Command Center
+          <ArrowLeft className="w-3.5 h-3.5 mr-1" /> {t("back_to_command")}
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
-              National Attendance Integrity Audit
+              {t("att_title")}
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              बायोमेट्रिक उपस्थिति बनाम वास्तविक कक्षा निरीक्षण — Cross-referencing reported biometric register submissions vs. AI optical presence detection.
+              {t("att_desc")}
             </p>
           </div>
 
@@ -65,7 +67,7 @@ export default function AttendanceAuditPage() {
             <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
             <input
               type="text"
-              placeholder="Search centre, state, or ID..."
+              placeholder={t("search_placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 pr-4 py-2 border border-slate-200 rounded-xl text-xs w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -77,25 +79,25 @@ export default function AttendanceAuditPage() {
       {/* Aggregate KPI Summary Banner */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <span className="text-xs font-medium text-slate-500">Official Roster Trainees</span>
+          <span className="text-xs font-medium text-slate-500">{t("att_registered")}</span>
           <p className="text-2xl font-bold text-slate-900 mt-1">{totalRegistered} trainees</p>
           <p className="text-xs text-slate-400 mt-0.5">Submitted via gate register</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-blue-200 bg-blue-50/20 shadow-sm">
-          <span className="text-xs font-medium text-blue-800">Physical Optical Count</span>
+          <span className="text-xs font-medium text-blue-800">{t("att_detected")}</span>
           <p className="text-2xl font-bold text-blue-700 mt-1">{totalDetected} trainees</p>
           <p className="text-xs text-blue-700 mt-0.5">Verified inside workshop</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm">
-          <span className="text-xs font-semibold text-rose-700">Total Ghost Deficit</span>
+          <span className="text-xs font-semibold text-rose-700">{t("att_ghosts")}</span>
           <p className="text-2xl font-bold text-rose-600 mt-1">-{totalInflation} trainees</p>
           <p className="text-xs text-rose-700 mt-0.5">Physical absence delta</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm">
-          <span className="text-xs font-semibold text-amber-700">National Inflation Rate</span>
+          <span className="text-xs font-semibold text-amber-700">{t("att_discrepancy_rate")}</span>
           <p className="text-2xl font-bold text-amber-600 mt-1">{overallDiscrepancyPct}%</p>
           <p className="text-xs text-amber-700 mt-0.5">Average ghost inflation</p>
         </div>
@@ -109,10 +111,10 @@ export default function AttendanceAuditPage() {
           </div>
           <div>
             <h4 className="font-bold text-slate-900 text-sm">
-              आसान गाइड: हाज़िरी की जाँच कैसे होती है? (How Attendance Audit Works)
+              {t("easy_guide_title")}
             </h4>
             <p className="text-slate-600 text-xs mt-0.5">
-              बायोमेट्रिक मशीन पर फिंगरप्रिंट लगाने के बाद, AI कैमरा क्लास में बैठे छात्रों की गिनती करता है। यदि कोई छात्र फिंगरप्रिंट लगाकर क्लास छोड़ देता है, तो सिस्टम तुरंत लाल निशान (⚠️) दिखाता है।
+              {t("easy_guide_desc")}
             </p>
           </div>
         </div>
@@ -121,7 +123,7 @@ export default function AttendanceAuditPage() {
           className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-colors flex-shrink-0 shadow-sm"
         >
           <Camera className="w-3.5 h-3.5" />
-          <span>Launch Live Studio</span>
+          <span>{t("cmd_launch_studio")}</span>
         </Link>
       </div>
 
@@ -136,14 +138,14 @@ export default function AttendanceAuditPage() {
           <table className="min-w-full text-xs text-left">
             <thead className="bg-slate-50 text-xs font-semibold text-slate-600 uppercase border-b border-slate-200">
               <tr>
-                <th className="py-3.5 px-4">Centre & Trade</th>
-                <th className="py-3.5 px-4">Certified Trainer</th>
+                <th className="py-3.5 px-4">{t("col_centre")}</th>
+                <th className="py-3.5 px-4">{t("col_trainer")}</th>
                 <th className="py-3.5 px-4">Male / Female</th>
-                <th className="py-3.5 px-4">Submitted Reg.</th>
-                <th className="py-3.5 px-4">AI Optical Count</th>
-                <th className="py-3.5 px-4">Discrepancy Delta</th>
-                <th className="py-3.5 px-4">Audit Status</th>
-                <th className="py-3.5 px-4">Action</th>
+                <th className="py-3.5 px-4">{t("col_aebas")}</th>
+                <th className="py-3.5 px-4">{t("col_camera")}</th>
+                <th className="py-3.5 px-4">{t("col_mismatch")}</th>
+                <th className="py-3.5 px-4">{t("col_status")}</th>
+                <th className="py-3.5 px-4">{t("col_action")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">

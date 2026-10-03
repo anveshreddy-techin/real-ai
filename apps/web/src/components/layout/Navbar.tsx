@@ -36,6 +36,7 @@ export const Navbar = () => {
   // Primary Operational Navigation (Core Workflows)
   const primaryNav = [
     { key: 'command_center', defaultName: 'Command Center', href: '/', icon: LayoutDashboard },
+    { key: 'dashboard', defaultName: 'Dashboard', href: '/dashboard', icon: Activity },
     { key: 'live_studio', defaultName: 'Live Studio', href: '/studio', icon: Camera },
     { key: 'attendance_audit', defaultName: 'Attendance Audit', href: '/attendance', icon: Users },
     { key: 'infra_bom', defaultName: 'Infrastructure (BOM)', href: '/infrastructure', icon: Box },
@@ -44,11 +45,14 @@ export const Navbar = () => {
 
   // Secondary / Governance & Accuracy Hub
   const secondaryNav = [
-    { key: 'centres', defaultName: 'Empaneled Centres', desc: '5 Active institution feeds', href: '/centres', icon: Building2 },
+    { key: 'evidence_review', defaultName: 'Evidence Review', desc: '48 items AI & human validation', href: '/evidence', icon: Layers },
+    { key: 'corrective_queue', defaultName: 'Corrective Action Queue', desc: '12 remediation tickets', href: '/review-queue', icon: AlertTriangle },
+    { key: 'centres', defaultName: 'Empaneled Centres (28)', desc: '28 Active institution feeds', href: '/centres', icon: Building2 },
     { key: 'datasets_hub', defaultName: 'Real Datasets Hub', desc: 'AEBAS logs & BOM specs', href: '/datasets', icon: Database },
     { key: 'pipeline_benchmarks', defaultName: 'AI Pipeline & Benchmarks', desc: '1,200 Benchmark frames', href: '/pipeline', icon: Cpu },
     { key: 'why_skillguard', defaultName: 'Why Unique?', desc: 'Fund leakage calculator', href: '/uniqueness', icon: Sparkles, highlight: true },
     { key: 'privacy_note', defaultName: 'Privacy Note (DPDP)', desc: 'Section 6/8/9 compliance', href: '/privacy', icon: ShieldCheck },
+    { key: 'sign_in', defaultName: 'Portal Sign In', desc: 'Demo roles & credential login', href: '/login', icon: Users },
   ];
 
   const isSecondaryActive = secondaryNav.some(item => pathname === item.href);
@@ -205,8 +209,16 @@ export const Navbar = () => {
             </div>
           </nav>
 
-          {/* Right Action: Launch Studio Quick CTA & Mobile Hamburger */}
+          {/* Right Action: Launch Studio Quick CTA, Sign In & Mobile Hamburger */}
           <div className="flex items-center space-x-2.5">
+            <Link
+              href="/login"
+              className="hidden md:inline-flex items-center space-x-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/80 font-semibold rounded-xl text-xs transition-all"
+            >
+              <Users className="w-3.5 h-3.5 text-amber-400" />
+              <span>Sign In</span>
+            </Link>
+
             <Link
               href="/studio"
               className="hidden sm:inline-flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl text-xs transition-all shadow-md shadow-blue-900/30"

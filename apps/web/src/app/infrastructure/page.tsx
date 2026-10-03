@@ -2,28 +2,30 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/components/ui/LanguageContext';
 import { CANONICAL_CENTRES } from '@/data/mockCentres';
 import { Box, ArrowLeft, CheckCircle2, AlertTriangle, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function InfrastructurePage() {
+  const { t } = useLanguage();
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
       {/* Header */}
       <div>
         <Link href="/" className="inline-flex items-center text-xs font-semibold text-blue-700 hover:text-blue-800 mb-2">
-          <ArrowLeft className="w-3.5 h-3.5 mr-1" /> Back to Command Center
+          <ArrowLeft className="w-3.5 h-3.5 mr-1" /> {t("back_to_command")}
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Sanctioned Equipment & Infrastructure Compliance</h1>
+            <h1 className="text-2xl font-bold text-slate-900">{t("infra_title")}</h1>
             <p className="text-sm text-slate-500 mt-0.5">
-              Continuous computer vision verification of workbenches, machinery, IT hardware, and safety gear against scheme BOM.
+              {t("infra_desc")}
             </p>
           </div>
 
           <div className="bg-amber-50 border border-amber-200 px-3.5 py-1.5 rounded-xl text-xs text-amber-900 font-semibold flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-amber-600" />
-            <span>Stops "Borrow-for-Inspection" Equipment Fraud</span>
+            <span>{t("infra_badge")}</span>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { CANONICAL_CENTRES, Centre, TraineeRecord } from '@/data/mockCentres';
 import { AttendanceTimelineChart } from '@/components/charts/AttendanceTimelineChart';
 import { SeatingHeatmap } from '@/components/ui/SeatingHeatmap';
 import { TradeBatchRoster } from '@/components/ui/TradeBatchRoster';
+import { useLanguage } from '@/components/ui/LanguageContext';
 import { 
   Building2, 
   Users, 
@@ -28,10 +29,12 @@ import {
   Download,
   FileCheck2,
   HelpCircle,
-  Box
+  Box,
+  Activity
 } from 'lucide-react';
 
 export default function NationalCommandPage() {
+  const { t } = useLanguage();
   const [selectedCentre, setSelectedCentre] = useState<Centre>(CANONICAL_CENTRES[0]);
   const [activeCamIndex, setActiveCamIndex] = useState<number>(1);
   const [showDetections, setShowDetections] = useState<boolean>(true);
@@ -86,42 +89,49 @@ export default function NationalCommandPage() {
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center space-x-1.5 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
                 <Zap className="w-3.5 h-3.5 text-amber-400" />
-                <span>SIH 26245 — Real-World AI Monitoring of Training Centres</span>
+                <span>{t("sih_header_tag")}</span>
               </span>
               <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/60 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Active Continuous Audit</span>
+                <span>{t("active_continuous_audit")}</span>
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-              National Training Centre Compliance Command Center
+              {t("cmd_title")}
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Official MSDE & NSDC skilling compliance monitoring engine. Automatically cross-references door AEBAS biometric entries with in-room AI headcount to eliminate ghost enrollment and temporary equipment borrowing.
+              {t("cmd_desc")}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Link
+              href="/dashboard"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md shadow-amber-500/20"
+            >
+              <Activity className="w-4 h-4" />
+              <span>National Dashboard (28)</span>
+            </Link>
+            <Link
               href="/studio"
               className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-md shadow-blue-900/40"
             >
               <Camera className="w-4 h-4" />
-              <span>Launch Live Studio</span>
+              <span>{t("cmd_launch_studio")}</span>
             </Link>
             <Link
               href="/datasets"
               className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-xl text-xs transition-colors"
             >
               <Database className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Datasets Hub</span>
+              <span>{t("cmd_datasets_hub")}</span>
             </Link>
             <Link
               href="/uniqueness"
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-xl text-xs transition-colors shadow-sm"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition-colors"
             >
-              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span>Why Unique?</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>{t("cmd_why_unique")}</span>
             </Link>
           </div>
         </div>
@@ -130,11 +140,11 @@ export default function NationalCommandPage() {
         <div className="pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-300 gap-2">
           <div className="flex items-center space-x-2">
             <ShieldCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
-            <span className="font-semibold text-slate-400">Jurisdiction Scope:</span>
-            <span className="text-white font-medium">5 Empaneled Centres Across 5 Indian States (UP, RJ, WB, MH, HP)</span>
+            <span className="font-semibold text-slate-400">{t("jurisdiction_scope")}:</span>
+            <span className="text-white font-medium">{t("jurisdiction_val")}</span>
           </div>
           <span className="font-mono text-[11px] text-slate-400">
-            DPDP Act 2023 Compliant • Aggregate Centroids Only
+            {t("dpdp_compliance_banner")}
           </span>
         </div>
       </div>
@@ -143,47 +153,47 @@ export default function NationalCommandPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-600">Empaneled Centres</span>
+            <span className="text-xs font-semibold text-slate-600">{t("kpi_empaneled_centres")}</span>
             <Building2 className="w-4 h-4 text-blue-600" />
           </div>
           <p className="text-2xl font-bold text-slate-900 mt-2">{totalCentres}</p>
-          <p className="text-xs text-slate-500 mt-1">Real training partners</p>
+          <p className="text-xs text-slate-500 mt-1">{t("kpi_empaneled_sub")}</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-rose-200 bg-rose-50/20 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-rose-700">Critical Flags</span>
+            <span className="text-xs font-semibold text-rose-700">{t("kpi_critical_flags")}</span>
             <AlertTriangle className="w-4 h-4 text-rose-600" />
           </div>
           <p className="text-2xl font-bold text-rose-600 mt-2">{criticalCentres}</p>
-          <p className="text-xs text-rose-700 mt-1">Severe ghost attendance</p>
+          <p className="text-xs text-rose-700 mt-1">{t("kpi_critical_sub")}</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-amber-200 bg-amber-50/20 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-amber-700">Elevated Risk</span>
+            <span className="text-xs font-semibold text-amber-700">{t("kpi_elevated_risk")}</span>
             <ShieldAlert className="w-4 h-4 text-amber-600" />
           </div>
           <p className="text-2xl font-bold text-amber-600 mt-2">{elevatedCentres}</p>
-          <p className="text-xs text-amber-700 mt-1">Equipment deficit queue</p>
+          <p className="text-xs text-amber-700 mt-1">{t("kpi_elevated_sub")}</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-emerald-700">Fully Compliant</span>
+            <span className="text-xs font-semibold text-emerald-700">{t("kpi_fully_compliant")}</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           </div>
           <p className="text-2xl font-bold text-emerald-600 mt-2">{compliantCentres}</p>
-          <p className="text-xs text-emerald-700 mt-1">Roster & BOM verified</p>
+          <p className="text-xs text-emerald-700 mt-1">{t("kpi_fully_sub")}</p>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm col-span-2 sm:col-span-1 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-600">National Index</span>
+            <span className="text-xs font-semibold text-slate-600">{t("kpi_national_index")}</span>
             <Layers className="w-4 h-4 text-indigo-600" />
           </div>
           <p className="text-2xl font-bold text-indigo-600 mt-2">{avgCompliance}%</p>
-          <p className="text-xs text-slate-500 mt-1">Weighted compliance</p>
+          <p className="text-xs text-slate-500 mt-1">{t("kpi_national_sub")}</p>
         </div>
       </div>
 
@@ -192,13 +202,13 @@ export default function NationalCommandPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
             <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
-              Real-World Implementation Walkthrough
+              {t("workflow_title")}
             </span>
             <h2 className="text-base font-bold text-slate-900 mt-0.5">
-              How SkillGuard AI Solves SIH 26245 in 5 Automated Steps
+              {t("workflow_subtitle")}
             </h2>
           </div>
-          <span className="text-xs text-slate-500">Click any step to inspect real-world logic</span>
+          <span className="text-xs text-slate-500">{t("workflow_hint")}</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
@@ -246,11 +256,11 @@ export default function NationalCommandPage() {
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h2 className="font-bold text-slate-900 text-sm">Empaneled Training Centres</h2>
-                <p className="text-xs text-slate-500">Real institutions monitored under SIH 26245</p>
+                <h2 className="font-bold text-slate-900 text-sm">{t("centres_list_title")}</h2>
+                <p className="text-xs text-slate-500">{t("centres_list_sub")}</p>
               </div>
               <span className="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-semibold">
-                5 Active Feeds
+                {t("active_feeds")}
               </span>
             </div>
 
@@ -290,10 +300,10 @@ export default function NationalCommandPage() {
                     <div className="mt-3 flex items-center justify-between text-xs text-slate-600 pt-2 border-t border-slate-100">
                       <div className="flex items-center space-x-1.5">
                         <Users className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Present: <strong className="text-slate-800">{centre.attendance.ai_detected_headcount}</strong> / {centre.attendance.submitted_attendance}</span>
+                        <span>{t("present")}: <strong className="text-slate-800">{centre.attendance.ai_detected_headcount}</strong> / {centre.attendance.submitted_attendance}</span>
                       </div>
                       <div className="font-bold text-slate-900 text-xs">
-                        Score: <span className={isCritical ? 'text-rose-600' : isElevated ? 'text-amber-600' : 'text-emerald-600'}>{centre.compliance_score}%</span>
+                        {t("score")}: <span className={isCritical ? 'text-rose-600' : isElevated ? 'text-amber-600' : 'text-emerald-600'}>{centre.compliance_score}%</span>
                       </div>
                     </div>
                   </button>
@@ -336,7 +346,7 @@ export default function NationalCommandPage() {
                 }`}>
                   {selectedCentre.compliance_score}%
                 </p>
-                <span className="text-xs text-slate-500 font-medium">Formula: 50% Att + 35% BOM + 15% Temp</span>
+                <span className="text-xs text-slate-500 font-medium">{t("compliance_formula")}</span>
               </div>
             </div>
 
@@ -365,7 +375,7 @@ export default function NationalCommandPage() {
                 }`}
               >
                 <Camera className="w-4 h-4" />
-                <span>Live Video Feeds ({selectedCentre.cameras_online}/{selectedCentre.total_cameras})</span>
+                <span>{t("tab_cameras")} ({selectedCentre.cameras_online}/{selectedCentre.total_cameras})</span>
               </button>
 
               <button
@@ -377,7 +387,7 @@ export default function NationalCommandPage() {
                 }`}
               >
                 <Users className="w-4 h-4" />
-                <span>Official Trainee AEBAS Roster ({selectedCentre.trainees.length} Records)</span>
+                <span>{t("tab_roster")} ({selectedCentre.trainees.length})</span>
               </button>
 
               <button
@@ -389,7 +399,7 @@ export default function NationalCommandPage() {
                 }`}
               >
                 <Box className="w-4 h-4" />
-                <span>Sanctioned BOM Checklist ({selectedCentre.infrastructure.length} Items)</span>
+                <span>{t("tab_bom")} ({selectedCentre.infrastructure.length})</span>
               </button>
             </div>
 

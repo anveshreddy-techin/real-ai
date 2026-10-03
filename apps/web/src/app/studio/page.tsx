@@ -25,6 +25,7 @@ import {
   FileCheck2
 } from 'lucide-react';
 import { CANONICAL_CENTRES } from '@/data/mockCentres';
+import { useLanguage } from '@/components/ui/LanguageContext';
 
 interface DetectionBox {
   id: string;
@@ -315,6 +316,7 @@ const DEMO_SCENARIOS: Scenario[] = [
 ];
 
 export default function LiveStudioPage() {
+  const { t } = useLanguage();
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>('gkp-ghost');
   const [confidenceThreshold, setConfidenceThreshold] = useState<number>(0.50);
   const [dpdpMode, setDpdpMode] = useState<boolean>(true); // DPDP Act 2023: Centroids only
@@ -401,7 +403,7 @@ export default function LiveStudioPage() {
       {/* Header */}
       <div>
         <Link href="/" className="inline-flex items-center text-xs font-semibold text-blue-700 hover:text-blue-800 mb-2">
-          <ArrowLeft className="w-3.5 h-3.5 mr-1" /> Back to Command Center
+          <ArrowLeft className="w-3.5 h-3.5 mr-1" /> {t("back_to_command")}
         </Link>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
@@ -411,14 +413,14 @@ export default function LiveStudioPage() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
-                  Live Video Analytics & Compliance Studio
+                  {t("studio_title")}
                 </h1>
                 <span className="px-2.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-bold rounded-full border border-blue-300">
                   SIH 26245 Real-World Prototype
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-                Inspect live video feeds, differentiate male 👨 and female 👩 candidates, verify certified trainers 👩‍🏫, and audit physical presence against AEBAS portal records.
+                {t("studio_desc")}
               </p>
             </div>
           </div>
@@ -437,7 +439,7 @@ export default function LiveStudioPage() {
               className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Download Form 4A Notice</span>
+              <span>{t("download_form4a")}</span>
             </button>
           </div>
         </div>
@@ -447,7 +449,7 @@ export default function LiveStudioPage() {
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-            Select Training Centre Video Footage / Real-World Scenario
+            {t("select_scenario")}
           </span>
           <span className="text-xs text-slate-400">Click any scenario to load video telemetry</span>
         </div>
@@ -711,7 +713,7 @@ export default function LiveStudioPage() {
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-slate-900 text-sm">{scenario.trainer.name}</span>
                     <span className="text-[10px] px-2 py-0.5 bg-amber-100 text-amber-900 font-bold rounded-full">
-                      Certified Master Instructor
+                      {t("trainer_in_charge")}
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 font-medium">{scenario.trainer.qualification}</p>
@@ -721,7 +723,7 @@ export default function LiveStudioPage() {
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
                   <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  कक्षा में मौजूद (Present in Room)
+                  {t("present_in_room")}
                 </span>
               </div>
             </div>
@@ -744,7 +746,7 @@ export default function LiveStudioPage() {
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                       trainee.inRoom ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
                     }`}>
-                      {trainee.inRoom ? '✅ Present' : '❌ Ghost'}
+                      {trainee.inRoom ? (`✅ ${t("present")}`) : (`❌ ${t("absent_ghost")}`)}
                     </span>
                   </div>
 
@@ -754,7 +756,7 @@ export default function LiveStudioPage() {
                   </div>
 
                   <div className="mt-2 pt-1 border-t border-slate-200/50 flex items-center justify-between text-[10px] text-slate-500">
-                    <span>{trainee.gender === 'F' ? '👩 महिला' : '👨 पुरुष'}</span>
+                    <span>{trainee.gender === 'F' ? (`👩 ${t("female")}`) : (`👨 ${t("male")}`)}</span>
                     <span className="font-mono">{trainee.punchTime} AM</span>
                   </div>
                 </div>
@@ -766,10 +768,10 @@ export default function LiveStudioPage() {
               <HelpCircle className="w-4 h-4 text-blue-700 flex-shrink-0 mt-0.5" />
               <div className="space-y-0.5">
                 <p className="font-bold text-blue-900 text-xs">
-                  सरल भाषा में स्पष्टीकरण (Simple Guide for Students and Visitors):
+                  {t("easy_guide_title")}
                 </p>
                 <p className="text-[11px] leading-relaxed text-blue-800">
-                  हर छात्र के कार्ड पर हरा निशान (✅) का मतलब है कि वे कैमरे के सामने कक्षा में उपस्थित हैं। लाल निशान (❌) का मतलब है कि पोर्टल पर हाज़िरी दर्ज़ हुई थी लेकिन वे क्लास में मौजूद नहीं हैं।
+                  {t("easy_guide_desc")}
                 </p>
               </div>
             </div>
