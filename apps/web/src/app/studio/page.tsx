@@ -315,6 +315,23 @@ const DEMO_SCENARIOS: Scenario[] = [
   }
 ];
 
+const getScenarioImage = (scenarioId: string, trade: string = ''): string => {
+  const t = trade.toLowerCase();
+  if (scenarioId === 'gkp-ghost' || t.includes('apparel') || t.includes('sewing')) {
+    return '/images/feeds/sewing_workshop.jpg';
+  }
+  if (scenarioId === 'mld-equipment' || t.includes('data entry') || t.includes('software') || t.includes('it')) {
+    return '/images/feeds/computer_lab.jpg';
+  }
+  if (scenarioId === 'jdh-solar' || t.includes('solar') || t.includes('electrical') || t.includes('electrician')) {
+    return '/images/feeds/solar_training.jpg';
+  }
+  if (scenarioId === 'ngp-normal' || t.includes('cnc') || t.includes('lathe') || t.includes('machinery')) {
+    return '/images/feeds/electrical_workshop.jpg';
+  }
+  return '/images/feeds/classroom_instruction.jpg';
+};
+
 export default function LiveStudioPage() {
   const { t } = useLanguage();
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>('gkp-ghost');
@@ -458,26 +475,46 @@ export default function LiveStudioPage() {
           {DEMO_SCENARIOS.map((sc) => {
             const isSelected = sc.id === selectedScenarioId;
             const isCritical = sc.fraudType.includes('CRITICAL') || sc.fraudType.includes('TEMPORAL');
+            const bgImg = getScenarioImage(sc.id, sc.trade);
+
             return (
               <button
                 key={sc.id}
                 onClick={() => setSelectedScenarioId(sc.id)}
-                className={`text-left p-3 rounded-xl border transition-all ${
+                className={`text-left p-2.5 rounded-2xl border transition-all overflow-hidden flex flex-col justify-between group ${
                   isSelected 
-                    ? 'border-blue-600 bg-blue-50/70 shadow-sm ring-1 ring-blue-500' 
+                    ? 'border-blue-600 bg-blue-50/80 shadow-md ring-2 ring-blue-500/40' 
                     : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                 }`}
               >
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
-                  isCritical ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'
-                }`}>
-                  {sc.fraudType.replace(/_/g, ' ')}
-                </span>
-                <h3 className="font-bold text-xs text-slate-900 mt-2 line-clamp-1">{sc.name}</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5 font-mono">{sc.centreId}</p>
-                <div className="mt-2 text-[11px] text-slate-600 flex justify-between">
-                  <span>Reg: <strong>{sc.submittedAttendance}</strong></span>
-                  <span>AI: <strong>{sc.expectedPersons}</strong></span>
+                {/* Real Photo Thumbnail */}
+                <div className="relative h-20 w-full rounded-xl overflow-hidden mb-2 bg-slate-900">
+                  <img
+                    src={bgImg}
+                    alt={sc.name}
+                    className="w-full h-full object-cover filter brightness-85 group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+                  <div className="absolute top-1.5 left-1.5">
+                    <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full uppercase shadow-sm ${
+                      isCritical ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'
+                    }`}>
+                      {sc.fraudType.replace(/_/g, ' ')}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-1 right-1.5 bg-black/80 backdrop-blur-sm text-[9px] font-mono text-emerald-400 font-bold px-1.5 py-0.2 rounded border border-emerald-500/30">
+                    CAM-01
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-bold text-xs text-slate-900 line-clamp-1">{sc.name}</h3>
+                  <p className="text-[11px] text-slate-500 mt-0.5 font-mono">{sc.centreId}</p>
+                </div>
+
+                <div className="mt-2 pt-1.5 border-t border-slate-200/80 text-[11px] text-slate-600 flex justify-between">
+                  <span>Reg: <strong className="text-slate-900">{sc.submittedAttendance}</strong></span>
+                  <span>AI: <strong className={isCritical ? 'text-rose-600' : 'text-emerald-700'}>{sc.expectedPersons}</strong></span>
                 </div>
               </button>
             );
@@ -489,24 +526,25 @@ export default function LiveStudioPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Interactive Video Canvas Viewport (2 Cols) */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-xl relative aspect-video flex flex-col justify-between p-3 sm:p-4">
+          <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl relative aspect-video flex flex-col justify-between p-3 sm:p-4">
             {/* Viewport Top Bar */}
             <div className="flex items-center justify-between text-xs z-20">
               <div className="flex items-center space-x-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="font-mono text-white/90 bg-black/70 px-2 py-0.5 rounded border border-slate-800 font-semibold text-[11px]">
+                <span className="font-mono text-white/90 bg-black/75 backdrop-blur-sm px-2 py-0.5 rounded border border-slate-700 font-semibold text-[11px]">
                   CAM-01 • {scenario.centreId}
                 </span>
-                <span className="hidden sm:inline-block bg-blue-600/90 text-white font-mono text-[11px] px-2 py-0.5 rounded">
+                <span className="hidden sm:inline-block bg-blue-600/90 text-white font-mono text-[11px] px-2 py-0.5 rounded shadow-sm">
                   {scenario.trade.split('(')[0]}
                 </span>
               </div>
 
               <div className="flex items-center space-x-2">
-                <span className="hidden sm:inline-block bg-black/60 text-slate-300 font-mono text-[11px] px-2 py-0.5 rounded border border-slate-800">
-                  Model: YOLOv8-nano (48ms)
+                <span className="hidden sm:inline-flex items-center space-x-1 bg-black/70 text-emerald-400 font-mono text-[11px] px-2 py-0.5 rounded border border-emerald-500/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>HD OPTICAL FEED</span>
                 </span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase shadow-sm ${
                   dpdpMode ? 'bg-emerald-500 text-slate-950' : 'bg-amber-400 text-slate-950'
                 }`}>
                   {dpdpMode ? 'DPDP 2023: Centroids' : 'Full Bounding Box'}
@@ -514,14 +552,24 @@ export default function LiveStudioPage() {
               </div>
             </div>
 
-            {/* Simulated Live Frame Background with Workshop Ambience */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 overflow-hidden select-none">
+            {/* Real Live Frame Background with Real Vocational Workshop & Classroom Photos */}
+            <div className="absolute inset-0 bg-slate-950 overflow-hidden select-none">
+              {/* Real Classroom/Workshop Camera Image */}
+              <img
+                src={getScenarioImage(scenario.id, scenario.trade)}
+                alt={scenario.name}
+                className="absolute inset-0 w-full h-full object-cover filter brightness-[0.55] contrast-120 saturate-105 transition-all duration-700"
+              />
+
+              {/* Realistic CCTV Lens Vignette & Scan Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/60 pointer-events-none"></div>
+
               {/* Workshop Layout Grid Lines */}
-              <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+              <div className="absolute inset-0 opacity-15 bg-[linear-gradient(to_right,#00f0ff_1px,transparent_1px),linear-gradient(to_bottom,#00f0ff_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none"></div>
 
               {/* Scanning Laser Line Animation */}
               {isScanning && (
-                <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee] animate-pulse top-1/2"></div>
+                <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee] animate-pulse top-1/2 pointer-events-none"></div>
               )}
 
               {/* Rendered Computer Vision Detections with Gender and Trainer distinction */}

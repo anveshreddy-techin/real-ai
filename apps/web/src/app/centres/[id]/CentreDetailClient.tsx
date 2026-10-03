@@ -117,16 +117,16 @@ export default function CentreDetailClient({ id }: { id: string }) {
     }, 1500);
   };
 
-  // Infrastructure checklist data
+  // Infrastructure checklist data with real photos
   const infraItems = [
-    { name: 'Computer Lab Workstations', spec: 'Min 25 PCs + UPS', observed: '26 PCs (23 functional)', status: 'PASS', score: '96%' },
-    { name: 'Theory Classroom & Smart Board', spec: 'Min 30 seats + Projector', observed: '32 seats + Interactive Screen', status: 'PASS', score: '98%' },
-    { name: 'AEBAS Biometric Punch Device', spec: 'RD-Service Geofenced', observed: 'Iris + Fingerprint active', status: 'PASS', score: '100%' },
-    { name: 'Domain Lab Equipment', spec: 'NSDC Model Curriculum Kit', observed: centre.status === 'Critical' ? 'Shortage: 2 Multimeters missing' : 'All calibrated kits present', status: centre.status === 'Critical' ? 'ATTENTION' : 'PASS', score: centre.status === 'Critical' ? '65%' : '94%' },
-    { name: 'Fire Safety Extinguisher & First Aid', spec: 'ABC Type certified valid till 2026', observed: centre.status === 'Critical' ? 'Extinguisher pressure low' : 'Inspection tag verified', status: centre.status === 'Critical' ? 'WARNING' : 'PASS', score: centre.status === 'Critical' ? '50%' : '100%' },
-    { name: 'Separate Male / Female Sanitation', spec: 'Clean running water + hygiene audit', observed: '2 M / 2 F functional toilets', status: 'PASS', score: '92%' },
-    { name: 'Power Backup & Generator', spec: 'Min 5kVA Inverter / DG Set', observed: '7.5kVA Online UPS installed', status: 'PASS', score: '95%' },
-    { name: 'CCTV Feeds with Edge Compression', spec: 'Classroom & Entrance dual feed', observed: '2 / 2 Feeds operational (5 FPS)', status: 'PASS', score: '90%' },
+    { name: 'Computer Lab Workstations', spec: 'Min 25 PCs + UPS', observed: '26 PCs (23 functional)', status: 'PASS', score: '96%', image: '/images/feeds/computer_lab.jpg' },
+    { name: 'Theory Classroom & Smart Board', spec: 'Min 30 seats + Projector', observed: '32 seats + Interactive Screen', status: 'PASS', score: '98%', image: '/images/feeds/classroom_instruction.jpg' },
+    { name: 'AEBAS Biometric Punch Device', spec: 'RD-Service Geofenced', observed: 'Iris + Fingerprint active', status: 'PASS', score: '100%', image: '/images/feeds/attendance_biometric.jpg' },
+    { name: 'Domain Lab Equipment', spec: 'NSDC Model Curriculum Kit', observed: centre.status === 'Critical' ? 'Shortage: 2 Multimeters missing' : 'All calibrated kits present', status: centre.status === 'Critical' ? 'ATTENTION' : 'PASS', score: centre.status === 'Critical' ? '65%' : '94%', image: '/images/feeds/sewing_workshop.jpg' },
+    { name: 'Fire Safety Extinguisher & First Aid', spec: 'ABC Type certified valid till 2026', observed: centre.status === 'Critical' ? 'Extinguisher pressure low' : 'Inspection tag verified', status: centre.status === 'Critical' ? 'WARNING' : 'PASS', score: centre.status === 'Critical' ? '50%' : '100%', image: '/images/feeds/fire_extinguisher.jpg' },
+    { name: 'Separate Male / Female Sanitation', spec: 'Clean running water + hygiene audit', observed: '2 M / 2 F functional toilets', status: 'PASS', score: '92%', image: '/images/feeds/classroom_instruction.jpg' },
+    { name: 'Power Backup & Generator', spec: 'Min 5kVA Inverter / DG Set', observed: '7.5kVA Online UPS installed', status: 'PASS', score: '95%', image: '/images/feeds/ups_generator.jpg' },
+    { name: 'CCTV Feeds with Edge Compression', spec: 'Classroom & Entrance dual feed', observed: '2 / 2 Feeds operational (5 FPS)', status: 'PASS', score: '90%', image: '/images/feeds/electrical_workshop.jpg' },
   ];
 
   return (
@@ -407,9 +407,14 @@ export default function CentreDetailClient({ id }: { id: string }) {
               <tbody className="divide-y divide-slate-100">
                 {infraItems.map((item, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3.5 px-4 font-bold text-slate-900 flex items-center space-x-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-                      <span>{item.name}</span>
+                    <td className="py-3 px-4 font-bold text-slate-900 flex items-center space-x-3">
+                      <div className="w-12 h-9 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-900 shadow-xs relative">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <span className="block text-slate-900 leading-tight">{item.name}</span>
+                        <span className="text-[10px] text-slate-400 font-normal font-mono">BOM Verification Verified</span>
+                      </div>
                     </td>
                     <td className="py-3.5 px-4 text-slate-600">{item.spec}</td>
                     <td className="py-3.5 px-4 font-medium text-slate-800">{item.observed}</td>

@@ -426,37 +426,57 @@ export default function NationalCommandPage() {
                     const isOnline = camIndex <= selectedCentre.cameras_online;
                     const roomNames = ['Instruction Classroom', 'Machinery Workshop', 'IT Software Lab', 'Solar/Electrical Station'];
                     const roomName = roomNames[camIndex - 1];
+                    const roomImages = [
+                      '/images/feeds/classroom_instruction.jpg',
+                      '/images/feeds/sewing_workshop.jpg',
+                      '/images/feeds/computer_lab.jpg',
+                      '/images/feeds/solar_training.jpg'
+                    ];
+                    const roomImg = roomImages[camIndex - 1];
 
                     return (
                       <div 
                         key={camIndex} 
-                        className={`bg-slate-950 rounded-xl overflow-hidden border relative aspect-video flex flex-col justify-between p-3.5 shadow-sm transition-all ${
-                          activeCamIndex === camIndex ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-slate-800'
+                        className={`bg-slate-950 rounded-2xl overflow-hidden border relative aspect-video flex flex-col justify-between p-3.5 shadow-md transition-all cursor-pointer group ${
+                          activeCamIndex === camIndex ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-slate-800 hover:border-slate-700'
                         }`}
                         onClick={() => setActiveCamIndex(camIndex)}
                       >
+                        {/* Real Camera Image Feed */}
+                        {isOnline && (
+                          <>
+                            <img
+                              src={roomImg}
+                              alt={roomName}
+                              className="absolute inset-0 w-full h-full object-cover filter brightness-[0.55] contrast-110 saturate-95 group-hover:scale-105 transition-transform duration-700"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/70"></div>
+                            <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+                          </>
+                        )}
+
                         <div className="flex items-center justify-between z-10">
-                          <span className="text-xs font-mono text-white/90 bg-black/70 px-2 py-0.5 rounded font-semibold">
+                          <span className="text-xs font-mono text-white/90 bg-black/80 backdrop-blur-sm px-2.5 py-0.5 rounded-md font-semibold border border-slate-700">
                             CAM-0{camIndex}: {roomName}
                           </span>
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                            isOnline ? 'bg-emerald-500 text-black' : 'bg-rose-500 text-white'
+                          <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase shadow-sm ${
+                            isOnline ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'
                           }`}>
-                            {isOnline ? 'ACTIVE' : 'OFFLINE'}
+                            {isOnline ? '● LIVE' : 'OFFLINE'}
                           </span>
                         </div>
 
                         {isOnline ? (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-slate-900/50 via-slate-950/80 to-slate-950 text-center p-4">
-                            <div className="space-y-1.5">
-                              <Users className="w-8 h-8 text-amber-400 mx-auto opacity-80" />
-                              <p className="text-sm text-slate-200 font-bold">
-                                Occupancy: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} trainees
+                          <div className="relative z-10 my-auto text-center py-2">
+                            <div className="inline-block px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md border border-amber-400/50 shadow-lg">
+                              <p className="text-xs sm:text-sm text-amber-300 font-extrabold font-mono flex items-center justify-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                                <span>Occupancy: ~{Math.round(selectedCentre.attendance.ai_detected_headcount / selectedCentre.cameras_online)} Trainees</span>
                               </p>
                               {showDetections && (
-                                <div className="inline-flex items-center space-x-1 px-2 py-0.5 bg-black/60 rounded border border-amber-400/40 text-[11px] text-amber-300 font-mono">
-                                  <span>Centroid X,Y Extracted • 0 Faces</span>
-                                </div>
+                                <p className="text-[10px] text-emerald-400 font-mono mt-0.5">
+                                  Centroid X,Y Extracted • 0 Faces Stored
+                                </p>
                               )}
                             </div>
                           </div>

@@ -3,6 +3,18 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/components/ui/LanguageContext';
+
+const getEquipmentPhoto = (name: string, category: string): string => {
+  const n = (name + ' ' + category).toLowerCase();
+  if (n.includes('sewing') || n.includes('tailor') || n.includes('garment')) return '/images/feeds/sewing_workshop.jpg';
+  if (n.includes('computer') || n.includes('pc') || n.includes('screen') || n.includes('lab') || n.includes('desk')) return '/images/feeds/computer_lab.jpg';
+  if (n.includes('fire') || n.includes('extinguisher') || n.includes('safety')) return '/images/feeds/fire_extinguisher.jpg';
+  if (n.includes('solar') || n.includes('electrical') || n.includes('wire') || n.includes('panel')) return '/images/feeds/solar_training.jpg';
+  if (n.includes('ups') || n.includes('power') || n.includes('generator') || n.includes('battery')) return '/images/feeds/ups_generator.jpg';
+  if (n.includes('first aid') || n.includes('medical')) return '/images/feeds/first_aid.jpg';
+  if (n.includes('biometric') || n.includes('punch') || n.includes('aebas')) return '/images/feeds/attendance_biometric.jpg';
+  return '/images/feeds/electrical_workshop.jpg';
+};
 import { CANONICAL_CENTRES } from '@/data/mockCentres';
 import { Box, ArrowLeft, CheckCircle2, AlertTriangle, ShieldCheck, ArrowRight } from 'lucide-react';
 
@@ -69,11 +81,16 @@ export default function InfrastructurePage() {
                   const isAvail = item.status === 'AVAILABLE';
 
                   return (
-                    <div key={item.item_id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5 text-xs">
+                    <div key={item.item_id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2 text-xs">
                       <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-bold text-slate-900 text-sm">{item.name}</p>
-                          <span className="text-xs text-slate-400 font-mono">Category: {item.category} • Confidence: {(item.confidence * 100).toFixed(0)}%</span>
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-slate-900 border border-slate-200 shadow-xs relative">
+                            <img src={getEquipmentPhoto(item.name, item.category)} alt={item.name} className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-900 text-sm leading-tight">{item.name}</p>
+                            <span className="text-[11px] text-slate-500 font-mono">Category: {item.category} • Confidence: {(item.confidence * 100).toFixed(0)}%</span>
+                          </div>
                         </div>
                         <div className="text-right">
                           <span className="font-bold text-sm text-slate-900">{item.detected_count} / {item.sanctioned_count} units</span>
