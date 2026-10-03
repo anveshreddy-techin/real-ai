@@ -426,13 +426,21 @@ export default function NationalCommandPage() {
                     const isOnline = camIndex <= selectedCentre.cameras_online;
                     const roomNames = ['Instruction Classroom', 'Machinery Workshop', 'IT Software Lab', 'Solar/Electrical Station'];
                     const roomName = roomNames[camIndex - 1];
-                    // Real CCTV-style room footage — looks like actual live camera feed
-                    const roomImages = [
-                      '/images/feeds/room_cnc_cctv.jpg',     // Cam 1: workshop/classroom overhead
-                      '/images/feeds/room_sewing_cctv.jpg',  // Cam 2: sewing machinery workshop
-                      '/images/feeds/room_it_cctv.jpg',      // Cam 3: IT computer lab
-                      '/images/feeds/room_solar_cctv.jpg',   // Cam 4: solar/electrical lab
-                    ];
+                    // Dynamic: When "AI Annotations ON" is clicked, show full AI model inference overlay
+                    // When "Raw Feed" is clicked, show raw security camera room footage
+                    const roomImages = showDetections
+                      ? [
+                          '/images/feeds/ai_compliant_cnc.jpg',    // Cam 1: AI detections + headcount
+                          '/images/feeds/ai_sewing_detection.jpg', // Cam 2: AI detections + machines
+                          '/images/feeds/ai_it_lab.jpg',           // Cam 3: AI detections + AEBAS
+                          '/images/feeds/ai_solar_electrical.jpg', // Cam 4: AI detections + PPE safety
+                        ]
+                      : [
+                          '/images/feeds/room_cnc_cctv.jpg',       // Cam 1: Raw CCTV feed
+                          '/images/feeds/room_sewing_cctv.jpg',    // Cam 2: Raw CCTV feed
+                          '/images/feeds/room_it_cctv.jpg',        // Cam 3: Raw CCTV feed
+                          '/images/feeds/room_solar_cctv.jpg',     // Cam 4: Raw CCTV feed
+                        ];
                     const roomImg = roomImages[camIndex - 1];
 
                     return (
@@ -446,21 +454,25 @@ export default function NationalCommandPage() {
                         {/* Real Camera Image Feed */}
                         {isOnline && (
                           <>
-                            {/* Real CCTV room footage — slightly dimmed so overlays are readable */}
+                            {/* Camera Feed Image: Full brightness for AI overlay, crisp for raw CCTV */}
                             <img
                               src={roomImg}
                               alt={roomName}
                               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                              style={{ filter: 'brightness(0.5) saturate(0.8) contrast(1.05)' }}
+                              style={{ 
+                                filter: showDetections 
+                                  ? 'brightness(0.95) contrast(1.05)' 
+                                  : 'brightness(0.85) contrast(1.02)' 
+                              }}
                             />
-                            {/* CCTV scan-line texture for authenticity */}
+                            {/* Subtle CCTV scan-line texture */}
                             <div className="absolute inset-0 pointer-events-none opacity-15"
                               style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.4) 3px, rgba(0,0,0,0.4) 4px)' }}
                             />
                             {/* Top bar gradient for label readability */}
-                            <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/80 to-transparent pointer-events-none"></div>
+                            <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-black/80 to-transparent pointer-events-none"></div>
                             {/* Bottom gradient for stats readability */}
-                            <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/90 to-transparent pointer-events-none"></div>
+                            <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
                           </>
                         )}
 

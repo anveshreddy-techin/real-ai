@@ -133,32 +133,38 @@ const DEMO_SCENARIOS: Scenario[] = [
       { id: 'CAN-GKP-032', name: 'Usha Gond', gender: 'F', punchTime: '09:25', inRoom: false, avatar: '👩' }
     ],
     boxes: [
-      // 17 Present Trainees + 1 Trainer = 18 in room
-      { id: 'p1', label: 'Trainee: Ravi Kumar', category: 'person', confidence: 0.94, x: 12, y: 35, w: 9, h: 28, gender: 'M', personName: 'Ravi Kumar' },
-      { id: 'p2', label: 'Trainee: Pooja Verma', category: 'person', confidence: 0.96, x: 23, y: 36, w: 9, h: 27, gender: 'F', personName: 'Pooja Verma' },
-      { id: 'p3', label: 'Trainee: Amit Singh', category: 'person', confidence: 0.91, x: 34, y: 38, w: 8, h: 26, gender: 'M', personName: 'Amit Singh' },
-      { id: 'p4', label: 'Trainee: Kavita Yadav', category: 'person', confidence: 0.89, x: 45, y: 37, w: 9, h: 28, gender: 'F', personName: 'Kavita Yadav' },
-      { id: 'p5', label: 'Trainee: Manoj Tiwari', category: 'person', confidence: 0.95, x: 56, y: 35, w: 9, h: 29, gender: 'M', personName: 'Manoj Tiwari' },
-      { id: 'p6', label: 'Trainee: Suman Gupta', category: 'person', confidence: 0.92, x: 67, y: 36, w: 8, h: 27, gender: 'F', personName: 'Suman Gupta' },
-      { id: 'p7', label: 'Trainee: Deepak Sharma', category: 'person', confidence: 0.88, x: 78, y: 38, w: 9, h: 26, gender: 'M', personName: 'Deepak Sharma' },
-      { id: 'p8', label: 'Trainee: Anjali Maurya', category: 'person', confidence: 0.93, x: 15, y: 55, w: 10, h: 32, gender: 'F', personName: 'Anjali Maurya' },
-      { id: 'p9', label: 'Trainee: Sanjay Nishad', category: 'person', confidence: 0.97, x: 28, y: 56, w: 10, h: 31, gender: 'M', personName: 'Sanjay Nishad' },
-      { id: 'p10', label: 'Trainee: Priyanka Dubey', category: 'person', confidence: 0.90, x: 40, y: 54, w: 10, h: 33, gender: 'F', personName: 'Priyanka Dubey' },
-      { id: 'p11', label: 'Trainee: Vikas Pandey', category: 'person', confidence: 0.94, x: 53, y: 55, w: 10, h: 32, gender: 'M', personName: 'Vikas Pandey' },
-      { id: 'p12', label: 'Trainee: Roshni Khatun', category: 'person', confidence: 0.87, x: 65, y: 57, w: 10, h: 30, gender: 'F', personName: 'Roshni Khatun' },
-      { id: 'p13', label: 'Trainee: Alok Mishra', category: 'person', confidence: 0.91, x: 78, y: 55, w: 10, h: 32, gender: 'M', personName: 'Alok Mishra' },
-      { id: 'p14', label: 'Trainee: Sarita Chauhan', category: 'person', confidence: 0.86, x: 20, y: 22, w: 7, h: 20, gender: 'F', personName: 'Sarita Chauhan' },
-      { id: 'p15', label: 'Trainee: Ramesh Patel', category: 'person', confidence: 0.89, x: 32, y: 21, w: 7, h: 21, gender: 'M', personName: 'Ramesh Patel' },
-      { id: 'p16', label: 'Trainee: Neetu Rajbhar', category: 'person', confidence: 0.93, x: 44, y: 23, w: 7, h: 19, gender: 'F', personName: 'Neetu Rajbhar' },
-      { id: 'p17', label: 'Trainee: Gaurav Srivastava', category: 'person', confidence: 0.88, x: 56, y: 22, w: 7, h: 20, gender: 'M', personName: 'Gaurav Srivastava' },
-      { id: 'p18', label: 'Instructor: Sunita Devi', category: 'person', confidence: 0.99, x: 86, y: 25, w: 10, h: 36, isTrainer: true, gender: 'F', personName: 'Sunita Devi' },
-      // Equipment
-      { id: 'e1', label: 'Sewing Machine #1', category: 'equipment', confidence: 0.92, x: 10, y: 65, w: 14, h: 18 },
-      { id: 'e2', label: 'Sewing Machine #2', category: 'equipment', confidence: 0.89, x: 26, y: 66, w: 14, h: 17 },
-      { id: 'e3', label: 'Sewing Machine #3', category: 'equipment', confidence: 0.94, x: 42, y: 65, w: 14, h: 18 },
-      { id: 'e4', label: 'Sewing Machine #4', category: 'equipment', confidence: 0.91, x: 58, y: 66, w: 14, h: 17 },
-      { id: 'e5', label: 'Sewing Machine #5', category: 'equipment', confidence: 0.88, x: 74, y: 65, w: 14, h: 18 },
-      { id: 'e6', label: 'Fire Extinguisher', category: 'equipment', confidence: 0.95, x: 92, y: 40, w: 6, h: 16 }
+      // Instructor Sunita Devi standing at front whiteboard
+      { id: 'p18', label: 'Instructor: Sunita Devi', category: 'person', confidence: 0.99, x: 50.5, y: 11, w: 5.5, h: 19, isTrainer: true, gender: 'F', personName: 'Sunita Devi' },
+      // Trainees standing near front whiteboard
+      { id: 'p16', label: 'Trainee: Neetu Rajbhar', category: 'person', confidence: 0.93, x: 37, y: 12.5, w: 4.5, h: 14, gender: 'F', personName: 'Neetu Rajbhar' },
+      { id: 'p17', label: 'Trainee: Gaurav Srivastava', category: 'person', confidence: 0.88, x: 40.5, y: 13.5, w: 4.5, h: 14, gender: 'M', personName: 'Gaurav Srivastava' },
+      // Row 1 (back of room)
+      { id: 'p1', label: 'Trainee: Ravi Kumar', category: 'person', confidence: 0.94, x: 23, y: 22, w: 5, h: 14, gender: 'M', personName: 'Ravi Kumar' },
+      { id: 'p6', label: 'Trainee: Suman Gupta', category: 'person', confidence: 0.92, x: 41, y: 22, w: 5, h: 14, gender: 'F', personName: 'Suman Gupta' },
+      { id: 'p11', label: 'Trainee: Vikas Pandey', category: 'person', confidence: 0.94, x: 55, y: 21, w: 5, h: 14, gender: 'M', personName: 'Vikas Pandey' },
+      // Row 2
+      { id: 'p2', label: 'Trainee: Pooja Verma', category: 'person', confidence: 0.96, x: 19, y: 27, w: 5.5, h: 15, gender: 'F', personName: 'Pooja Verma' },
+      { id: 'p7', label: 'Trainee: Deepak Sharma', category: 'person', confidence: 0.88, x: 39, y: 26, w: 5.5, h: 15, gender: 'M', personName: 'Deepak Sharma' },
+      { id: 'p12', label: 'Trainee: Roshni Khatun', category: 'person', confidence: 0.87, x: 55, y: 26, w: 5.5, h: 15, gender: 'F', personName: 'Roshni Khatun' },
+      // Row 3
+      { id: 'p3', label: 'Trainee: Amit Singh', category: 'person', confidence: 0.91, x: 13, y: 35, w: 6.5, h: 16, gender: 'M', personName: 'Amit Singh' },
+      { id: 'p8', label: 'Trainee: Anjali Maurya', category: 'person', confidence: 0.93, x: 36, y: 33, w: 6.5, h: 16, gender: 'F', personName: 'Anjali Maurya' },
+      { id: 'p13', label: 'Trainee: Alok Mishra', category: 'person', confidence: 0.91, x: 56, y: 33, w: 6.5, h: 16, gender: 'M', personName: 'Alok Mishra' },
+      // Row 4
+      { id: 'p4', label: 'Trainee: Kavita Yadav', category: 'person', confidence: 0.89, x: 7.5, y: 44, w: 8, h: 20, gender: 'F', personName: 'Kavita Yadav' },
+      { id: 'p9', label: 'Trainee: Sanjay Nishad', category: 'person', confidence: 0.97, x: 33, y: 43, w: 8, h: 19, gender: 'M', personName: 'Sanjay Nishad' },
+      { id: 'p14', label: 'Trainee: Sarita Chauhan', category: 'person', confidence: 0.86, x: 57, y: 44, w: 8, h: 19, gender: 'F', personName: 'Sarita Chauhan' },
+      // Row 5 (foreground, closest to camera)
+      { id: 'p5', label: 'Trainee: Manoj Tiwari', category: 'person', confidence: 0.95, x: 7, y: 57, w: 10, h: 25, gender: 'M', personName: 'Manoj Tiwari' },
+      { id: 'p10', label: 'Trainee: Priyanka Dubey', category: 'person', confidence: 0.90, x: 30, y: 61, w: 11, h: 26, gender: 'F', personName: 'Priyanka Dubey' },
+      { id: 'p15', label: 'Trainee: Ramesh Patel', category: 'person', confidence: 0.89, x: 57, y: 61, w: 11, h: 26, gender: 'M', personName: 'Ramesh Patel' },
+      // Equipment (Actual sewing machines at desks)
+      { id: 'e1', label: 'Sewing Machine #1 (Juki DDL-8700)', category: 'equipment', confidence: 0.92, x: 21, y: 91, w: 15, h: 9 },
+      { id: 'e2', label: 'Sewing Machine #2 (Workstation)', category: 'equipment', confidence: 0.89, x: 33, y: 61, w: 15, h: 10 },
+      { id: 'e3', label: 'Sewing Machine #3 (Workstation)', category: 'equipment', confidence: 0.94, x: 63, y: 61, w: 15, h: 10 },
+      { id: 'e4', label: 'Sewing Machine #4 (Juki DDL-8700)', category: 'equipment', confidence: 0.91, x: 65, y: 91, w: 15, h: 9 },
+      { id: 'e5', label: 'Sewing Machine #5 (Mid Row)', category: 'equipment', confidence: 0.88, x: 36, y: 45, w: 12, h: 9 },
+      { id: 'e6', label: 'Fire Extinguisher ABC', category: 'equipment', confidence: 0.95, x: 23, y: 15, w: 3, h: 7 }
     ]
   },
   {
@@ -193,23 +199,50 @@ const DEMO_SCENARIOS: Scenario[] = [
       avatar: i % 3 === 0 ? '👩' : '👨'
     })),
     boxes: [
-      { id: 'np0', label: 'Instructor: Vikram Patil', category: 'person', confidence: 0.99, x: 86, y: 22, w: 9, h: 35, isTrainer: true, gender: 'M', personName: 'Vikram Patil' },
-      ...Array.from({ length: 42 }, (_, i) => ({
-        id: `np${i + 1}`,
-        label: i % 3 === 0 ? `👩 Female Trainee #${i + 1}` : `👨 Male Trainee #${i + 1}`,
+      // Instructor Vikram Patil in white shirt walking in center aisle
+      { id: 'np0', label: 'Instructor: Vikram Patil', category: 'person', confidence: 0.99, x: 48.5, y: 41, w: 4.8, h: 22, isTrainer: true, gender: 'M', personName: 'Vikram Patil' },
+      // Foreground main workbenches (left to right)
+      { id: 'np1', label: 'Trainee: Mahesh Jadhav', category: 'person', confidence: 0.95, x: 11.5, y: 71, w: 7.5, h: 24, gender: 'M', personName: 'Mahesh Jadhav' },
+      { id: 'np2', label: 'Trainee: Rahul Shinde', category: 'person', confidence: 0.94, x: 18, y: 61.5, w: 5.5, h: 18, gender: 'M', personName: 'Rahul Shinde' },
+      { id: 'np3', label: 'Trainee: Ganesh More', category: 'person', confidence: 0.96, x: 36, y: 63.5, w: 5.5, h: 15, gender: 'M', personName: 'Ganesh More' },
+      { id: 'np4', label: 'Trainee: Anand Deshmukh', category: 'person', confidence: 0.93, x: 62, y: 73, w: 7.5, h: 26, gender: 'M', personName: 'Anand Deshmukh' },
+      { id: 'np5', label: 'Trainee: Sachin Kadam', category: 'person', confidence: 0.92, x: 84.5, y: 69, w: 7.5, h: 24, gender: 'M', personName: 'Sachin Kadam' },
+      // Row 2 benches
+      { id: 'np6', label: 'Trainee: Pravin Pawar', category: 'person', confidence: 0.91, x: 24, y: 47.5, w: 4.5, h: 16, gender: 'M', personName: 'Pravin Pawar' },
+      { id: 'np7', label: 'Trainee: Nitin Gaikwad', category: 'person', confidence: 0.90, x: 39, y: 48.5, w: 4.5, h: 16, gender: 'M', personName: 'Nitin Gaikwad' },
+      { id: 'np8', label: 'Trainee: Sunil Chavan', category: 'person', confidence: 0.93, x: 59, y: 48, w: 4.5, h: 16, gender: 'M', personName: 'Sunil Chavan' },
+      { id: 'np9', label: 'Trainee: Ajay Wagh', category: 'person', confidence: 0.89, x: 74, y: 42, w: 4, h: 15, gender: 'M', personName: 'Ajay Wagh' },
+      { id: 'np10', label: 'Trainee: Kishore Kale (Welder)', category: 'person', confidence: 0.94, x: 85.5, y: 46, w: 4.5, h: 18, gender: 'M', personName: 'Kishore Kale' },
+      { id: 'np11', label: 'Trainee: Dinesh Mane', category: 'person', confidence: 0.92, x: 92.5, y: 60, w: 6, h: 20, gender: 'M', personName: 'Dinesh Mane' },
+      // Remaining trainees positioned on actual visible workstations in room_cnc_cctv.jpg
+      ...[
+        { x: 70, y: 62, w: 4.5, h: 16 }, { x: 78, y: 53, w: 4, h: 15 }, { x: 76, y: 49, w: 4, h: 14 },
+        { x: 61, y: 53, w: 4.5, h: 16 }, { x: 57, y: 42, w: 4, h: 14 }, { x: 59, y: 38, w: 4, h: 14 },
+        { x: 41, y: 38, w: 4, h: 14 }, { x: 43, y: 32, w: 3.5, h: 12 }, { x: 42, y: 28, w: 3.5, h: 12 },
+        { x: 27, y: 41, w: 4, h: 14 }, { x: 29, y: 36, w: 3.5, h: 12 }, { x: 31, y: 32, w: 3.5, h: 12 },
+        { x: 21, y: 38, w: 3.5, h: 13 }, { x: 25, y: 32, w: 3.5, h: 12 }, { x: 33, y: 28, w: 3, h: 11 },
+        { x: 35, y: 24, w: 3, h: 10 }, { x: 37, y: 22, w: 3, h: 10 }, { x: 39, y: 20, w: 3, h: 10 },
+        { x: 44, y: 24, w: 3, h: 10 }, { x: 45, y: 20, w: 3, h: 10 }, { x: 47, y: 18, w: 3, h: 9 },
+        { x: 55, y: 32, w: 3.5, h: 12 }, { x: 56, y: 28, w: 3.5, h: 11 }, { x: 57, y: 24, w: 3, h: 10 },
+        { x: 65, y: 35, w: 3.5, h: 12 }, { x: 66, y: 30, w: 3.5, h: 11 }, { x: 67, y: 26, w: 3, h: 10 },
+        { x: 68, y: 22, w: 3, h: 10 }, { x: 71, y: 38, w: 3.5, h: 12 }, { x: 79, y: 36, w: 3.5, h: 12 },
+        { x: 82, y: 42, w: 4, h: 14 }
+      ].map((pos, idx) => ({
+        id: `np${idx + 12}`,
+        label: (idx % 4 === 0) ? `👩 Female Trainee #${idx + 12}` : `👨 Trainee #${idx + 12}`,
         category: 'person' as const,
-        confidence: 0.88 + (i % 10) * 0.01,
-        x: 6 + (i % 8) * 11,
-        y: 20 + Math.floor(i / 8) * 14,
-        w: 7,
-        h: 18,
-        gender: (i % 3 === 0 ? 'F' : 'M') as 'F' | 'M',
-        personName: `Trainee #${i + 1}`
+        confidence: 0.88 + ((idx * 3) % 11) * 0.01,
+        x: pos.x,
+        y: pos.y,
+        w: pos.w,
+        h: pos.h,
+        gender: ((idx % 4 === 0) ? 'F' : 'M') as 'F' | 'M',
+        personName: `Trainee #${idx + 12}`
       })),
-      { id: 'ne1', label: 'CNC Simulator 1', category: 'equipment', confidence: 0.96, x: 5, y: 75, w: 20, h: 22 },
-      { id: 'ne2', label: 'CNC Simulator 2', category: 'equipment', confidence: 0.95, x: 28, y: 75, w: 20, h: 22 },
-      { id: 'ne3', label: 'CNC Simulator 3', category: 'equipment', confidence: 0.94, x: 51, y: 75, w: 20, h: 22 },
-      { id: 'ne4', label: 'CNC Simulator 4', category: 'equipment', confidence: 0.97, x: 74, y: 75, w: 20, h: 22 }
+      { id: 'ne1', label: 'CNC Simulator 1 (Lathe Bay)', category: 'equipment', confidence: 0.96, x: 14.5, y: 48, w: 8.5, h: 17 },
+      { id: 'ne2', label: 'CNC Simulator 2 (Milling Bay)', category: 'equipment', confidence: 0.95, x: 8, y: 55, w: 8, h: 19 },
+      { id: 'ne3', label: 'Precision Workbench A', category: 'equipment', confidence: 0.94, x: 27, y: 73, w: 16, h: 19 },
+      { id: 'ne4', label: 'Precision Workbench B', category: 'equipment', confidence: 0.97, x: 58.5, y: 74, w: 16, h: 20 }
     ]
   },
   {
@@ -253,14 +286,24 @@ const DEMO_SCENARIOS: Scenario[] = [
       }))
     ],
     boxes: [
-      { id: 'sp1', label: 'Trainee: Priya Sharma', category: 'person', confidence: 0.92, x: 18, y: 40, w: 10, h: 30, gender: 'F', personName: 'Priya Sharma' },
-      { id: 'sp2', label: 'Trainee: Rohit Verma', category: 'person', confidence: 0.90, x: 30, y: 42, w: 10, h: 28, gender: 'M', personName: 'Rohit Verma' },
-      { id: 'sp3', label: 'Trainee: Anjali Thakur', category: 'person', confidence: 0.95, x: 45, y: 41, w: 10, h: 29, gender: 'F', personName: 'Anjali Thakur' },
-      { id: 'sp4', label: 'Trainee: Vikas Negi', category: 'person', confidence: 0.88, x: 60, y: 43, w: 10, h: 27, gender: 'M', personName: 'Vikas Negi' },
-      { id: 'sp5', label: 'Trainee: Sneha Paul', category: 'person', confidence: 0.91, x: 72, y: 40, w: 10, h: 30, gender: 'F', personName: 'Sneha Paul' },
-      { id: 'sp6', label: 'Trainee: Amit Rawat', category: 'person', confidence: 0.89, x: 25, y: 65, w: 11, h: 28, gender: 'M', personName: 'Amit Rawat' },
-      { id: 'sp7', label: 'Trainee: Tina Dhiman', category: 'person', confidence: 0.93, x: 50, y: 66, w: 11, h: 27, gender: 'F', personName: 'Tina Dhiman' },
-      { id: 'sp8', label: 'Instructor: Pooja Negi', category: 'person', confidence: 0.98, x: 80, y: 30, w: 10, h: 35, isTrainer: true, gender: 'F', personName: 'Pooja Negi' }
+      // Instructor Pooja Negi standing in navy blazer near whiteboard holding clipboard
+      { id: 'sp8', label: 'Instructor: Pooja Negi', category: 'person', confidence: 0.98, x: 68.5, y: 19, w: 7, h: 29, isTrainer: true, gender: 'F', personName: 'Pooja Negi' },
+      // Stewards at beverage bar
+      { id: 'sp1', label: 'Trainee: Rohan Thakur', category: 'person', confidence: 0.92, x: 39.5, y: 10.5, w: 3.5, h: 16, gender: 'M', personName: 'Rohan Thakur' },
+      { id: 'sp2', label: 'Trainee: Rohit Verma', category: 'person', confidence: 0.90, x: 42.2, y: 9.8, w: 3.2, h: 17, gender: 'M', personName: 'Rohit Verma' },
+      // Stewards setting center table
+      { id: 'sp3', label: 'Trainee: Vikas Negi', category: 'person', confidence: 0.88, x: 43.5, y: 18.5, w: 6.5, h: 18, gender: 'M', personName: 'Vikas Negi' },
+      { id: 'sp4', label: 'Trainee: Amit Rawat', category: 'person', confidence: 0.91, x: 53.8, y: 21, w: 7.2, h: 33, gender: 'M', personName: 'Amit Rawat' },
+      // Stewards in foreground with trays
+      { id: 'sp5', label: 'Trainee: Priya Sharma', category: 'person', confidence: 0.95, x: 15.5, y: 63, w: 12.5, h: 35, gender: 'F', personName: 'Priya Sharma' },
+      { id: 'sp6', label: 'Trainee: Sunny Kumar', category: 'person', confidence: 0.96, x: 27.5, y: 47, w: 11.5, h: 43, gender: 'M', personName: 'Sunny Kumar' },
+      { id: 'sp7', label: 'Trainee: Anjali Thakur', category: 'person', confidence: 0.93, x: 12.2, y: 57.5, w: 7.5, h: 27, gender: 'F', personName: 'Anjali Thakur' },
+      // Equipment: Sanctioned Banquet Training Tables & Bar
+      { id: 'se1', label: 'Banquet Training Setup #1', category: 'equipment', confidence: 0.96, x: 41, y: 31, w: 16, h: 20 },
+      { id: 'se2', label: 'Banquet Training Setup #2', category: 'equipment', confidence: 0.94, x: 30, y: 23, w: 12, h: 14 },
+      { id: 'se3', label: 'Banquet Training Setup #3', category: 'equipment', confidence: 0.91, x: 17.5, y: 46, w: 14.5, h: 27 },
+      { id: 'se4', label: 'Banquet Training Setup #4', category: 'equipment', confidence: 0.95, x: 65, y: 46, w: 22, h: 32 },
+      { id: 'se5', label: 'Beverage Service Station', category: 'equipment', confidence: 0.93, x: 45, y: 14, w: 14.5, h: 14 }
     ]
   },
   {
@@ -294,42 +337,53 @@ const DEMO_SCENARIOS: Scenario[] = [
       avatar: i % 4 === 0 ? '👩' : '👨'
     })),
     boxes: [
-      { id: 'jp0', label: 'Instructor: Rajesh Sharma', category: 'person', confidence: 0.98, x: 85, y: 22, w: 9, h: 33, isTrainer: true, gender: 'M', personName: 'Rajesh Sharma' },
-      ...Array.from({ length: 20 }, (_, i) => ({
-        id: `jp${i + 1}`,
-        label: i % 4 === 0 ? `👩 Female Trainee #${i + 1}` : `👨 Male Trainee #${i + 1}`,
-        category: 'person' as const,
-        confidence: 0.89 + (i % 8) * 0.01,
-        x: 10 + (i % 6) * 14,
-        y: 25 + Math.floor(i / 6) * 16,
-        w: 8,
-        h: 22,
-        gender: (i % 4 === 0 ? 'F' : 'M') as 'F' | 'M',
-        personName: `Trainee #${i + 1}`
-      })),
-      { id: 'je1', label: 'Solar Inverter Simulator 1', category: 'equipment', confidence: 0.93, x: 10, y: 72, w: 18, h: 22 },
-      { id: 'je2', label: 'Solar Inverter Simulator 2', category: 'equipment', confidence: 0.91, x: 32, y: 72, w: 18, h: 22 },
-      { id: 'je3', label: 'Solar Inverter Simulator 3', category: 'equipment', confidence: 0.94, x: 54, y: 72, w: 18, h: 22 },
-      { id: 'je4', label: 'Solar Inverter Simulator 4', category: 'equipment', confidence: 0.90, x: 76, y: 72, w: 18, h: 22 }
+      // Instructor Rajesh Sharma supervising near training boards
+      { id: 'jp0', label: 'Instructor: Rajesh Sharma', category: 'person', confidence: 0.98, x: 22, y: 42, w: 6, h: 25, isTrainer: true, gender: 'M', personName: 'Rajesh Sharma' },
+      // Trainees in orange hi-vis vests & safety gear
+      { id: 'jp1', label: 'Trainee: Manoj Bhati', category: 'person', confidence: 0.94, x: 10, y: 62.5, w: 7, h: 26, gender: 'M', personName: 'Manoj Bhati' },
+      { id: 'jp2', label: 'Trainee: Ashok Gehlot', category: 'person', confidence: 0.95, x: 13.5, y: 57, w: 6.5, h: 26, gender: 'M', personName: 'Ashok Gehlot' },
+      { id: 'jp3', label: 'Trainee: Rakesh Rathore', category: 'person', confidence: 0.92, x: 30, y: 46, w: 5.5, h: 21, gender: 'M', personName: 'Rakesh Rathore' },
+      { id: 'jp4', label: 'Trainee: Priya Choudhary', category: 'person', confidence: 0.91, x: 31, y: 33.5, w: 4.5, h: 17, gender: 'F', personName: 'Priya Choudhary' },
+      { id: 'jp5', label: 'Trainee: Suresh Bishnoi', category: 'person', confidence: 0.89, x: 37.5, y: 34.5, w: 4.5, h: 17, gender: 'M', personName: 'Suresh Bishnoi' },
+      { id: 'jp6', label: 'Trainee: Kamlesh Meena', category: 'person', confidence: 0.96, x: 53, y: 47, w: 6, h: 28, gender: 'M', personName: 'Kamlesh Meena' },
+      { id: 'jp7', label: 'Trainee: Pooja Solanki', category: 'person', confidence: 0.93, x: 64, y: 48, w: 6.5, h: 27, gender: 'F', personName: 'Pooja Solanki' },
+      { id: 'jp8', label: 'Trainee: Narendra Tak', category: 'person', confidence: 0.90, x: 63.5, y: 44, w: 5.5, h: 24, gender: 'M', personName: 'Narendra Tak' },
+      { id: 'jp9', label: 'Trainee: Sunita Dewasi', category: 'person', confidence: 0.88, x: 53.5, y: 33, w: 4.5, h: 18, gender: 'F', personName: 'Sunita Dewasi' },
+      { id: 'jp10', label: 'Trainee: Dinesh Suthar', category: 'person', confidence: 0.92, x: 60.5, y: 34, w: 4.5, h: 18, gender: 'M', personName: 'Dinesh Suthar' },
+      { id: 'jp11', label: 'Trainee: Kavita Panwar', category: 'person', confidence: 0.90, x: 68, y: 33, w: 4.5, h: 18, gender: 'F', personName: 'Kavita Panwar' },
+      { id: 'jp12', label: 'Trainee: Vikas Mali', category: 'person', confidence: 0.95, x: 79.5, y: 68.5, w: 8.5, h: 29, gender: 'M', personName: 'Vikas Mali' },
+      { id: 'jp13', label: 'Trainee: Shanti Devi', category: 'person', confidence: 0.91, x: 85.5, y: 68, w: 7.5, h: 26, gender: 'F', personName: 'Shanti Devi' },
+      { id: 'jp14', label: 'Trainee: Jitendra Sen', category: 'person', confidence: 0.93, x: 86.5, y: 53, w: 6.5, h: 23, gender: 'M', personName: 'Jitendra Sen' },
+      { id: 'jp15', label: 'Trainee: Anil Bheel', category: 'person', confidence: 0.89, x: 89, y: 61, w: 6, h: 20, gender: 'M', personName: 'Anil Bheel' },
+      { id: 'jp16', label: 'Trainee: Rekha Godara', category: 'person', confidence: 0.94, x: 81, y: 48.5, w: 5.5, h: 20, gender: 'F', personName: 'Rekha Godara' },
+      { id: 'jp17', label: 'Trainee: Omprakash Joshi', category: 'person', confidence: 0.90, x: 73, y: 38, w: 5, h: 17, gender: 'M', personName: 'Omprakash Joshi' },
+      { id: 'jp18', label: 'Trainee: Mamta Charan', category: 'person', confidence: 0.92, x: 77, y: 39, w: 5, h: 17, gender: 'F', personName: 'Mamta Charan' },
+      { id: 'jp19', label: 'Trainee: Mukesh Parihar', category: 'person', confidence: 0.91, x: 81, y: 46, w: 5, h: 17, gender: 'M', personName: 'Mukesh Parihar' },
+      { id: 'jp20', label: 'Trainee: Lalit Prajapat', category: 'person', confidence: 0.93, x: 34, y: 28.5, w: 4.5, h: 18, gender: 'M', personName: 'Lalit Prajapat' },
+      // Equipment
+      { id: 'je1', label: 'Solar PV Simulator 1 (Table Array)', category: 'equipment', confidence: 0.95, x: 34.5, y: 49.5, w: 9.5, h: 19 },
+      { id: 'je2', label: 'Solar PV Simulator 2 (A-Frame)', category: 'equipment', confidence: 0.96, x: 54.5, y: 45, w: 13, h: 32 },
+      { id: 'je3', label: 'Training Wiring Board A', category: 'equipment', confidence: 0.92, x: 52, y: 46, w: 10, h: 24 },
+      { id: 'je4', label: 'Mobile Diagnostics Cart', category: 'equipment', confidence: 0.90, x: 75.5, y: 66.5, w: 10, h: 23 }
     ]
   }
 ];
 
 const getScenarioImage = (scenarioId: string, trade: string = ''): string => {
   const t = trade.toLowerCase();
-  if (scenarioId === 'gkp-ghost' || t.includes('apparel') || t.includes('sewing')) {
-    return '/images/feeds/ai_ghost_fraud.jpg';    // Ghost attendance: 18 detected vs 32 registered
+  if (scenarioId === 'smr-temporal' || t.includes('hospitality') || t.includes('beverage') || t.includes('steward')) {
+    return '/images/feeds/room_hospitality_cctv.jpg';
   }
-  if (scenarioId === 'mld-equipment' || t.includes('data entry') || t.includes('software') || t.includes('it')) {
-    return '/images/feeds/ai_it_lab.jpg';          // IT Lab: workstations + AEBAS detection
+  if (scenarioId === 'gkp-ghost' || t.includes('apparel') || t.includes('sewing')) {
+    return '/images/feeds/room_ghost_cctv.jpg';
   }
   if (scenarioId === 'jdh-solar' || t.includes('solar') || t.includes('electrical') || t.includes('electrician')) {
-    return '/images/feeds/ai_bom_verification.jpg'; // Equipment BOM: deficit detection
+    return '/images/feeds/room_solar_cctv.jpg';
   }
   if (scenarioId === 'ngp-normal' || t.includes('cnc') || t.includes('lathe') || t.includes('machinery')) {
-    return '/images/feeds/ai_compliant_cnc.jpg';   // Fully compliant: 43/43 detected
+    return '/images/feeds/room_cnc_cctv.jpg';
   }
-  return '/images/feeds/ai_sewing_detection.jpg';  // Default: sewing workshop bounding boxes
+  return '/images/feeds/room_sewing_cctv.jpg';
 };
 
 export default function LiveStudioPage() {
@@ -558,18 +612,18 @@ export default function LiveStudioPage() {
               <img
                 src={
                   scenario.id === 'gkp-ghost'
-                    ? '/images/feeds/room_ghost_cctv.jpg'      // Ghost: sewing room with empty seats
+                    ? '/images/feeds/room_ghost_cctv.jpg'            // Ghost: sewing room with 14 empty seats
+                    : scenario.id === 'smr-temporal'
+                    ? '/images/feeds/room_hospitality_cctv.jpg'      // Hospitality: banquet setup with 8 stewards
                     : scenario.id === 'ngp-normal'
-                    ? '/images/feeds/room_cnc_cctv.jpg'        // Compliant: full CNC workshop
+                    ? '/images/feeds/room_cnc_cctv.jpg'              // Compliant: full CNC machining workshop
                     : scenario.id === 'jdh-solar'
-                    ? '/images/feeds/room_solar_cctv.jpg'      // Solar: electrical/solar lab
-                    : scenario.id === 'mld-equipment'
-                    ? '/images/feeds/room_it_cctv.jpg'         // IT Lab: computer workstations
-                    : '/images/feeds/room_sewing_cctv.jpg'     // Default: sewing workshop
+                    ? '/images/feeds/room_solar_cctv.jpg'            // Solar: solar PV electrical lab
+                    : '/images/feeds/room_sewing_cctv.jpg'           // Default: sewing workshop
                 }
                 alt="CCTV Live Feed"
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{ filter: 'brightness(0.42) contrast(1.1) saturate(0.85)' }}
+                style={{ filter: 'brightness(0.80) contrast(1.05) saturate(0.95)' }}
               />
 
               {/* Subtle CCTV scan-line texture overlay */}
